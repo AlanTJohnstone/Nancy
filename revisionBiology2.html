@@ -1,0 +1,1042 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology II Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden;
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain;
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none;
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nancy’s Biology II Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area"></div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                questionText: "What is the function of the xylem in a plant?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The xylem transports water and mineral ions from the roots to the leaves and other parts of the plant. It also provides structural support.</p>
+                `
+            },
+            {
+                questionText: "The diagram below shows a cross-section of a leaf. Identify parts A, B, and C.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Upper epidermis -->
+                        <rect x="10" y="10" width="180" height="20" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <text x="90" y="20" font-family="Arial" font-size="8">A</text>
+                        <!-- Palisade mesophyll -->
+                        <rect x="10" y="30" width="180" height="40" fill="#27AE60" stroke="#000" stroke-width="1"/>
+                        <text x="90" y="50" font-family="Arial" font-size="8">B</text>
+                        <!-- Spongy mesophyll -->
+                        <rect x="10" y="70" width="180" height="40" fill="#52BE80" stroke="#000" stroke-width="1"/>
+                        <text x="90" y="90" font-family="Arial" font-size="8">C</text>
+                        <!-- Lower epidermis -->
+                        <rect x="10" y="110" width="180" height="20" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <!-- Stomata -->
+                        <ellipse cx="100" cy="120" rx="10" ry="5" fill="#FFF" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <ul>
+                        <li><strong>A:</strong> Upper epidermis</li>
+                        <li><strong>B:</strong> Palisade mesophyll</li>
+                        <li><strong>C:</strong> Spongy mesophyll</li>
+                    </ul>
+                `
+            },
+            {
+                questionText: "What is homeostasis?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Homeostasis is the maintenance of a stable internal environment in the body, such as regulating temperature, blood glucose levels, and water balance, despite external changes.</p>
+                `
+            },
+            {
+                questionText: "The diagram below shows the human respiratory system. Identify parts A and B.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Trachea (A) -->
+                        <rect x="90" y="20" width="20" height="100" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                        <text x="85" y="70" font-family="Arial" font-size="8">A</text>
+                        <!-- Lungs (B) -->
+                        <ellipse cx="70" cy="180" rx="40" ry="60" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                        <ellipse cx="130" cy="180" rx="40" ry="60" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                        <text x="100" y="180" font-family="Arial" font-size="8">B</text>
+                        <!-- Bronchi -->
+                        <path d="M100,120 C80,140 70,160 70,180" fill="none" stroke="#000" stroke-width="1"/>
+                        <path d="M100,120 C120,140 130,160 130,180" fill="none" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <ul>
+                        <li><strong>A:</strong> Trachea</li>
+                        <li><strong>B:</strong> Lungs</li>
+                    </ul>
+                `
+            },
+            {
+                questionText: "Explain the role of stomata in plants.",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Stomata are small pores on the surface of leaves that allow gas exchange (carbon dioxide in, oxygen out) for photosynthesis and respiration. They also regulate water loss through transpiration.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the pancreas in blood glucose regulation?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The pancreas regulates blood glucose by releasing insulin when glucose levels are high, promoting glucose uptake by cells, and glucagon when glucose levels are low, stimulating glycogen breakdown in the liver.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a plant root hair cell. What is the function of structure A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cell body -->
+                        <rect x="50" y="20" width="100" height="60" fill="#D5F5E3" stroke="#000" stroke-width="1"/>
+                        <!-- Root hair (A) -->
+                        <rect x="150" y="40" width="30" height="80" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <text x="160" y="80" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is the root hair. It increases the surface area for the absorption of water and mineral ions from the soil.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the phloem in a plant?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The phloem transports sugars, such as glucose, produced during photosynthesis from the leaves to other parts of the plant for growth, storage, or respiration.</p>
+                `
+            },
+            {
+                questionText: "Describe the role of alveoli in gas exchange.",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Alveoli are tiny air sacs in the lungs where gas exchange occurs. Oxygen diffuses from the alveoli into the blood, and carbon dioxide diffuses from the blood into the alveoli to be exhaled.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows the nitrogen cycle. Identify process A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Soil -->
+                        <rect x="0" y="150" width="200" height="50" fill="#8B4513"/>
+                        <!-- Plants -->
+                        <rect x="50" y="100" width="20" height="50" fill="#228B22"/>
+                        <rect x="80" y="100" width="20" height="50" fill="#228B22"/>
+                        <!-- Arrow for nitrogen fixation (A) -->
+                        <path d="M100,150 L100,120" fill="none" stroke="#000" stroke-width="2"/>
+                        <path d="M90,130 L100,120 L110,130" fill="none" stroke="#000" stroke-width="2"/>
+                        <text x="110" y="130" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Process A is nitrogen fixation, where nitrogen gas in the atmosphere is converted into ammonia by bacteria in the soil or root nodules of plants.</p>
+                `
+            },
+            // Questions 11-100
+            {
+                questionText: "What hormone is released by the adrenal glands in response to stress?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The adrenal glands release adrenaline in response to stress, preparing the body for a 'fight or flight' response by increasing heart rate and energy availability.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a plant stem. Identify tissue A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Epidermis -->
+                        <circle cx="100" cy="100" r="80" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <!-- Xylem (A) -->
+                        <circle cx="100" cy="100" r="20" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="100" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Tissue A is xylem, responsible for transporting water and minerals from the roots to the rest of the plant.</p>
+                `
+            },
+            {
+                questionText: "What is transpiration in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Transpiration is the loss of water vapour from the leaves of a plant through the stomata, driving the uptake of water from the roots and aiding in nutrient transport.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the pituitary gland in homeostasis?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The pituitary gland releases hormones such as ADH (antidiuretic hormone) to regulate water balance and ACTH to control stress responses, helping maintain homeostasis.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows the heart. Identify chamber A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Heart outline -->
+                        <path d="M100,20 C60,0 20,40 20,80 C20,120 60,160 100,180 C140,160 180,120 180,80 C180,40 140,0 100,20" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                        <!-- Left ventricle (A) -->
+                        <rect x="60" y="120" width="40" height="40" fill="#FF9999" stroke="#000" stroke-width="1"/>
+                        <text x="80" y="140" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Chamber A is the left ventricle, which pumps oxygenated blood into the aorta and subsequently to the rest of the body.</p>
+                `
+            },
+            {
+                questionText: "What is the main source of energy for Earth's ecosystems?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The Sun is the main source of energy for Earth's ecosystems, providing energy for photosynthesis in producers, which is then transferred through food chains.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of red blood cells in oxygen transport.",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Red blood cells contain haemoglobin, which binds to oxygen in the lungs and transports it to tissues around the body, releasing it for respiration.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a food web. What is the role of organism A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Producer (grass) -->
+                        <rect x="80" y="160" width="40" height="20" fill="#228B22"/>
+                        <!-- Primary consumer (rabbit) -->
+                        <rect x="60" y="100" width="40" height="20" fill="#D3D3D3"/>
+                        <!-- Secondary consumer (fox, A) -->
+                        <rect x="80" y="40" width="40" height="20" fill="#FF4500"/>
+                        <text x="100" y="50" font-family="Arial" font-size="8">A</text>
+                        <!-- Arrows -->
+                        <path d="M100,160 L80,120" fill="none" stroke="#000" stroke-width="1"/>
+                        <path d="M80,100 L100,60" fill="none" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Organism A is a secondary consumer, as it feeds on primary consumers (e.g., rabbits) in the food web.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the guard cells in a leaf?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Guard cells surround stomata and control their opening and closing to regulate gas exchange and water loss in the leaf.</p>
+                `
+            },
+            {
+                questionText: "What is the role of decomposers in the carbon cycle?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Decomposers, such as bacteria and fungi, break down dead organisms and waste, releasing carbon dioxide back into the atmosphere through respiration.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a nephron. What is the function of structure A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Glomerulus (A) -->
+                        <circle cx="100" cy="50" r="30" fill="#FF9999" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="50" font-family="Arial" font-size="8">A</text>
+                        <!-- Bowman's capsule -->
+                        <ellipse cx="100" cy="50" rx="40" ry="20" fill="none" stroke="#000" stroke-width="1"/>
+                        <!-- Proximal tubule -->
+                        <path d="M100,80 C100,120 80,140 80,180" fill="none" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is the glomerulus, where blood is filtered to form a filtrate that enters the nephron for further processing in the kidney.</p>
+                `
+            },
+            {
+                questionText: "What is the role of insulin in the body?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Insulin lowers blood glucose levels by promoting the uptake of glucose into cells and stimulating the conversion of glucose to glycogen in the liver.</p>
+                `
+            },
+            {
+                questionText: "Explain the term 'trophic level' in an ecosystem.",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A trophic level is the position an organism occupies in a food chain, such as producer, primary consumer, secondary consumer, or tertiary consumer.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a plant cell. Identify structure A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cell wall -->
+                        <rect x="20" y="20" width="160" height="160" fill="#A9DFBF" stroke="#000" stroke-width="2"/>
+                        <!-- Chloroplast (A) -->
+                        <ellipse cx="100" cy="100" rx="20" ry="10" fill="#27AE60" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="100" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is a chloroplast, which contains chlorophyll and is the site of photosynthesis in plant cells.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the thyroid gland in homeostasis?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The thyroid gland releases thyroxine, which regulates metabolism, helping to control energy use and maintain body temperature.</p>
+                `
+            },
+            {
+                questionText: "What is the function of capillaries in the circulatory system?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Capillaries are tiny blood vessels where the exchange of oxygen, carbon dioxide, nutrients, and waste products occurs between blood and tissues.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a water cycle. Identify process A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Ocean -->
+                        <rect x="0" y="150" width="200" height="50" fill="#ADD8E6"/>
+                        <!-- Cloud -->
+                        <ellipse cx="100" cy="50" rx="30" ry="20" fill="#D3D3D3"/>
+                        <!-- Evaporation (A) -->
+                        <path d="M100,150 L100,80" fill="none" stroke="#000" stroke-width="2"/>
+                        <path d="M90,90 L100,80 L110,90" fill="none" stroke="#000" stroke-width="2"/>
+                        <text x="110" y="90" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Process A is evaporation, where water from the ocean or other bodies turns into water vapour and rises into the atmosphere.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the liver in blood glucose regulation?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The liver stores excess glucose as glycogen when insulin is present and breaks down glycogen into glucose when glucagon is released, maintaining blood glucose levels.</p>
+                `
+            },
+            {
+                questionText: "Explain the term 'biodiversity' in an ecosystem.",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Biodiversity refers to the variety of species, genetic diversity, and ecosystems in a given area, contributing to ecosystem stability and resilience.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a villus in the small intestine. What is the function of structure A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Villus -->
+                        <rect x="80" y="50" width="40" height="200" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                        <!-- Microvilli (A) -->
+                        <rect x="80" y="50" width="40" height="20" fill="#FF9999" stroke="#000" stroke-width="1"/>
+                        <text x="90" y="60" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A represents microvilli, which increase the surface area of the villus for the absorption of nutrients into the bloodstream.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the nervous system in coordination?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The nervous system coordinates responses by transmitting electrical impulses through neurons, allowing rapid communication between the brain, spinal cord, and body parts.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the cuticle on a leaf?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The cuticle is a waxy layer on the leaf surface that reduces water loss by transpiration and protects the leaf from damage.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows the carbon cycle. Identify process A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Plant -->
+                        <rect x="80" y="100" width="40" height="50" fill="#228B22"/>
+                        <!-- Atmosphere -->
+                        <rect x="50" y="20" width="100" height="30" fill="#ADD8E6"/>
+                        <!-- Photosynthesis (A) -->
+                        <path d="M100,100 L100,50" fill="none" stroke="#000" stroke-width="2"/>
+                        <path d="M90,60 L100,50 L110,60" fill="none" stroke="#000" stroke-width="2"/>
+                        <text x="110" y="60" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Process A is photosynthesis, where plants absorb carbon dioxide from the atmosphere to produce glucose and oxygen.</p>
+                `
+            },
+            {
+                questionText: "What is the role of platelets in the blood?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Platelets help in blood clotting by forming a plug at the site of a wound, preventing excessive bleeding and aiding in wound healing.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the meristem in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Meristems are regions of actively dividing cells in plants, responsible for growth in length (apical meristems) and thickness (lateral meristems).</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a synapse. What is the function of structure A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Pre-synaptic neuron -->
+                        <rect x="20" y="20" width="60" height="40" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                        <!-- Synaptic cleft -->
+                        <rect x="80" y="20" width="20" height="40" fill="#FFF" stroke="#000" stroke-width="1"/>
+                        <!-- Post-synaptic neuron -->
+                        <rect x="100" y="20" width="60" height="40" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                        <!-- Neurotransmitter (A) -->
+                        <circle cx="90" cy="40" r="5" fill="#FF4500"/>
+                        <text x="95" y="45" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A represents neurotransmitters, which transmit signals across the synaptic cleft from one neuron to another.</p>
+                `
+            },
+            {
+                questionText: "What is the role of ADH in water balance?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Antidiuretic hormone (ADH) increases the reabsorption of water in the kidneys, reducing urine volume and helping to maintain water balance in the body.</p>
+                `
+            },
+            {
+                questionText: "Explain the term 'producer' in an ecosystem.",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A producer is an organism, such as a plant, that produces its own food through photosynthesis, forming the base of the food chain.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a plant shoot. What is the function of structure A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Stem -->
+                        <rect x="90" y="50" width="20" height="200" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <!-- Leaf (A) -->
+                        <ellipse cx="100" cy="100" rx="30" ry="15" fill="#27AE60" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="100" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is a leaf, which is the primary site of photosynthesis, producing glucose using sunlight, carbon dioxide, and water.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the kidneys in homeostasis?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The kidneys regulate water and ion balance, filter blood to remove waste, and produce urine, helping to maintain homeostasis.</p>
+                `
+            },
+            {
+                questionText: "What is the function of chlorophyll in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Chlorophyll absorbs light energy, primarily from the Sun, to drive photosynthesis, converting carbon dioxide and water into glucose and oxygen.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a reflex arc. Identify component A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Receptor -->
+                        <circle cx="20" cy="75" r="10" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                        <!-- Sensory neuron (A) -->
+                        <path d="M30,75 L80,75" fill="none" stroke="#FF4500" stroke-width="2"/>
+                        <text x="50" y="65" font-family="Arial" font-size="8">A</text>
+                        <!-- Relay neuron -->
+                        <path d="M80,75 L120,75" fill="none" stroke="#000" stroke-width="2"/>
+                        <!-- Motor neuron -->
+                        <path d="M120,75 L170,75" fill="none" stroke="#000" stroke-width="2"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Component A is the sensory neuron, which transmits nerve impulses from the receptor to the spinal cord or brain.</p>
+                `
+            },
+            {
+                questionText: "What is the role of glucagon in the body?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Glucagon raises blood glucose levels by stimulating the breakdown of glycogen into glucose in the liver when blood glucose is low.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the palisade mesophyll in a leaf?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The palisade mesophyll contains many chloroplasts and is the main site of photosynthesis in the leaf, producing glucose.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a food chain. What is the role of organism A?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Producer -->
+                        <rect x="20" y="100" width="40" height="20" fill="#228B22"/>
+                        <!-- Primary consumer -->
+                        <rect x="80" y="70" width="40" height="20" fill="#D3D3D3"/>
+                        <!-- Secondary consumer (A) -->
+                        <rect x="140" y="40" width="40" height="20" fill="#FF4500"/>
+                        <text x="150" y="50" font-family="Arial" font-size="8">A</text>
+                        <!-- Arrows -->
+                        <path d="M60,100 L80,90" fill="none" stroke="#000" stroke-width="1"/>
+                        <path d="M120,70 L140,60" fill="none" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Organism A is a secondary consumer, feeding on primary consumers in the food chain.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the diaphragm in breathing?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The diaphragm contracts to increase the volume of the chest cavity during inhalation, allowing air to enter the lungs, and relaxes during exhalation.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the spongy mesophyll in a leaf?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The spongy mesophyll has air spaces that allow gas exchange (carbon dioxide and oxygen) for photosynthesis and respiration in the leaf.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows the human endocrine system. Identify gland A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Head -->
+                        <circle cx="100" cy="50" r="30" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                        <!-- Pituitary gland (A) -->
+                        <circle cx="100" cy="50" r="5" fill="#FF9999" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="50" font-family="Arial" font-size="8">A</text>
+                        <!-- Body -->
+                        <rect x="80" y="80" width="40" height="150" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Gland A is the pituitary gland, which releases hormones that control other endocrine glands and regulate processes like growth and water balance.</p>
+                `
+            },
+            {
+                questionText: "What is the role of producers in the nitrogen cycle?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Producers, such as plants, absorb nitrates from the soil to synthesize proteins and other nitrogen-containing compounds for growth.</p>
+                `
+            },
+            {
+                questionText: "What is the function of arteries in the circulatory system?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Arteries carry oxygenated blood away from the heart to the body’s tissues under high pressure, except for the pulmonary artery, which carries deoxygenated blood to the lungs.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a chloroplast. Identify structure A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Chloroplast -->
+                        <ellipse cx="100" cy="75" rx="80" ry="50" fill="#27AE60" stroke="#000" stroke-width="1"/>
+                        <!-- Thylakoid (A) -->
+                        <ellipse cx="100" cy="75" rx="20" ry="10" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="75" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is a thylakoid, where the light-dependent reactions of photosynthesis occur, producing ATP and oxygen.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the hypothalamus in homeostasis?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The hypothalamus monitors internal conditions and controls the pituitary gland to release hormones that regulate temperature, water balance, and other homeostatic processes.</p>
+                `
+            },
+            {
+                questionText: "What is the function of veins in the circulatory system?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Veins carry deoxygenated blood back to the heart, except for the pulmonary vein, which carries oxygenated blood from the lungs to the heart.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a pyramid of biomass. What does level A represent?",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Producers (A) -->
+                        <rect x="20" y="150" width="160" height="40" fill="#228B22"/>
+                        <text x="90" y="170" font-family="Arial" font-size="8">A</text>
+                        <!-- Primary consumers -->
+                        <rect x="50" y="100" width="100" height="30" fill="#D3D3D3"/>
+                        <!-- Secondary consumers -->
+                        <rect x="70" y="60" width="60" height="20" fill="#FF4500"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Level A represents producers, such as plants, which have the highest biomass and form the base of the pyramid.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the large intestine in homeostasis?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The large intestine absorbs water from undigested food, helping to regulate water balance and form solid faeces for excretion.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the root cap in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The root cap protects the growing tip of the root as it pushes through the soil and aids in sensing gravity for proper root growth.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a blood vessel. Identify structure A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Blood vessel wall -->
+                        <rect x="20" y="20" width="160" height="110" fill="#F5B7B1" stroke="#000" stroke-width="2"/>
+                        <!-- Red blood cell (A) -->
+                        <circle cx="100" cy="75" r="10" fill="#FF0000" stroke="#000" stroke-width="1"/>
+                        <text x="110" y="75" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is a red blood cell, which transports oxygen from the lungs to the body’s tissues.</p>
+                `
+            },
+            {
+                questionText: "What is the role of consumers in the carbon cycle?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Consumers, such as animals, take in carbon by eating plants or other animals and release carbon dioxide through respiration.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the stomata in gas exchange?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Stomata allow carbon dioxide to enter the leaf for photosynthesis and oxygen to exit as a byproduct, facilitating gas exchange.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows the human circulatory system. Identify vessel A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Heart -->
+                        <path d="M100,50 C60,30 20,70 20,110 C20,150 60,190 100,210 C140,190 180,150 180,110 C180,70 140,30 100,50" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                        <!-- Aorta (A) -->
+                        <path d="M100,50 L100,20" fill="none" stroke="#FF0000" stroke-width="5"/>
+                        <text x="110" y="30" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Vessel A is the aorta, which carries oxygenated blood from the heart to the rest of the body.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the small intestine in nutrient absorption?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The small intestine absorbs nutrients, such as glucose, amino acids, and fatty acids, into the bloodstream through its villi and microvilli.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the epidermis in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The epidermis is the outer layer of cells in plants that protects against water loss, physical damage, and pathogens.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a leaf structure. Identify layer A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cuticle -->
+                        <rect x="10" y="10" width="180" height="10" fill="#D5F5E3" stroke="#000" stroke-width="1"/>
+                        <!-- Upper epidermis (A) -->
+                        <rect x="10" y="20" width="180" height="20" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                        <text x="90" y="30" font-family="Arial" font-size="8">A</text>
+                        <!-- Palisade mesophyll -->
+                        <rect x="10" y="40" width="180" height="40" fill="#27AE60" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Layer A is the upper epidermis, which protects the leaf and reduces water loss.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the testes in the endocrine system?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The testes produce testosterone, which regulates male reproductive development and secondary sexual characteristics.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the xylem vessels in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Xylem vessels are hollow tubes that transport water and mineral ions from the roots to the leaves and provide structural support.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a kidney. Identify structure A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Kidney outline -->
+                        <ellipse cx="100" cy="100" rx="60" ry="80" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                        <!-- Renal artery (A) -->
+                        <path d="M100,20 L100,60" fill="none" stroke="#FF0000" stroke-width="5"/>
+                        <text x="110" y="40" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is the renal artery, which supplies blood to the kidney for filtration.</p>
+                `
+            },
+            {
+                questionText: "What is the role of decomposers in ecosystems?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Decomposers break down dead organisms and waste, recycling nutrients like carbon and nitrogen back into the ecosystem for use by producers.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the phloem sieve tubes in plants?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Phloem sieve tubes transport sugars and other organic compounds from the leaves to other parts of the plant for growth or storage.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows an ecosystem. Identify organism A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Plant (A) -->
+                        <rect x="80" y="100" width="40" height="50" fill="#228B22"/>
+                        <text x="90" y="120" font-family="Arial" font-size="8">A</text>
+                        <!-- Animal -->
+                        <rect x="80" y="50" width="40" height="20" fill="#D3D3D3"/>
+                        <!-- Arrow -->
+                        <path d="M100,100 L100,70" fill="none" stroke="#000" stroke-width="1"/>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Organism A is a producer, such as a plant, which produces its own food through photosynthesis.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the ovaries in the endocrine system?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The ovaries produce oestrogen and progesterone, which regulate female reproductive development and the menstrual cycle.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the bronchi in the respiratory system?",
+                svgDiagram: "",
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The bronchi are airways that branch from the trachea and carry air into the lungs, dividing into smaller bronchioles.</p>
+                `
+            },
+            {
+                questionText: "The diagram shows a neurone. Identify structure A.",
+                svgDiagram: `
+                    <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cell body -->
+                        <circle cx="50" cy="75" r="20" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                        <!-- Axon (A) -->
+                        <rect x="70" y="70" width="100" height="10" fill="#FF9999" stroke="#000" stroke-width="1"/>
+                        <text x="100" y="65" font-family="Arial" font-size="8">A</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Structure A is the axon, which transmits nerve impulses away from the cell body to other neurons or effectors.</p>
+                `
+            }
+        ];
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none';
+            answerAreaEl.innerHTML = '';
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0;
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        loadNextQuestion();
+    </script>
+</body>
+</html>
