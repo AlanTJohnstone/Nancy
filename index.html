@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology I Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden; /* Prevent SVG overflow */
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px; /* Limit SVG height */
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain; /* Ensure SVG scales properly */
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none; /* Hidden by default */
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Biology I Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area">
+            <!-- Model answer will be injected here -->
+        </div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                questionText: "The diagram below shows a simple animal cell. Identify parts A, B, and C.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cell Membrane (A) -->
+                        <ellipse cx="50" cy="50" rx="45" ry="30" fill="#FFDDC1" stroke="#000" stroke-width="2"/>
+                        <!-- Nucleus (C) -->
+                        <circle cx="50" cy="50" r="12.5" fill="#ADD8E6" stroke="#000" stroke-width="1.5"/>
+                        <!-- Cytoplasm (B) -->
+                        <text x="5" y="10" font-family="Arial" font-size="5">A</text>
+                        <line x1="10" y1="10" x2="20" y2="20" stroke="black" stroke-width="1"/>
+                        <text x="35" y="25" font-family="Arial" font-size="5">B</text>
+                        <line x1="37.5" y1="25" x2="42.5" y2="30" stroke="black" stroke-width="1"/>
+                        <text x="47.5" y="52" font-family="Arial" font-size="5" fill="black">C</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <ul>
+                        <li><strong>A:</strong> Cell Membrane</li>
+                        <li><strong>B:</strong> Cytoplasm</li>
+                        <li><strong>C:</strong> Nucleus</li>
+                    </ul>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'dominant allele'?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A dominant allele is an allele that is always expressed in the phenotype (the observable characteristic) even if only one copy is present in the genotype.</p>
+                `
+            },
+            {
+                questionText: "Polydactyly is a condition where a person is born with extra fingers or toes. It is caused by a dominant allele (P). The recessive allele is (p). A heterozygous male (Pp) with polydactyly and a homozygous recessive female (pp) have a child. Draw a Punnett square to show the possible genotypes of their offspring and state the percentage probability that their child will have polydactyly.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Punnett Square:</p>
+                    <table border="1" style="margin-left:auto; margin-right:auto; border-collapse: collapse; text-align:center;">
+                        <tr><td style="padding:5px;"></td><td style="padding:5px;"><strong>P</strong> (from male)</td><td style="padding:5px;"><strong>p</strong> (from male)</td></tr>
+                        <tr><td style="padding:5px;"><strong>p</strong> (from female)</td><td style="padding:5px;">Pp</td><td style="padding:5px;">pp</td></tr>
+                        <tr><td style="padding:5px;"><strong>p</strong> (from female)</td><td style="padding:5px;">Pp</td><td style="padding:5px;">pp</td></tr>
+                    </table>
+                    <p>Possible genotypes of offspring: Pp, Pp, pp, pp.</p>
+                    <p>The genotypes Pp will result in polydactyly (as P is dominant).</p>
+                    <p>Percentage probability of child having polydactyly: <strong>50%</strong> (2 out of 4 offspring).</p>
+                `
+            },
+            {
+                questionText: "Describe the process of natural selection.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <ol>
+                        <li><strong>Variation:</strong> Individuals within a population show variation in their characteristics due to differences in their genes (mutations).</li>
+                        <li><strong>Competition:</strong> Organisms produce more offspring than can survive, leading to competition for resources (e.g., food, mates, space).</li>
+                        <li><strong>Survival of the Fittest:</strong> Individuals with characteristics best suited to their environment are more likely to survive and reproduce.</li>
+                        <li><strong>Inheritance:</strong> These advantageous alleles are passed on to their offspring.</li>
+                        <li><strong>Evolution:</strong> Over many generations, the frequency of these advantageous alleles increases in the population, leading to evolution.</li>
+                    </ol>
+                `
+            },
+            {
+                questionText: "What are the products of anaerobic respiration in yeast cells, and what is this process called?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The products of anaerobic respiration in yeast cells are:</p>
+                    <ul>
+                        <li>Ethanol</li>
+                        <li>Carbon Dioxide</li>
+                        <li>(A small amount of ATP/energy)</li>
+                    </ul>
+                    <p>This process is called <strong>fermentation</strong> (specifically alcoholic fermentation).</p>
+                `
+            },
+            {
+                questionText: "What is the primary source of energy for Earth's climate system?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The primary source of energy for Earth's climate system is the Sun. Solar radiation provides the energy that drives atmospheric and oceanic circulation, influencing weather patterns and climate.</p>
+                `
+            },
+            {
+                questionText: "Describe the structure of a plant cell and identify one feature that distinguishes it from an animal cell.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="10" width="80" height="80" stroke="black" stroke-width="2" fill="green" />
+                        <circle cx="50" cy="50" r="10" stroke="black" stroke-width="2" fill="purple" />
+                        <text x="50" y="15" text-anchor="middle" font-size="5" fill="black">Cell Wall</text>
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="white">Nucleus</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A plant cell has a cell wall, cell membrane, cytoplasm, nucleus, mitochondria, chloroplasts, and a large central vacuole. The cell wall, made of cellulose, provides structural support. One feature that distinguishes it from an animal cell is the presence of the cell wall, which animal cells lack.</p>
+                `
+            },
+            {
+                questionText: "Explain how enzymes function as biological catalysts.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Enzymes are proteins that act as biological catalysts, speeding up chemical reactions without being consumed. They lower the activation energy required for reactions by providing an active site where substrates bind, forming an enzyme-substrate complex. This facilitates the reaction, producing products that are then released.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the mitochondria in a eukaryotic cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="50" rx="40" ry="20" stroke="black" stroke-width="2" fill="yellow" />
+                        <path d="M30,50 C30,60 70,60 70,50 C70,40 30,40 30,50" stroke="black" stroke-width="1" fill="none" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="black">Mitochondrion</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Mitochondria are the powerhouses of eukaryotic cells, responsible for producing energy through aerobic respiration. They convert glucose and oxygen into ATP, carbon dioxide, and water in a process called cellular respiration, primarily occurring in the inner mitochondrial membrane.</p>
+                `
+            },
+            {
+                questionText: "Define osmosis and explain its importance in cells.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Osmosis is the diffusion of water molecules across a partially permeable membrane from a region of higher water concentration to a region of lower water concentration. It is important in cells for maintaining water balance, enabling nutrient uptake, and supporting turgor pressure in plant cells.</p>
+                `
+            },
+            {
+                questionText: "What is the function of chlorophyll in photosynthesis?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="30" stroke="black" stroke-width="2" fill="green" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="white">Chlorophyll</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Chlorophyll is a green pigment in chloroplasts that absorbs light energy, primarily from blue and red wavelengths, during photosynthesis. It captures light to drive the reaction that converts carbon dioxide and water into glucose and oxygen.</p>
+                `
+            },
+            {
+                questionText: "Explain the difference between aerobic and anaerobic respiration.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Aerobic respiration requires oxygen and produces more energy (ATP) by fully breaking down glucose into carbon dioxide and water. Anaerobic respiration occurs without oxygen, producing less energy and forming lactic acid (in animals) or ethanol and carbon dioxide (in yeast and plants).</p>
+                `
+            },
+            {
+                questionText: "What is the purpose of the cell membrane in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="black" stroke-width="2" fill="none" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="black">Cell Membrane</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The cell membrane controls the movement of substances in and out of the cell, acting as a selectively permeable barrier. It maintains homeostasis by regulating the exchange of nutrients, waste, and ions.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of photosynthesis, including the word equation.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Photosynthesis is the process by which plants produce glucose using light energy. It occurs in chloroplasts, where chlorophyll absorbs light to combine carbon dioxide and water. The word equation is: carbon dioxide + water → glucose + oxygen.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'diffusion' in the context of cells?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="50" height="100" fill="blue" />
+                        <rect x="50" y="0" width="50" height="100" fill="red" />
+                        <circle cx="25" cy="50" r="5" fill="white" />
+                        <circle cx="75" cy="50" r="5" fill="white" />
+                        <text x="50" y="10" text-anchor="middle" font-size="5" fill="black">Diffusion</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Diffusion is the passive movement of particles from an area of higher concentration to an area of lower concentration until equilibrium is reached. In cells, it allows substances like oxygen and carbon dioxide to cross membranes without energy input.</p>
+                `
+            },
+            {
+                questionText: "What are the main stages of the cell cycle?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The cell cycle consists of interphase and the mitotic (M) phase. Interphase includes G1 (cell growth), S (DNA replication), and G2 (preparation for division). The mitotic phase includes mitosis (nucleus division) and cytokinesis (cytoplasm division).</p>
+                `
+            },
+            {
+                questionText: "Explain the role of the nucleus in a eukaryotic cell.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="20" stroke="black" stroke-width="2" fill="purple" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="white">Nucleus</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The nucleus stores the cell's genetic material (DNA) and controls cell activities by regulating gene expression. It directs protein synthesis and cell division, ensuring proper cell function and reproduction.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of the stomata in plant leaves?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="40" width="60" height="20" stroke="black" stroke-width="2" fill="green" />
+                        <ellipse cx="50" cy="50" rx="10" ry="5" stroke="black" stroke-width="2" fill="white" />
+                        <text x="50" y="30" text-anchor="middle" font-size="5" fill="black">Stoma</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Stomata are pores on plant leaves that regulate gas exchange, allowing carbon dioxide to enter for photosynthesis and oxygen and water vapor to exit. They are controlled by guard cells, which open and close the stomata to balance gas exchange and water loss.</p>
+                `
+            },
+            {
+                questionText: "Describe the structure and function of a red blood cell.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="30" stroke="black" stroke-width="2" fill="red" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="white">Red Blood Cell</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Red blood cells are biconcave, disc-shaped cells without a nucleus, containing hemoglobin. Their shape increases surface area for oxygen transport. They carry oxygen from the lungs to tissues and return carbon dioxide to the lungs for exhalation.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'active transport' in cells?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Active transport is the movement of substances across a cell membrane against their concentration gradient, from a region of lower concentration to higher concentration, using energy (usually ATP). It is essential for processes like nutrient uptake and ion regulation.</p>
+                `
+            },
+            {
+                questionText: "Explain how the structure of a leaf is adapted for photosynthesis.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,80 C50,20 80,80 20,80" stroke="black" stroke-width="2" fill="green" />
+                        <text x="50" y="50" text-anchor="middle" font-size="5" fill="black">Leaf</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A leaf has a large surface area to absorb sunlight, a thin structure for gas diffusion, and chloroplasts containing chlorophyll for light absorption. Stomata allow gas exchange, and veins transport water and nutrients, optimizing photosynthesis.</p>
+                `
+            },
+            {
+                questionText: "What is the role of DNA in cells?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>DNA (deoxyribonucleic acid) carries genetic instructions for building proteins and controlling cell functions. It is stored in the nucleus and replicated during cell division, ensuring genetic information is passed to daughter cells.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of mitosis and its importance.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="30" cy="50" r="15" stroke="black" stroke-width="2" fill="blue" />
+                        <circle cx="70" cy="50" r="15" stroke="black" stroke-width="2" fill="blue" />
+                        <text x="50" y="20" text-anchor="middle" font-size="5" fill="black">Mitosis</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Mitosis is the process of cell division where a single cell divides to produce two identical daughter cells. It involves prophase, metaphase, anaphase, and telophase, followed by cytokinesis. Mitosis is crucial for growth, repair, and asexual reproduction.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the vacuole in a plant cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="30" stroke="black" stroke-width="2" fill="lightblue" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="black">Vacuole</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The vacuole in a plant cell is a large, fluid-filled sac that stores water, nutrients, and waste products. It maintains turgor pressure, helping the cell remain rigid, and can store toxins or pigments.</p>
+                `
+            },
+            {
+                questionText: "Explain the term 'homeostasis' and its importance in organisms.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Homeostasis is the maintenance of a stable internal environment despite external changes. It involves regulating factors like temperature, pH, and glucose levels. Homeostasis is vital for optimal enzyme function and overall organism survival.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the ribosomes in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="10" stroke="black" stroke-width="2" fill="gray" />
+                        <text x="50" y="70" text-anchor="middle" font-size="5" fill="black">Ribosome</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Ribosomes are cell structures where protein synthesis occurs. They translate mRNA into polypeptide chains by assembling amino acids, either freely in the cytoplasm or attached to the endoplasmic reticulum.</p>
+                `
+            },
+            {
+                questionText: "Describe the structure of a bacterial cell.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="30" width="60" height="40" rx="20" stroke="black" stroke-width="2" fill="gray" />
+                        <text x="50" y="50" text-anchor="middle" font-size="5" fill="black">Bacterial Cell</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A bacterial cell is prokaryotic, lacking a nucleus. It has a cell wall, cell membrane, cytoplasm, ribosomes, and a single circular DNA molecule. Some have flagella for movement or pili for attachment.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of the palisade mesophyll in a leaf?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The palisade mesophyll is a layer of tightly packed cells in a leaf, rich in chloroplasts. It is the primary site of photosynthesis, as its cells absorb light efficiently to produce glucose.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'allele' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>An allele is a variant form of a gene that occupies the same locus on a chromosome. Alleles can be dominant or recessive, influencing traits like eye color. For example, brown and blue eye color alleles.</p>
+                `
+            },
+            {
+                questionText: "Explain the structure of DNA and its importance.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30,20 C40,40 60,60 70,80" stroke="black" stroke-width="2" fill="none" />
+                        <path d="M70,20 C60,40 40,60 30,80" stroke="black" stroke-width="2" fill="none" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">DNA</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>DNA is a double helix molecule composed of two strands of nucleotides, linked by base pairs (adenine-thymine, cytosine-guanine). It stores genetic information, directing protein synthesis and inheritance, crucial for cell function and reproduction.</p>
+                `
+            },
+            {
+                questionText: "What is the purpose of the xylem in plants?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="45" y="20" width="10" height="60" stroke="black" stroke-width="2" fill="brown" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Xylem</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Xylem is a vascular tissue in plants that transports water and dissolved minerals from roots to leaves. Its hollow, lignified cells provide structural support and enable efficient water movement via transpiration.</p>
+                `
+            },
+            {
+                questionText: "Define the term 'metabolism' and give an example.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Metabolism is the set of chemical reactions in an organism that sustain life, including energy production and molecule synthesis. An example is glycolysis, where glucose is broken down to produce ATP.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the phloem in plants?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="45" y="20" width="10" height="60" stroke="black" stroke-width="2" fill="green" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Phloem</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Phloem is a vascular tissue in plants that transports sugars, produced during photosynthesis, from leaves to other parts of the plant, such as roots and fruits, for growth and storage.</p>
+                `
+            },
+            {
+                questionText: "What is the function of guard cells in plants?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="40" cy="50" rx="10" ry="20" stroke="black" stroke-width="2" fill="green" />
+                        <ellipse cx="60" cy="50" rx="10" ry="20" stroke="black" stroke-width="2" fill="green" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Guard Cells</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Guard cells surround stomata on plant leaves and control their opening and closing. By changing shape through turgor pressure, they regulate gas exchange and water loss, optimizing photosynthesis and preventing dehydration.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'genotype' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The genotype is the genetic makeup of an organism, specifically the combination of alleles for a particular gene. It determines the potential traits an organism can express, such as BB or Bb for eye color.</p>
+                `
+            },
+            {
+                questionText: "Describe the structure of a virus and its relevance to disease.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="20" stroke="black" stroke-width="2" fill="yellow" />
+                        <line x1="50" y1="30" x2="50" y2="10" stroke="black" stroke-width="2" />
+                        <line x1="50" y1="70" x2="50" y2="90" stroke="black" stroke-width="2" />
+                        <text x="50" y="95" text-anchor="middle" font-size="5" fill="black">Virus</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A virus consists of genetic material (DNA or RNA) enclosed in a protein coat called a capsid, sometimes with a lipid envelope. Viruses cause disease by infecting host cells, using their machinery to replicate, leading to cell damage and symptoms.</p>
+                `
+            },
+            {
+                questionText: "Explain the process of natural selection.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Natural selection is the process where organisms with traits better suited to their environment survive and reproduce more successfully. Over time, these advantageous traits become more common in the population, driving evolution. For example, faster prey animals escape predators, passing on speed-related genes.</p>
+                `
+            },
+            {
+                questionText: "What is the role of white blood cells in the immune system?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="15" stroke="black" stroke-width="2" fill="white" />
+                        <text x="50" y="70" text-anchor="middle" font-size="5" fill="black">White Blood Cell</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>White blood cells, or leukocytes, defend the body against pathogens. They include phagocytes, which engulf microbes, and lymphocytes, which produce antibodies or attack infected cells, coordinating immune responses.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'phenotype' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The phenotype is the observable physical or biochemical traits of an organism, determined by its genotype and environmental factors. For example, brown eye color is a phenotype resulting from specific alleles.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of antibiotics in treating bacterial infections.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Antibiotics are medicines that kill or inhibit the growth of bacteria by targeting processes like cell wall synthesis or protein production. They treat bacterial infections, such as strep throat, but are ineffective against viruses.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of the epidermis in plants?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The epidermis is the outermost layer of cells in plants, covering leaves, stems, and roots. It protects against water loss, pathogens, and physical damage, and contains stomata for gas exchange.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of meiosis and its importance in genetics.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="30" cy="50" r="10" stroke="black" stroke-width="2" fill="blue" />
+                        <circle cx="70" cy="50" r="10" stroke="black" stroke-width="2" fill="blue" />
+                        <text x="50" y="20" text-anchor="middle" font-size="5" fill="black">Meiosis</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Meiosis is a cell division process that produces four haploid gametes from a diploid cell, involving two divisions: meiosis I and II. It reduces chromosome number by half, ensuring genetic diversity through crossing over and random assortment, crucial for sexual reproduction.</p>
+                `
+            },
+            {
+                questionText: "What is the role of vaccines in preventing disease?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Vaccines stimulate the immune system to produce antibodies against specific pathogens without causing illness. They contain weakened or inactivated pathogens or their antigens, providing immunity and preventing diseases like measles or polio.</p>
+                `
+            },
+            {
+                questionText: "Explain the term 'variation' in the context of genetics.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Variation refers to differences in traits among individuals within a species, caused by genetic differences (mutations, recombination) and environmental factors. It provides the raw material for natural selection, enabling adaptation, e.g., height differences in humans.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the chloroplasts in plant cells?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="20" stroke="black" stroke-width="2" fill="green" />
+                        <text x="50" y="55" text-anchor="middle" font-size="5" fill="white">Chloroplast</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Chloroplasts are organelles in plant cells where photosynthesis occurs. They contain chlorophyll, which absorbs light energy to convert carbon dioxide and water into glucose and oxygen, providing energy for the plant.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of genetic modification in organisms.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Genetic modification involves altering an organism's DNA by inserting, removing, or modifying genes, often using techniques like CRISPR. It is used to enhance traits, such as pest resistance in crops, by introducing specific genes from other organisms.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'pathogen' and give an example.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A pathogen is a microorganism that causes disease in its host. Examples include bacteria, viruses, fungi, and protozoa. An example is the influenza virus, which causes flu.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of mRNA in protein synthesis.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,50 C40,30 60,70 80,50" stroke="black" stroke-width="2" fill="none" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">mRNA</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>mRNA (messenger RNA) carries genetic information from DNA in the nucleus to ribosomes in the cytoplasm. During translation, ribosomes read mRNA's nucleotide sequence to assemble amino acids into proteins, following the genetic code.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of the cuticle in plants?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The cuticle is a waxy layer on the epidermis of leaves and stems. It reduces water loss by evaporation, protects against pathogens, and shields the plant from environmental stresses like UV radiation.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of phagocytosis in the immune system.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="20" stroke="black" stroke-width="2" fill="white" />
+                        <circle cx="60" cy="50" r="5" stroke="black" stroke-width="2" fill="red" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Phagocytosis</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Phagocytosis is the process where phagocytes, such as macrophages, engulf and digest pathogens or debris. The phagocyte surrounds the particle, forming a phagosome, which fuses with lysosomes to break down the contents.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'homozygous' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Homozygous refers to an organism with two identical alleles for a specific gene, either both dominant (e.g., BB) or both recessive (e.g., bb). It determines consistent trait expression, like blue eyes in bb individuals.</p>
+                `
+            },
+            {
+                questionText: "Explain the ethical considerations of genetic modification.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Ethical considerations of genetic modification include potential environmental impacts, such as GM crops affecting ecosystems, and social concerns, like unequal access to technology. There are also debates about 'designer babies' and unintended health effects, requiring careful regulation.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the Golgi apparatus in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30,40 C50,30 70,40 70,50 C70,60 50,70 30,60 C30,50 50,40 30,40" stroke="black" stroke-width="2" fill="lightyellow" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Golgi Apparatus</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The Golgi apparatus modifies, packages, and sorts proteins and lipids from the endoplasmic reticulum into vesicles for secretion or use within the cell, ensuring proper cellular function and transport.</p>
+                `
+            },
+            {
+                questionText: "Describe the role of antibodies in the immune system.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,20 L40,60 L60,60 Z" stroke="black" stroke-width="2" fill="blue" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Antibody</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Antibodies are proteins produced by B-lymphocytes that bind to specific antigens on pathogens, neutralizing them or marking them for destruction by other immune cells. They provide targeted defense against infections.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'heterozygous' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Heterozygous refers to an organism with two different alleles for a specific gene, one dominant and one recessive (e.g., Bb). It can result in the dominant trait being expressed, like brown eyes in Bb individuals.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of natural selection in antibiotic resistance.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Natural selection drives antibiotic resistance when bacteria with mutations conferring resistance survive antibiotic treatment. These bacteria reproduce, passing on resistance genes, leading to a population of resistant bacteria, making infections harder to treat.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the endoplasmic reticulum in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,40 C50,30 80,40 80,50 C80,60 50,70 20,60" stroke="black" stroke-width="2" fill="lightgray" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Endoplasmic Reticulum</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The endoplasmic reticulum (ER) is a network of membranes involved in protein and lipid synthesis. Rough ER, with ribosomes, modifies proteins, while smooth ER synthesizes lipids and detoxifies substances.</p>
+                `
+            },
+            {
+                questionText: "Describe the structure of a chromosome.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,20 L50,80 M40,50 L60,50" stroke="black" stroke-width="2" fill="none" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Chromosome</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A chromosome is a thread-like structure of DNA and proteins, consisting of two chromatids joined at a centromere after DNA replication. It carries genes and condenses during cell division to ensure accurate genetic distribution.</p>
+                `
+            },
+            {
+                questionText: "What is the role of tRNA in protein synthesis?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M40,30 C50,20 60,30 60,50 L40,50 Z" stroke="black" stroke-width="2" fill="none" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">tRNA</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>tRNA (transfer RNA) carries specific amino acids to the ribosome during protein synthesis. It matches its anticodon to mRNA codons, ensuring the correct amino acid is added to the growing polypeptide chain.</p>
+                `
+            },
+            {
+                questionText: "Explain the term 'dominant allele' in genetics.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A dominant allele is a variant of a gene that masks the effect of a recessive allele when present in a heterozygous individual. It is expressed in the phenotype, e.g., B for brown eyes in Bb.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of the lysosomes in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 40 40" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="6" stroke="black" stroke-width="0.8" fill="orange" />
+                        <text x="20" y="28" text-anchor="middle" font-size="2" fill="black">Lysosome</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Lysosomes are membrane-bound organelles containing digestive enzymes that break down waste materials, damaged organelles, and engulfed pathogens, recycling components and maintaining cellular health.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of transcription in protein synthesis.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Transcription is the process where a segment of DNA is copied into mRNA in the nucleus. RNA polymerase binds to a promoter, unwinds DNA, and synthesizes mRNA using complementary base pairing, which then carries the genetic code to ribosomes.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'recessive allele' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A recessive allele is a variant of a gene that is only expressed in the phenotype when two copies are present (homozygous, e.g., bb). It is masked by a dominant allele in heterozygous individuals, e.g., blue eyes in bb.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of mutations in genetic variation.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Mutations are changes in DNA sequences that introduce new genetic variations. They can occur spontaneously or due to environmental factors, altering traits and providing raw material for natural selection, e.g., a mutation causing antibiotic resistance in bacteria.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the cell wall in plant cells?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="20" width="60" height="60" stroke="black" stroke-width="2" fill="green" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Cell Wall</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The cell wall in plant cells, made of cellulose, provides structural support and protection. It maintains cell shape, resists internal turgor pressure, and protects against pathogens and mechanical damage.</p>
+                `
+            },
+            {
+                questionText: "Describe the role of the immune system in combating disease.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The immune system protects the body from pathogens using white blood cells, antibodies, and lymph organs. It identifies and destroys invaders through phagocytosis, antibody production, and targeted cell destruction, preventing and controlling infections.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'codominance' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Codominance occurs when both alleles in a heterozygous individual are fully expressed, resulting in a phenotype showing both traits. For example, in AB blood type, both A and B alleles are expressed, producing AB antigens.</p>
+                `
+            },
+            {
+                questionText: "Explain the process of translation in protein synthesis.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Translation is the process where ribosomes read mRNA's nucleotide sequence to synthesize a protein. tRNA delivers amino acids matching mRNA codons, and ribosomes link them into a polypeptide chain, following the genetic code.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the centrioles in cell division?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="10" stroke="black" stroke-width="2" fill="gray" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Centriole</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Centrioles are cylindrical structures that organize the spindle fibers during mitosis. They form the centrosome, which anchors microtubules to pull chromosomes apart, ensuring accurate chromosome separation in cell division.</p>
+                `
+            },
+            {
+                questionText: "Describe the impact of non-communicable diseases on health.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Non-communicable diseases, like cancer and heart disease, are not caused by pathogens and cannot be transmitted. They result from genetic, lifestyle, or environmental factors, causing long-term health issues, reducing quality of life, and requiring ongoing treatment.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'Punnett square' in genetics?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="30" y="30" width="40" height="40" stroke="black" stroke-width="2" fill="none" />
+                        <line x1="50" y1="30" x2="50" y2="70" stroke="black" stroke-width="1" />
+                        <line x1="30" y1="50" x2="70" y2="50" stroke="black" stroke-width="1" />
+                        <text x="50" y="20" text-anchor="middle" font-size="5" fill="black">Punnett Square</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A Punnett square is a diagram used to predict the possible genotypes and phenotypes of offspring from a genetic cross. It shows the combination of parental alleles, e.g., predicting Bb or bb from a Bb x bb cross.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of selective breeding in genetic modification.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Selective breeding is a form of genetic modification where organisms with desirable traits are mated to produce offspring with those traits. For example, breeding disease-resistant wheat increases crop yield, but it is slower than modern genetic engineering.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the nucleolus in the nucleus?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="10" stroke="black" stroke-width="2" fill="darkpurple" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Nucleolus</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The nucleolus, within the nucleus, is the site of ribosome assembly. It produces rRNA and proteins that combine to form ribosomal subunits, essential for protein synthesis.</p>
+                `
+            },
+            {
+                questionText: "Describe the causes of communicable diseases.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Communicable diseases are caused by pathogens, such as bacteria, viruses, fungi, or protozoa, transmitted through direct contact, air, food, water, or vectors like mosquitoes. Examples include influenza (virus) and tuberculosis (bacteria).</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'gene' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A gene is a segment of DNA that contains the instructions for producing a specific protein or RNA molecule. It determines traits and is passed from parents to offspring, e.g., a gene for eye color.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of the spindle fibers in mitosis.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="30" y1="20" x2="70" y2="80" stroke="black" stroke-width="2" />
+                        <line x1="30" y1="80" x2="70" y2="20" stroke="black" stroke-width="2" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Spindle Fibers</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Spindle fibers are microtubules that form during mitosis, attaching to chromosomes at the centromere. They pull sister chromatids apart to opposite poles of the cell during anaphase, ensuring each daughter cell receives identical chromosomes.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of biodiversity in natural selection?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Biodiversity provides genetic variation within populations, which is essential for natural selection. Diverse traits allow some individuals to survive environmental changes, passing on advantageous genes, ensuring species adaptation and survival, e.g., varied beak shapes in finches.</p>
+                `
+            },
+            {
+                questionText: "Describe the role of enzymes in digestion.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Enzymes in digestion are proteins that catalyze the breakdown of complex molecules into simpler ones. For example, amylase breaks down starch into sugars, and protease breaks down proteins into amino acids, enabling nutrient absorption.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'carrier' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>A carrier is an individual who is heterozygous for a recessive genetic disorder, carrying one normal and one mutated allele (e.g., Aa). They do not show symptoms but can pass the mutated allele to offspring.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of monoclonal antibodies in medicine.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Monoclonal antibodies are identical antibodies produced from a single B-cell clone, used in medicine to target specific cells, like cancer cells, for destruction or to deliver drugs. They are also used in diagnostic tests, e.g., pregnancy tests.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the cytoskeleton in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="20" y1="20" x2="80" y2="80" stroke="black" stroke-width="2" />
+                        <line x1="20" y1="80" x2="80" y2="20" stroke="black" stroke-width="2" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Cytoskeleton</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The cytoskeleton is a network of protein fibers (microtubules, microfilaments, intermediate filaments) that provides structural support, maintains cell shape, and facilitates movement, intracellular transport, and cell division.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of crossing over in meiosis.",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30,20 C40,40 60,60 70,80" stroke="black" stroke-width="2" fill="none" />
+                        <path d="M70,20 C60,40 40,60 30,80" stroke="red" stroke-width="2" fill="none" />
+                        <text x="50" y="90" text-anchor="middle" font-size="5" fill="black">Crossing Over</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Crossing over occurs during prophase I of meiosis, where homologous chromosomes exchange segments of DNA at chiasmata. This shuffles alleles, increasing genetic diversity in gametes, contributing to variation in offspring.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'evolution' in biology?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Evolution is the gradual change in the genetic composition of a population over generations, driven by mechanisms like natural selection and mutations. It leads to the development of new species, e.g., Darwin's finches.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of B-lymphocytes in the immune system.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>B-lymphocytes (B-cells) produce antibodies that target specific pathogens for destruction. They also form memory cells after an infection, providing long-term immunity by enabling a faster response to future exposures.</p>
+                `
+            },
+            {
+                questionText: "What is the significance of the meristem in plants?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The meristem is a region of actively dividing cells in plants, found at root and shoot tips. It enables growth in length (apical meristem) and thickness (lateral meristem), producing new tissues for development.</p>
+                `
+            },
+            {
+                questionText: "Describe the role of T-lymphocytes in the immune system.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>T-lymphocytes (T-cells) include helper T-cells, which activate other immune cells, and cytotoxic T-cells, which destroy infected cells. They also form memory cells, ensuring rapid responses to previously encountered pathogens.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'haploid' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Haploid refers to a cell with one set of chromosomes (n), typically found in gametes like sperm and eggs. It ensures that fertilization restores the diploid number (2n) in the zygote, maintaining genetic stability.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of random assortment in meiosis.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Random assortment occurs during metaphase I of meiosis, where homologous chromosomes line up independently at the cell's equator. This random alignment shuffles maternal and paternal chromosomes, increasing genetic diversity in gametes.</p>
+                `
+            },
+            {
+                questionText: "What is the function of the peroxisomes in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="15" stroke="black" stroke-width="2" fill="lightgreen" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Peroxisome</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Peroxisomes are organelles that break down fatty acids and detoxify harmful substances, like hydrogen peroxide, using enzymes. They protect cells from oxidative damage and contribute to lipid metabolism.</p>
+                `
+            },
+            {
+                questionText: "Describe the impact of lifestyle factors on non-communicable diseases.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Lifestyle factors like poor diet, smoking, and lack of exercise increase the risk of non-communicable diseases, such as heart disease and type 2 diabetes, by causing obesity, high blood pressure, or cellular damage, worsening health outcomes.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'diploid' in genetics?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Diploid refers to a cell with two sets of chromosomes (2n), one from each parent, found in most body cells. It ensures genetic stability and provides two copies of each gene for trait expression.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of genetic engineering in agriculture.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Genetic engineering in agriculture involves modifying crop DNA to enhance traits like pest resistance or drought tolerance, e.g., Bt corn produces a bacterial toxin to deter pests. This increases yield and reduces pesticide use.</p>
+                `
+            },
+            {
+                questionText: "What is the role of the nuclear envelope in a cell?",
+                svgDiagram: `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="25" stroke="black" stroke-width="2" fill="none" />
+                        <text x="50" y="80" text-anchor="middle" font-size="5" fill="black">Nuclear Envelope</text>
+                    </svg>
+                `,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>The nuclear envelope is a double membrane surrounding the nucleus, controlling the flow of materials like RNA and proteins between the nucleus and cytoplasm through nuclear pores, protecting DNA and regulating gene expression.</p>
+                `
+            },
+            {
+                questionText: "Describe the process of developing a new medicine.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Developing a new medicine involves identifying a target (e.g., a disease-causing protein), screening compounds, testing in labs and animals, conducting clinical trials in humans (phases I-III), and obtaining regulatory approval to ensure safety and efficacy.</p>
+                `
+            },
+            {
+                questionText: "What is meant by the term 'adaptation' in biology?",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>An adaptation is a trait that enhances an organism's survival and reproduction in its environment, developed through natural selection. For example, a camel's hump stores fat for energy in deserts.</p>
+                `
+            },
+            {
+                questionText: "Explain the role of memory cells in immunity.",
+                svgDiagram: null,
+                answerText: `
+                    <p><strong>Model Answer:</strong></p>
+                    <p>Memory cells are long-lived B- and T-lymphocytes formed after an infection. They 'remember' specific pathogens, enabling a faster, stronger immune response upon re-exposure, providing long-term immunity, e.g., against measles after Kvaccination.</p>
+                `
+            }
+        ];
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none'; // Hide answer when new question loads
+            answerAreaEl.innerHTML = ''; // Clear previous answer
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            // Ensure we don't pick the same question twice in a row if there's more than one question
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0; // Only one question, so always pick it
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        // Event Listeners
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        // Initial Load
+        loadNextQuestion();
+    </script>
+</body>
+</html>
