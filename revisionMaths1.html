@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<link rel="icon" href="data:,">
 <html lang="en">
-       
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GCSE EdExcel Higher Tier Maths Non-Calculator Revision</title>
+    <title>Non Calculator Maths Revision</title>
     <style>
         body {
             font-family: sans-serif;
@@ -39,17 +37,17 @@
         }
         .diagram-container {
             width: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Prevent SVG overflow */
         }
         .diagram-container svg {
             max-width: 100%;
-            max-height: 300px;
+            max-height: 300px; /* Limit SVG height */
             width: 100%;
             height: auto;
             display: block;
             margin: 10px auto;
             border: 1px solid #ccc;
-            object-fit: contain;
+            object-fit: contain; /* Ensure SVG scales properly */
         }
         .answer-area {
             margin-top: 15px;
@@ -57,7 +55,7 @@
             border: 1px dashed #007bff;
             border-radius: 5px;
             background-color: #e7f3ff;
-            display: none;
+            display: none; /* Hidden by default */
         }
         .buttons-area {
             text-align: center;
@@ -90,7 +88,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>GCSE EdExcel Higher Tier Maths Non-Calculator Revision</h1>
+        <h1>Non Calculator Maths Revision</h1>
 
         <div class="question-area">
             <div class="question-text" id="question-text">Loading question...</div>
@@ -110,9 +108,9 @@
     <script>
         const questions = [
             {
-                questionText: "Simplify the expression (√18 + √50) / √2.",
-                svgDiagram: "",
-                answerText: `
+                "questionText": "Simplify the expression (√18 + √50) / √2.",
+                "svgDiagram": "",
+                "answerText": `
                     <p><strong>Model Answer:</strong></p>
                     <p><strong>Step 1:</strong> Simplify the square roots in the numerator.</p>
                     <p>√18 = √(9 × 2) = √9 × √2 = 3√2</p>
@@ -127,9 +125,9 @@
                 `
             },
             {
-                questionText: "Solve the simultaneous equations: 2x + y = 7 and x - y = 1.",
-                svgDiagram: "",
-                answerText: `
+                "questionText": "Solve the simultaneous equations: 2x + y = 7 and x - y = 1.",
+                "svgDiagram": "",
+                "answerText": `
                     <p><strong>Model Answer:</strong></p>
                     <p><strong>Step 1:</strong> Use the elimination method by adding the equations to eliminate y.</p>
                     <p>(2x + y) + (x - y) = 7 + 1</p>
@@ -139,16 +137,16 @@
                     <p><strong>Step 2:</strong> Substitute x = 8/3 into the second equation to find y.</p>
                     <p>x - y = 1</p>
                     <p>(8/3) - y = 1</p>
-                    <p>y = (8/3) - 1 = (8/3) -}
+                    <p>y = (8/3) - 1 = (8/3) - (3/3) = 5/3</p>
                     <p><strong>Step 3:</strong> Verify the solution in the first equation.</p>
                     <p>2x + y = 2(8/3) + (5/3) = (16/3) + (5/3) = 21/3 = 7, which is correct.</p>
                     <p><strong>Final Answer:</strong> x = 8/3, y = 5/3</p>
                 `
             },
             {
-                questionText: "A recipe requires ingredients in the ratio 3:5:2. If 150g of the first ingredient is used, calculate the total mass of all ingredients.",
-                svgDiagram: "",
-                answerText: `
+                "questionText": "A recipe requires ingredients in the ratio 3:5:2. If 150g of the first ingredient is used, calculate the total mass of all ingredients.",
+                "svgDiagram": "",
+                "answerText": `
                     <p><strong>Model Answer:</strong></p>
                     <p><strong>Step 1:</strong> Determine the parts of the ratio.</p>
                     <p>The ratio is 3:5:2, so the total parts = 3 + 5 + 2 = 10 parts.</p>
@@ -161,38 +159,37 @@
                 `
             },
             {
-                questionText: "In the diagram, triangle ABC has angle BAC = 40° and angle ABC = 70°. Calculate angle ACB.",
-                svgDiagram: `
-                    <svg width="400" height="400" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                "questionText": "In the diagram, triangle ABC has angle BAC = 40° and angle ABC = 70°. Calculate angle ACB.",
+                "svgDiagram": `
+                    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
                         <!-- Triangle ABC -->
-                        <polygon points="100,300 300,300 200,100" fill="none" stroke="#000" stroke-width="2"/>
+                        <polygon points="50,150 150,150 100,50" fill="none" stroke="#000" stroke-width="2"/>
                         <!-- Labels for vertices -->
-                        <text x="90" y="320" font-family="Arial" font-size="16">A</text>
-                        <text x="310" y="320" font-family="Arial" font-size="16">B</text>
-                        <text x="195" y="90" font-family="Arial" font-size="16">C</text>
+                        <text x="45" y="165" font-family="Arial" font-size="12">A</text>
+                        <text x="155" y="165" font-family="Arial" font-size="12">B</text>
+                        <text x="100" y="40" font-family="Arial" font-size="12">C</text>
                         <!-- Angle labels -->
-                        <text x="130" y="280" font-family="Arial" font-size="14">40°</text>
-                        <text x="270" y="280" font-family="Arial" font-size="14">70°</text>
-                        <text x="190" y="130" font-family="Arial" font-size="14">70°</text>
+                        <text x="60" y="140" font-family="Arial" font-size="10">40°</text>
+                        <text x="130" y="140" font-family="Arial" font-size="10">70°</text>
                         <!-- Angle arcs -->
-                        <path d="M 120 280 A 20 20 0 0 1 140 260" fill="none" stroke="#007bff" stroke-width="1"/>
-                        <path d="M 260 280 A 20 20 0 0 1 280 260" fill="none" stroke="#007bff" stroke-width="1"/>
-                        <path d="M 190 120 A 20 20 0 0 1 210 120" fill="none" stroke="#007bff" stroke-width="1"/>
+                        <path d="M 70 140 A 20 20 0 0 1 80 120" fill="none" stroke="#007bff" stroke-width="1"/>
+                        <path d="M 120 140 A 20 20 0 0 1 130 120" fill="none" stroke="#007bff" stroke-width="1"/>
                     </svg>
                 `,
-                answerText: `
+                "answerText": `
                     <p><strong>Model Answer:</strong></p>
                     <p><strong>Step 1:</strong> Recall the angle sum in a triangle.</p>
                     <p>The sum of angles in a triangle is 180°.</p>
                     <p><strong>Step 2:</strong> Identify the given angles.</p>
                     <p>Angle BAC = 40°, angle ABC = 70°.</p>
                     <p><strong>Step 3:</strong> Calculate angle ACB.</p>
-                    <p>Angle ACB = 180° - (40° + 70°) = 180 <p><strong>Final Answer:</strong> Angle ACB = 70°</p>
+                    <p>Angle ACB = 180° - (40° + 70°) = 180° - 110° = 70°.</p>
+                    <p><strong>Final Answer:</strong> Angle ACB = 70°</p>
                 `
             },
             {
-                questionText: "A bag contains 4 red balls and 6 blue balls. Two balls are drawn without replacement. Calculate the probability that both balls are red.",
-                svgDiagram: `
+                "questionText": "A bag contains 4 red balls and 6 blue balls. Two balls are drawn without replacement. Calculate the probability that both balls are red.",
+                "svgDiagram": `
                     <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
                         <!-- Bag outline -->
                         <path d="M 50 50 Q 100 20 150 50 V 150 Q 100 180 50 150 Z" fill="none" stroke="#000" stroke-width="2"/>
@@ -212,7 +209,7 @@
                         <text x="100" y="30" font-family="Arial" font-size="12" text-anchor="middle">Bag of Balls</text>
                     </svg>
                 `,
-                answerText: `
+                "answerText": `
                     <p><strong>Model Answer:</strong></p>
                     <p><strong>Step 1:</strong> Determine the total number of balls.</p>
                     <p>Total balls = 4 red + 6 blue = 10 balls.</p>
@@ -226,251 +223,377 @@
                     <p><strong>Final Answer:</strong> Probability = 2/15</p>
                 `
             },
-            {
-                questionText: "Simplify the expression (√32 - √8) / √2.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify the square roots in the numerator.</p><p>√32 = √(16 × 2) = √16 × √2 = 4√2</p><p>√8 = √(4 × 2) = √4 × √2 = 2√2</p><p>So, the expression becomes (4√2 - 2√2) / √2.</p><p><strong>Step 2:</strong> Combine like terms in the numerator.</p><p>4√2 - 2√2 = (4 - 2)√2 = 2√2</p><p>So, the expression is now 2√2 / √2.</p><p><strong>Step 3:</strong> Simplify the fraction.</p><p>(2√2) / √2 = 2, since the √2 terms cancel out.</p><p><strong>Final Answer:</strong> 2</p>"
-            },
-            {
-                questionText: "Solve the quadratic equation 2x² - 8x + 6 = 0 by factorising.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Write the equation in standard form.</p><p>The equation is 2x² - 8x + 6 = 0.</p><p><strong>Step 2:</strong> Factor out the common factor, if any.</p><p>Notice that all coefficients are divisible by 2, so divide the entire equation by 2: x² - 4x + 3 = 0.</p><p><strong>Step 3:</strong> Factorise the quadratic.</p><p>We need two numbers that multiply to 3 (the constant term) and add to -4 (the coefficient of x). These numbers are -1 and -3.</p><p>So, x² - 4x + 3 = (x - 1)(x - 3) = 0.</p><p><strong>Step 4:</strong> Solve for x.</p><p>Set each factor to zero: x - 1 = 0 → x = 1; x - 3 = 0 → x = 3.</p><p><strong>Final Answer:</strong> x = 1 or x = 3</p>"
-            },
-            {
-                questionText: "In triangle ABC, angle ABC = 90°, AB = 6 cm, and BC = 8 cm. Find the length of AC.",
-                svgDiagram: `
-                    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="100,300 100,180 180,300" fill="none" stroke="black" stroke-width="2"/>
-                        <text x="90" y="320" font-size="16">A</text>
-                        <text x="190" y="320" font-size="16">C</text>
-                        <text x="90" y="170" font-size="16">B</text>
-                        <text x="120" y="310" font-size="14">6 cm</text>
-                        <text x="140" y="240" font-size="14">8 cm</text>
-                        <text x="130" y="280" font-size="14">10 cm</text>
-                    </svg>
-                `,
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Identify the right-angled triangle and apply Pythagoras’ theorem.</p><p>In triangle ABC, angle ABC = 90°, so AB² + BC² = AC².</p><p>Given: AB = 6 cm, BC = 8 cm.</p><p><strong>Step 2:</strong> Substitute the values into Pythagoras’ theorem.</p><p>AC² = 6² + 8² = 36 + 64 = 100.</p><p><strong>Step 3:</strong> Solve for AC.</p><p>AC = √100 = 10 cm.</p><p><strong>Final Answer:</strong> AC = 10 cm</p>"
-            },
-            {
-                questionText: "Expand and simplify (2x + 3)(x - 4).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the FOIL method to expand the brackets.</p><p>(2x + 3)(x - 4) = 2x × x + 2x × (-4) + 3 × x + 3 × (-4).</p><p>= 2x² - 8x + 3x - 12.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>-8x + 3x = -5x.</p><p>So, 2x² - 8x + 3x - 12 = 2x² - 5x - 12.</p><p><strong>Final Answer:</strong> 2x² - 5x - 12</p>"
-            },
-            {
-                questionText: "Find the equation of the line passing through points (2, 3) and (4, 7).",
-                svgDiagram: `
-                    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="100" y1="250" x2="200" y2="150" stroke="black" stroke-width="2"/>
-                        <circle cx="100" cy="250" r="5" fill="black"/>
-                        <circle cx="200" cy="150" r="5" fill="black"/>
-                        <text x="90" y="270" font-size="16">(2, 3)</text>
-                        <text x="210" y="160" font-size="16">(4, 7)</text>
-                        <line x1="50" y1="350" x2="350" y2="350" stroke="black" stroke-width="2"/>
-                        <line x1="50" y1="350" x2="50" y2="50" stroke="black" stroke-width="2"/>
-                        <text x="360" y="350" font-size="16">x</text>
-                        <text x="40" y="40" font-size="16">y</text>
-                    </svg>
-                `,
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Calculate the gradient (m) using the formula m = (y₂ - y₁) / (x₂ - x₁).</p><p>Points: (2, 3) and (4, 7).</p><p>m = (7 - 3) / (4 - 2) = 4 / 2 = 2.</p><p><strong>Step 2:</strong> Use the point-slope form y - y₁ = m(x - x₁) with point (2, 3).</p><p>y - 3 = 2(x - 2).</p><p><strong>Step 3:</strong> Simplify to the form y = mx + c.</p><p>y - 3 = 2x - 4.</p><p>y = 2x - 4 + 3 = 2x - 1.</p><p><strong>Final Answer:</strong> y = 2x - 1</p>"
-            },
-            {
-                questionText: "Prove that the angles in a triangle add up to 180°.",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 200,100 300,300' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>A</text><text x='210' y='90' font-size='16'>B</text><text x='310' y='320' font-size='16'>C</text><text x='150' y='280' font-size='14'>α</text><text x='230' y='130' font-size='14'>β</text><text x='270' y='280' font-size='14'>γ</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Consider a triangle ABC with angles α at A, β at B, and γ at C.</p><p><strong>Step 2:</strong> Draw a line through vertex B parallel to side AC, creating angles p and q at B on either side of angle β.</p><p><strong>Step 3:</strong> Since the line is parallel to AC, angle p = α (corresponding angles) and angle q = γ (alternate angles).</p><p><strong>Step 4:</strong> The angles at point B on a straight line (p, β, q) add to 180°.</p><p>So, p + β + q = α + β + γ = 180°.</p><p><strong>Step 5:</strong> Thus, the angles in triangle ABC (α, β, γ) sum to 180°.</p><p><strong>Final Answer:</strong> The angles in a triangle add up to 180°.</p>"
-            },
-            {
-                questionText: "Simplify the algebraic fraction (x² - 4) / (x + 2).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the numerator.</p><p>x² - 4 is a difference of squares: x² - 4 = (x + 2)(x - 2).</p><p>So, the fraction becomes (x + 2)(x - 2) / (x + 2).</p><p><strong>Step 2:</strong> Cancel common factors.</p><p>Assuming x ≠ -2 (to avoid division by zero), cancel (x + 2) from numerator and denominator.</p><p>(x + 2)(x - 2) / (x + 2) = x - 2.</p><p><strong>Final Answer:</strong> x - 2</p>"
-            },
-            {
-                questionText: "Find the nth term of the sequence 3, 7, 11, 15, …",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Identify the pattern.</p><p>The sequence is 3, 7, 11, 15, … The differences are 7 - 3 = 4, 11 - 7 = 4, 15 - 11 = 4, so the sequence is arithmetic with a common difference of 4.</p><p><strong>Step 2:</strong> Use the formula for the nth term of an arithmetic sequence: aₙ = a₁ + (n - 1)d.</p><p>First term (a₁) = 3, common difference (d) = 4.</p><p>aₙ = 3 + (n - 1) × 4.</p><p><strong>Step 3:</strong> Simplify the expression.</p><p>aₙ = 3 + 4n - 4 = 4n - 1.</p><p><strong>Final Answer:</strong> 4n - 1</p>"
-            },
-            {
-                questionText: "In a circle with centre O, chord AB subtends an angle of 120° at the centre. If the radius is 5 cm, find the length of chord AB.",
-                svgDiagram: `
-                    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="200" cy="200" r="150" fill="none" stroke="black" stroke-width="2"/>
-                        <line x1="200" y1="50" x2="50" y2="350" stroke="black" stroke-width="2"/>
-                        <line x1="200" y1="50" x2="350" y2="350" stroke="black" stroke-width="2"/>
-                        <text x="190" y="40" font-size="16">O</text>
-                        <text x="40" y="370" font-size="16">A</text>
-                        <text x="360" y="370" font-size="16">B</text>
-                        <text x="200" y="100" font-size="14">120°</text>
-                        <path d="M 200 50 A 50 50 0 0 1 275 125" fill="none" stroke="blue" stroke-width="1"/>
-                    </svg>
-                `,
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Draw triangle OAB, where O is the centre, OA = OB = 5 cm (radii), and angle AOB = 120°.</p><p><strong>Step 2:</strong> Since OA = OB, triangle OAB is isosceles. The base angles at A and B are equal.</p><p>Sum of angles in triangle OAB = 180°, so each base angle = (180° - 120°) / 2 = 30°.</p><p><strong>Step 3:</strong> Use the cosine rule in triangle OAB to find AB: AB² = OA² + OB² - 2 × OA × OB × cos(120°).</p><p>OA = 5 cm, OB = 5 cm, cos(120°) = -0.5.</p><p>AB² = 5² + 5² - 2 × 5 × 5 × (-0.5) = 25 + 25 + 25 = 75.</p><p><strong>Step 4:</strong> Solve for AB.</p><p>AB = √75 = √(25 × 3) = 5√3 cm.</p><p><strong>Final Answer:</strong> 5√3 cm</p>"
-            },
-            {
-                questionText: "Solve the inequality 3x - 5 > x + 7.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>3x - 5 > x + 7.</p><p>Subtract x from both sides: 3x - x - 5 > 7.</p><p>2x - 5 > 7.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Add 5 to both sides: 2x > 7 + 5 = 12.</p><p>Divide by 2: x > 12 / 2 = 6.</p><p><strong>Final Answer:</strong> x > 6</p>"
-            },
-            {
-                questionText: "Rationalise the denominator of 5 / (√3 + √2).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Multiply numerator and denominator by the conjugate of the denominator, √3 - √2.</p><p>(5 / (√3 + √2)) × ((√3 - √2) / (√3 - √2)) = (5(√3 - √2)) / ((√3 + √2)(√3 - √2)).</p><p><strong>Step 2:</strong> Simplify the denominator using the difference of squares.</p><p>(√3 + √2)(√3 - √2) = (√3)² - (√2)² = 3 - 2 = 1.</p><p>So, the expression becomes 5(√3 - √2) / 1 = 5(√3 - √2).</p><p><strong>Step 3:</strong> Write the final answer.</p><p>5(√3 - √2) cannot be simplified further.</p><p><strong>Final Answer:</strong> 5(√3 - √2)</p>"
-            },
-            {
-                questionText: "Solve the simultaneous equations: x + y = 5 and x² - y² = 15.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Rewrite the second equation using the difference of squares.</p><p>x² - y² = (x + y)(x - y) = 15.</p><p>From the first equation, x + y = 5, so substitute into the second: 5(x - y) = 15.</p><p><strong>Step 2:</strong> Solve for x - y.</p><p>(x - y) = 15 / 5 = 3.</p><p><strong>Step 3:</strong> Solve the system of equations: x + y = 5 and x - y = 3.</p><p>Add the equations: (x + y) + (x - y) = 5 + 3 → 2x = 8 → x = 4.</p><p>Substitute x = 4 into x + y = 5: 4 + y = 5 → y = 1.</p><p><strong>Step 4:</strong> Verify the solution in the second equation.</p><p>x² - y² = 4² - 1² = 16 - 1 = 15, which satisfies the equation.</p><p><strong>Final Answer:</strong> x = 4, y = 1</p>"
-            },
-            {
-                questionText: "In triangle PQR, angle PQR = 90°, PQ = 5 cm, and QR = 12 cm. Find the length of PR.",
-                svgDiagram: `
-                    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="100,300 100,200 220,300" fill="none" stroke="black" stroke-width="2"/>
-                        <text x="90" y="320" font-size="16">P</text>
-                        <text x="230" y="320" font-size="16">R</text>
-                        <text x="90" y="190" font-size="16">Q</text>
-                        <text x="120" y="310" font-size="14">5 cm</text>
-                        <text x="160" y="310" font-size="14">12 cm</text>
-                        <text x="140" y="240" font-size="14">13 cm</text>
-                    </svg>
-                `,
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Apply Pythagoras’ theorem in right-angled triangle PQR.</p><p>PR² = PQ² + QR².</p><p>Given: PQ = 5 cm, QR = 12 cm.</p><p><strong>Step 2:</strong> Substitute the values.</p><p>PR² = 5² + 12² = 25 + 144 = 169.</p><p><strong>Step 3:</strong> Solve for PR.</p><p>PR = √169 = 13 cm.</p><p><strong>Final Answer:</strong> PR = 13 cm</p>"
-            },
-            {
-                questionText: "Expand and simplify (3x - 2)(x + 5).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the FOIL method to expand.</p><p>(3x - 2)(x + 5) = 3x × x + 3x × 5 + (-2) × x + (-2) × 5.</p><p>= 3x² + 15x - 2x - 10.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>15x - 2x = 13x.</p><p>So, 3x² + 15x - 2x - 10 = 3x² + 13x - 10.</p><p><strong>Final Answer:</strong> 3x² + 13x - 10</p>"
-            },
-            {
-                questionText: "Find the equation of the line perpendicular to y = 2x - 3 passing through (1, 4).",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='150' stroke='black' stroke-width='2'/><circle cx='150' cy='300' r='5' fill='black'/><text x='140' y='320' font-size='16'>(1, 4)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Find the gradient of the given line y = 2x - 3.</p><p>The gradient (m₁) is 2.</p><p><strong>Step 2:</strong> Find the gradient of the perpendicular line.</p><p>For perpendicular lines, m₁ × m₂ = -1, so m₂ = -1 / 2 = -0.5.</p><p><strong>Step 3:</strong> Use the point-slope form y - y₁ = m(x - x₁) with point (1, 4) and m = -0.5.</p><p>y - 4 = -0.5(x - 1).</p><p><strong>Step 4:</strong> Simplify to the form y = mx + c.</p><p>y - 4 = -0.5x + 0.5.</p><p>y = -0.5x + 0.5 + 4 = -0.5x + 4.5.</p><p><strong>Final Answer:</strong> y = -0.5x + 4.5</p>"
-            },
-            {
-                questionText: "Prove that the opposite angles of a cyclic quadrilateral sum to 180°.",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><polygon points='200,50 350,200 200,350 50,200' fill='none' stroke='black' stroke-width='2'/><text x='190' y='40' font-size='16'>A</text><text x='360' y='210' font-size='16'>B</text><text x='190' y='360' font-size='16'>C</text><text x='40' y='210' font-size='16'>D</text><text x='200' y='100' font-size='14'>∠A</text><text x='200' y='300' font-size='14'>∠C</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Consider a cyclic quadrilateral ABCD inscribed in a circle.</p><p><strong>Step 2:</strong> Draw diagonals AC and BD, splitting the quadrilateral into triangles ABC and ADC.</p><p><strong>Step 3:</strong> Use the circle theorem: the angle subtended by an arc at the circumference is half the angle subtended at the centre.</p><p>Angle ∠A (at A) and angle ∠C (at C) are opposite angles. They subtend arcs BCD and BAD, respectively.</p><p><strong>Step 4:</strong> The sum of the central angles subtended by arcs BCD and BAD is 360° (a full circle).</p><p>Thus, ∠A = (1/2) × central angle BCD, and ∠C = (1/2) × central angle BAD.</p><p>Sum of ∠A + ∠C = (1/2) × (central angle BCD + central angle BAD) = (1/2) × 360° = 180°.</p><p><strong>Final Answer:</strong> The opposite angles of a cyclic quadrilateral sum to 180°.</p>"
-            },
-            {
-                questionText: "Simplify (2x² + 3x - 5) / (x + 2).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Attempt to factorise the numerator.</p><p>2x² + 3x - 5: Find numbers that multiply to 2 × (-5) = -10 and add to 3. These are 5 and -2.</p><p>Rewrite: 2x² + 5x - 2x - 5 = (2x² + 5x) - (2x + 5) = x(2x + 5) - 1(2x + 5) = (x - 1)(2x + 5).</p><p>So, the fraction is (x - 1)(2x + 5) / (x + 2).</p><p><strong>Step 2:</strong> Check for common factors.</p><p>No common factors exist between numerator and denominator.</p><p><strong>Final Answer:</strong> (x - 1)(2x + 5) / (x + 2)</p>"
-            },
-            {
-                questionText: "Find the nth term of the sequence 5, 8, 12, 18, …",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Check if the sequence is arithmetic.</p><p>Differences: 8 - 5 = 3, 12 - 8 = 4, 18 - 12 = 6. The differences are not constant, so it’s not arithmetic.</p><p><strong>Step 2:</strong> Look for a quadratic pattern by examining second differences.</p><p>First differences: 3, 4, 6. Second differences: 4 - 3 = 1, 6 - 4 = 2. Inconsistent, so check for a quadratic nth term.</p><p><strong>Step 3:</strong> Assume nth term is an² + bn + c. Use the first three terms.</p><p>n = 1: a(1)² + b(1) + c = a + b + c = 5 (1).</p><p>n = 2: a(2)² + b(2) + c = 4a + 2b + c = 8 (2).</p><p>n = 3: a(3)² + b(3) + c = 9a + 3b + c = 12 (3).</p><p>Solve: Subtract (1) from (2): 3a + b = 3 (4).</p><p>Subtract (2) from (3): 5a + b = 4 (5).</p><p>Subtract (4) from (5): 2a = 1 → a = 0.5.</p><p>Substitute a = 0.5 into (4): 3(0.5) + b = 3 → 1.5 + b = 3 → b = 1.5.</p><p>Substitute a = 0.5, b = 1.5 into (1): 0.5 + 1.5 + c = 5 → c = 3.</p><p><strong>Step 4:</strong> Write the nth term.</p><p>nth term = 0.5n² + 1.5n + 3.</p><p><strong>Final Answer:</strong> 0.5n² + 1.5n + 3</p>"
-            },
-            {
-                questionText: "In a circle with centre O, angle AOB = 80° and the radius is 6 cm. Find the length of arc AB.",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><path d='M200,50 A150,150 0 0,1 320,110' fill='none' stroke='black' stroke-width='2'/><text x='190' y='40' font-size='16'>O</text><text x='190' y='60' font-size='16'>A</text><text x='330' y='120' font-size='16'>B</text><text x='200' y='100' font-size='14'>80°</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the arc length formula: Arc length = (θ / 360) × 2πr.</p><p>Given: θ = 80°, r = 6 cm.</p><p><strong>Step 2:</strong> Substitute the values.</p><p>Arc length = (80 / 360) × 2 × π × 6 = (2 / 9) × 12π = (24π / 9) = (8π / 3) cm.</p><p><strong>Final Answer:</strong> (8π / 3) cm</p>"
-            },
-            {
-                questionText: "Solve the inequality 4x + 3 ≤ 2x + 11.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>4x + 3 ≤ 2x + 11.</p><p>Subtract 2x from both sides: 4x - 2x + 3 ≤ 11 → 2x + 3 ≤ 11.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Subtract 3: 2x ≤ 11 - 3 = 8.</p><p>Divide by 2: x ≤ 8 / 2 = 4.</p><p><strong>Final Answer:</strong> x ≤ 4</p>"
-            },
-            {
-                questionText: "Simplify √72 + √18.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify each square root.</p><p>√72 = √(36 × 2) = √36 × √2 = 6√2.</p><p>√18 = √(9 × 2) = √9 × √2 = 3√2.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>6√2 + 3√2 = (6 + 3)√2 = 9√2.</p><p><strong>Final Answer:</strong> 9√2</p>"
-            },
-            {
-                questionText: "Solve the quadratic equation x² - 6x + 8 = 0 by factorising.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>x² - 6x + 8: Find numbers that multiply to 8 and add to -6. These are -2 and -4.</p><p>x² - 6x + 8 = (x - 2)(x - 4) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>x - 2 = 0 → x = 2; x - 4 = 0 → x = 4.</p><p><strong>Final Answer:</strong> x = 2 or x = 4</p>"
-            },
-            {
-                questionText: "In triangle XYZ, XY = XZ = 10 cm, and angle XYZ = 40°. Find the length of YZ.",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 200,100 300,300' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>X</text><text x='190' y='90' font-size='16'>Y</text><text x='310' y='320' font-size='16'>Z</text><text x='130' y='200' font-size='14'>10 cm</text><text x='250' y='200' font-size='14'>10 cm</text><text x='200' y='310' font-size='14'>YZ</text><text x='190' y='130' font-size='14'>40°</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the cosine rule in triangle XYZ.</p><p>XY = XZ = 10 cm, so triangle XYZ is isosceles. Let YZ = a.</p><p>Cosine rule: a² = b² + c² - 2bc cos(A).</p><p>Here, a = YZ, b = XY = 10 cm, c = XZ = 10 cm, A = 40°.</p><p>a² = 10² + 10² - 2 × 10 × 10 × cos(40°).</p><p><strong>Step 2:</strong> Calculate.</p><p>a² = 100 + 100 - 200 cos(40°).</p><p>cos(40°) ≈ 0.766 (use exact form for non-calculator).</p><p>a² = 200 - 200 × 0.766 ≈ 200 - 153.2 = 46.8.</p><p>a = √46.8 (leave in exact form).</p><p><strong>Final Answer:</strong> YZ = √46.8 cm</p>"
-            },
-            {
-                questionText: "Expand (x - 3)³.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the binomial expansion formula for (a + b)³ = a³ + 3a²b + 3ab² + b³.</p><p>Here, a = x, b = -3.</p><p>(x - 3)³ = x³ + 3x²(-3) + 3x(-3)² + (-3)³.</p><p><strong>Step 2:</strong> Calculate each term.</p><p>= x³ + 3x²(-3) + 3x(9) + (-27).</p><p>= x³ - 9x² + 27x - 27.</p><p><strong>Final Answer:</strong> x³ - 9x² + 27x - 27</p>"
-            },
-            {
-                questionText: "Find the coordinates of the midpoint of the line segment joining (3, 2) and (7, 8).",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='150' y1='300' x2='250' y2='200' stroke='black' stroke-width='2'/><circle cx='150' cy='300' r='5' fill='black'/><circle cx='250' cy='200' r='5' fill='black'/><circle cx='200' cy='250' r='5' fill='red'/><text x='140' y='320' font-size='16'>(3, 2)</text><text x='260' y='210' font-size='16'>(7, 8)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the midpoint formula: ((x₁ + x₂)/2, (y₁ + y₂)/2).</p><p>Points: (3, 2) and (7, 8).</p><p><strong>Step 2:</strong> Calculate the x-coordinate.</p><p>(3 + 7) / 2 = 10 / 2 = 5.</p><p><strong>Step 3:</strong> Calculate the y-coordinate.</p><p>(2 + 8) / 2 = 10 / 2 = 5.</p><p><strong>Final Answer:</strong> (5, 5)</p>"
-            },
-            {
-                questionText: "Prove that (n + 1)² - (n - 1)² = 4n for all integers n.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Expand both squares.</p><p>(n + 1)² = n² + 2n + 1.</p><p>(n - 1)² = n² - 2n + 1.</p><p><strong>Step 2:</strong> Subtract the expressions.</p><p>(n + 1)² - (n - 1)² = (n² + 2n + 1) - (n² - 2n + 1).</p><p>= n² + 2n + 1 - n² + 2n - 1.</p><p><strong>Step 3:</strong> Simplify.</p><p>= (2n + 2n) + (1 - 1) = 4n.</p><p><strong>Final Answer:</strong> (n + 1)² - (n - 1)² = 4n, which is true for all integers n.</p>"
-            },
-            {
-                questionText: "Simplify (3√5 - 2√3)(√5 + √3).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the distributive property to expand.</p><p>(3√5 - 2√3)(√5 + √3) = 3√5 × √5 + 3√5 × √3 - 2√3 × √5 - 2√3 × √3.</p><p><strong>Step 2:</strong> Simplify each term.</p><p>= 3 × 5 + 3√15 - 2√15 - 2 × 3.</p><p>= 15 + 3√15 - 2√15 - 6.</p><p><strong>Step 3:</strong> Combine like terms.</p><p>15 - 6 = 9, and 3√15 - 2√15 = √15.</p><p>= 9 + √15.</p><p><strong>Final Answer:</strong> 9 + √15</p>"
-            },
-            {
-                questionText: "Solve the equation 3x² - 12x + 9 = 0 by completing the square.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Divide the equation by 3 to make the coefficient of x² equal to 1.</p><p>3x² - 12x + 9 = 0 → x² - 4x + 3 = 0.</p><p><strong>Step 2:</strong> Move the constant term.</p><p>x² - 4x = -3.</p><p><strong>Step 3:</strong> Complete the square.</p><p>Take half of -4 (coefficient of x), which is -2, and square it: (-2)² = 4.</p><p>Add 4 to both sides: x² - 4x + 4 = -3 + 4.</p><p>(x - 2)² = 1.</p><p><strong>Step 4:</strong> Solve for x.</p><p>x - 2 = ±√1 = ±1.</p><p>x - 2 = 1 → x = 3; x - 2 = -1 → x = 1.</p><p><strong>Final Answer:</strong> x = 1 or x = 3</p>"
-            },
-            {
-                questionText: "In a circle, angle ABC = 70° and point C lies on the circumference. Find angle BAC if AB is a diameter.",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><line x1='50' y1='200' x2='350' y2='200' stroke='black' stroke-width='2'/><polygon points='50,200 350,200 200,350' fill='none' stroke='black' stroke-width='2'/><text x='40' y='210' font-size='16'>A</text><text x='360' y='210' font-size='16'>B</text><text x='190' y='360' font-size='16'>C</text><text x='200' y='300' font-size='14'>70°</text><text x='100' y='190' font-size='14'>∠BAC</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the circle theorem: angle in a semicircle is 90°.</p><p>Since AB is a diameter, angle ACB = 90°.</p><p><strong>Step 2:</strong> Use the sum of angles in triangle ABC.</p><p>Angle ABC = 70°.</p><p>Sum of angles = 180°, so ∠BAC + 70° + 90° = 180°.</p><p><strong>Step 3:</strong> Solve for ∠BAC.</p><p>∠BAC = 180° - 70° - 90° = 20°.</p><p><strong>Final Answer:</strong> ∠BAC = 20°</p>"
-            },
-            {
-                questionText: "Find the inverse of the function f(x) = 2x + 3.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Set y = f(x) and solve for x.</p><p>y = 2x + 3.</p><p>Subtract 3: y - 3 = 2x.</p><p>Divide by 2: x = (y - 3) / 2.</p><p><strong>Step 2:</strong> Write the inverse function, swapping x and y.</p><p>f⁻¹(x) = (x - 3) / 2.</p><p><strong>Final Answer:</strong> f⁻¹(x) = (x - 3) / 2</p>"
-            },
-            {
-                questionText: "Simplify (x² - 9) / (x² + 3x).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the numerator and denominator.</p><p>Numerator: x² - 9 = (x + 3)(x - 3).</p><p>Denominator: x² + 3x = x(x + 3).</p><p>So, the fraction is (x + 3)(x - 3) / (x(x + 3)).</p><p><strong>Step 2:</strong> Cancel common factors.</p><p>Cancel (x + 3), assuming x ≠ -3.</p><p>(x - 3) / x.</p><p><strong>Final Answer:</strong> (x - 3) / x</p>"
-            },
-            {
-                questionText: "Find the nth term of the sequence 2, 5, 11, 20, …",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Check for a quadratic pattern.</p><p>First differences: 5 - 2 = 3, 11 - 5 = 6, 20 - 11 = 9.</p><p>Second differences: 6 - 3 = 3, 9 - 6 = 3. Constant, so the sequence is quadratic.</p><p><strong>Step 2:</strong> Assume nth term = an² + bn + c.</p><p>n = 1: a + b + c = 2 (1).</p><p>n = 2: 4a + 2b + c = 5 (2).</p><p>n = 3: 9a + 3b + c = 11 (3).</p><p>Subtract (1) from (2): 3a + b = 3 (4).</p><p>Subtract (2) from (3): 5a + b = 6 (5).</p><p>Subtract (4) from (5): 2a = 3 → a = 1.5.</p><p>Substitute a = 1.5 into (4): 3(1.5) + b = 3 → 4.5 + b = 3 → b = -1.5.</p><p>Substitute a = 1.5, b = -1.5 into (1): 1.5 - 1.5 + c = 2 → c = 2.</p><p><strong>Final Answer:</strong> 1.5n² - 1.5n + 2</p>"
-            },
-            {
-                questionText: "In triangle ABC, AB = AC = 8 cm, and BC = 6 cm. Find the size of angle BAC.",
-                svgDiagram: `
-                    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="100,300 250,300 175,150" fill="none" stroke="black" stroke-width="2"/>
-                        <text x="90" y="320" font-size="16">A</text>
-                        <text x="260" y="320" font-size="16">C</text>
-                        <text x="165" y="140" font-size="16">B</text>
-                        <text x="130" y="200" font-size="14">8 cm</text>
-                        <text x="200" y="200" font-size="14">8 cm</text>
-                        <text x="170" y="310" font-size="14">6 cm</text>
-                        <text x="165" y="180" font-size="14">∠BAC</text>
-                    </svg>
-                `,
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Recognize that triangle ABC is isosceles (AB = AC).</p><p>Drop a perpendicular from B to AC, meeting at D, so AD = DC = 6 / 2 = 3 cm.</p><p><strong>Step 2:</strong> In right-angled triangle ABD, use Pythagoras to find BD.</p><p>AB² = AD² + BD².</p><p>8² = 3² + BD² → 64 = 9 + BD² → BD² = 55 → BD = √55 cm.</p><p><strong>Step 3:</strong> Use trigonometry to find ∠BAD (half of ∠BAC).</p><p>cos(∠BAD) = adjacent/hypotenuse = 3 / 8.</p><p>∠BAD = cos⁻¹(3/8).</p><p><strong>Step 4:</strong> Calculate ∠BAC.</p><p>∠BAC = 2 × ∠BAD = 2 × cos⁻¹(3/8).</p><p><strong>Final Answer:</strong> ∠BAC = 2 cos⁻¹(3/8)</p>"
-            },
-            {
-                questionText: "Solve 2x² + 3x - 5 = 0 by factorising.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>2x² + 3x - 5: Find numbers that multiply to 2 × (-5) = -10 and add to 3. These are 5 and -2.</p><p>Rewrite: 2x² + 5x - 2x - 5 = (2x² + 5x) - (2x + 5) = x(2x + 5) - 1(2x + 5) = (x - 1)(2x + 5) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>x - 1 = 0 → x = 1; 2x + 5 = 0 → x = -5/2.</p><p><strong>Final Answer:</strong> x = 1 or x = -5/2</p>"
-            },
-            {
-                questionText: "Find the equation of the line parallel to y = 3x + 1 passing through (2, 5).",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='50' stroke='black' stroke-width='2'/><circle cx='200' cy='250' r='5' fill='black'/><text x='190' y='270' font-size='16'>(2, 5)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Identify the gradient of the given line.</p><p>y = 3x + 1 has gradient m = 3. A parallel line has the same gradient.</p><p><strong>Step 2:</strong> Use point-slope form y - y₁ = m(x - x₁) with point (2, 5) and m = 3.</p><p>y - 5 = 3(x - 2).</p><p><strong>Step 3:</strong> Simplify to y = mx + c.</p><p>y - 5 = 3x - 6.</p><p>y = 3x - 6 + 5 = 3x - 1.</p><p><strong>Final Answer:</strong> y = 3x - 1</p>"
-            },
-            {
-                questionText: "Simplify (4x + 3)/(2x - 1) - (2x + 1)/(2x - 1).",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Combine the fractions over a common denominator.</p><p>Since both fractions have denominator 2x - 1, combine numerators.</p><p>((4x + 3) - (2x + 1)) / (2x - 1).</p><p><strong>Step 2:</strong> Simplify the numerator.</p><p>(4x + 3) - (2x + 1) = 4x + 3 - 2x - 1 = 2x + 2.</p><p>So, the expression is (2x + 2) / (2x - 1).</p><p><strong>Step 3:</strong> Factorise and simplify.</p><p>2x + 2 = 2(x + 1), so (2(x + 1)) / (2x - 1).</p><p>No common factors to cancel.</p><p><strong>Final Answer:</strong> 2(x + 1) / (2x - 1)</p>"
-            },
-            {
-                questionText: "In a circle with centre O, chord PQ is 8 cm long, and the radius is 5 cm. Find the perpendicular distance from O to PQ.",
-                svgDiagram: "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><line x1='100' y1='250' x2='300' y2='250' stroke='black' stroke-width='2'/><line x1='200' y1='200' x2='200' y2='250' stroke='black' stroke-width='2' stroke-dasharray='5,5'/><text x='190' y='190' font-size='16'>O</text><text x='90' y='260' font-size='16'>P</text><text x='310' y='260' font-size='16'>Q</text><text x='200' y='270' font-size='14'>8 cm</text><text x='210' y='230' font-size='14'>d</text></svg>",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Let M be the midpoint of chord PQ. The perpendicular from O to PQ meets at M.</p><p>PQ = 8 cm, so PM = MQ = 4 cm. Radius OP = 5 cm.</p><p><strong>Step 2:</strong> In right-angled triangle OMP, use Pythagoras’ theorem.</p><p>OP² = OM² + PM².</p><p>5² = d² + 4².</p><p>25 = d² + 16.</p><p><strong>Step 3:</strong> Solve for d.</p><p>d² = 25 - 16 = 9.</p><p>d = √9 = 3 cm.</p><p><strong>Final Answer:</strong> 3 cm</p>"
-            },
-            {
-                questionText: "Solve the inequality -2x + 7 > 3x - 8.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>-2x + 7 > 3x - 8.</p><p>Add 2x to both sides: 7 > 5x - 8.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Add 8: 7 + 8 > 5x → 15 > 5x.</p><p>Divide by 5: 3 > x → x < 3.</p><p><strong>Final Answer:</strong> x < 3</p>"
-            },
-            {
-                questionText: "Simplify √200 - √50 + √8.",
-                svgDiagram: "",
-                answerText: "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify each square root.</p><p>√200 = √(100 × 2) = 10√2.</p><p>√50 = √(25 × 2) = 5√2.</p><p>√8 = √(4 × 2) = 2√2.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>10√2 - 5√2 + 2√2 = (10 - 5 + 2)
+
+  {
+    "questionText": "Simplify the expression (√32 - √8) / √2.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify the square roots in the numerator.</p><p>√32 = √(16 × 2) = √16 × √2 = 4√2</p><p>√8 = √(4 × 2) = √4 × √2 = 2√2</p><p>So, the expression becomes (4√2 - 2√2) / √2.</p><p><strong>Step 2:</strong> Combine like terms in the numerator.</p><p>4√2 - 2√2 = (4 - 2)√2 = 2√2</p><p>So, the expression is now 2√2 / √2.</p><p><strong>Step 3:</strong> Simplify the fraction.</p><p>(2√2) / √2 = 2, since the √2 terms cancel out.</p><p><strong>Final Answer:</strong> 2</p>"
+  },
+  {
+    "questionText": "Solve the quadratic equation 2x² - 8x + 6 = 0 by factorising.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Write the equation in standard form.</p><p>The equation is 2x² - 8x + 6 = 0.</p><p><strong>Step 2:</strong> Factor out the common factor, if any.</p><p>Notice that all coefficients are divisible by 2, so divide the entire equation by 2: x² - 4x + 3 = 0.</p><p><strong>Step 3:</strong> Factorise the quadratic.</p><p>We need two numbers that multiply to 3 (the constant term) and add to -4 (the coefficient of x). These numbers are -1 and -3.</p><p>So, x² - 4x + 3 = (x - 1)(x - 3) = 0.</p><p><strong>Step 4:</strong> Solve for x.</p><p>Set each factor to zero: x - 1 = 0 → x = 1; x - 3 = 0 → x = 3.</p><p><strong>Final Answer:</strong> x = 1 or x = 3</p>"
+  },
+  {
+    "questionText": "In triangle ABC, angle ABC = 90°, AB = 6 cm, and BC = 8 cm. Find the length of AC.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 100,100 300,300' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>A</text><text x='310' y='320' font-size='16'>C</text><text x='90' y='90' font-size='16'>B</text><text x='150' y='310' font-size='14'>6 cm</text><text x='200' y='200' font-size='14'>8 cm</text><text x='150' y='150' font-size='14'>AC</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Identify the right-angled triangle and apply Pythagoras’ theorem.</p><p>In triangle ABC, angle ABC = 90°, so AB² + BC² = AC².</p><p>Given: AB = 6 cm, BC = 8 cm.</p><p><strong>Step 2:</strong> Substitute the values into Pythagoras’ theorem.</p><p>AC² = 6² + 8² = 36 + 64 = 100.</p><p><strong>Step 3:</strong> Solve for AC.</p><p>AC = √100 = 10 cm.</p><p><strong>Final Answer:</strong> AC = 10 cm</p>"
+  },
+  {
+    "questionText": "Expand and simplify (2x + 3)(x - 4).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the FOIL method to expand the brackets.</p><p>(2x + 3)(x - 4) = 2x × x + 2x × (-4) + 3 × x + 3 × (-4).</p><p>= 2x² - 8x + 3x - 12.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>-8x + 3x = -5x.</p><p>So, 2x² - 8x + 3x - 12 = 2x² - 5x - 12.</p><p><strong>Final Answer:</strong> 2x² - 5x - 12</p>"
+  },
+  {
+    "questionText": "Find the equation of the line passing through points (2, 3) and (4, 7).",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='100' y1='300' x2='200' y2='200' stroke='black' stroke-width='2'/><circle cx='100' cy='300' r='5' fill='black'/><circle cx='200' cy='200' r='5' fill='black'/><text x='90' y='320' font-size='16'>(2, 3)</text><text x='210' y='210' font-size='16'>(4, 7)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Calculate the gradient (m) using the formula m = (y₂ - y₁) / (x₂ - x₁).</p><p>Points: (2, 3) and (4, 7).</p><p>m = (7 - 3) / (4 - 2) = 4 / 2 = 2.</p><p><strong>Step 2:</strong> Use the point-slope form y - y₁ = m(x - x₁) with point (2, 3).</p><p>y - 3 = 2(x - 2).</p><p><strong>Step 3:</strong> Simplify to the form y = mx + c.</p><p>y - 3 = 2x - 4.</p><p>y = 2x - 4 + 3 = 2x - 1.</p><p><strong>Final Answer:</strong> y = 2x - 1</p>"
+  },
+  {
+    "questionText": "Prove that the angles in a triangle add up to 180°.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 200,100 300,300' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>A</text><text x='210' y='90' font-size='16'>B</text><text x='310' y='320' font-size='16'>C</text><text x='150' y='280' font-size='14'>α</text><text x='230' y='130' font-size='14'>β</text><text x='270' y='280' font-size='14'>γ</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Consider a triangle ABC with angles α at A, β at B, and γ at C.</p><p><strong>Step 2:</strong> Draw a line through vertex B parallel to side AC, creating angles p and q at B on either side of angle β.</p><p><strong>Step 3:</strong> Since the line is parallel to AC, angle p = α (corresponding angles) and angle q = γ (alternate angles).</p><p><strong>Step 4:</strong> The angles at point B on a straight line (p, β, q) add to 180°.</p><p>So, p + β + q = α + β + γ = 180°.</p><p><strong>Step 5:</strong> Thus, the angles in triangle ABC (α, β, γ) sum to 180°.</p><p><strong>Final Answer:</strong> The angles in a triangle add up to 180°.</p>"
+  },
+  {
+    "questionText": "Simplify the algebraic fraction (x² - 4) / (x + 2).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the numerator.</p><p>x² - 4 is a difference of squares: x² - 4 = (x + 2)(x - 2).</p><p>So, the fraction becomes (x + 2)(x - 2) / (x + 2).</p><p><strong>Step 2:</strong> Cancel common factors.</p><p>Assuming x ≠ -2 (to avoid division by zero), cancel (x + 2) from numerator and denominator.</p><p>(x + 2)(x - 2) / (x + 2) = x - 2.</p><p><strong>Final Answer:</strong> x - 2</p>"
+  },
+  {
+    "questionText": "Find the nth term of the sequence 3, 7, 11, 15, …",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Identify the pattern.</p><p>The sequence is 3, 7, 11, 15, … The differences are 7 - 3 = 4, 11 - 7 = 4, 15 - 11 = 4, so the sequence is arithmetic with a common difference of 4.</p><p><strong>Step 2:</strong> Use the formula for the nth term of an arithmetic sequence: aₙ = a₁ + (n - 1)d.</p><p>First term (a₁) = 3, common difference (d) = 4.</p><p>aₙ = 3 + (n - 1) × 4.</p><p><strong>Step 3:</strong> Simplify the expression.</p><p>aₙ = 3 + 4n - 4 = 4n - 1.</p><p><strong>Final Answer:</strong> 4n - 1</p>"
+  },
+  {
+    "questionText": "In a circle with centre O, chord AB subtends an angle of 120° at the centre. If the radius is 5 cm, find the length of chord AB.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><line x1='200' y1='50' x2='50' y2='350' stroke='black' stroke-width='2'/><line x1='200' y1='50' x2='350' y2='350' stroke='black' stroke-width='2'/><text x='190' y='40' font-size='16'>O</text><text x='40' y='370' font-size='16'>A</text><text x='360' y='370' font-size='16'>B</text><text x='200' y='100' font-size='14'>120°</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Draw triangle OAB, where O is the centre, OA = OB = 5 cm (radii), and angle AOB = 120°.</p><p><strong>Step 2:</strong> Since OA = OB, triangle OAB is isosceles. The base angles at A and B are equal.</p><p>Sum of angles in triangle OAB = 180°, so each base angle = (180° - 120°) / 2 = 30°.</p><p><strong>Step 3:</strong> Use the cosine rule in triangle OAB to find AB: AB² = OA² + OB² - 2 × OA × OB × cos(120°).</p><p>OA = 5 cm, OB = 5 cm, cos(120°) = -0.5.</p><p>AB² = 5² + 5² - 2 × 5 × 5 × (-0.5) = 25 + 25 + 25 = 75.</p><p><strong>Step 4:</strong> Solve for AB.</p><p>AB = √75 = √(25 × 3) = 5√3 cm.</p><p><strong>Final Answer:</strong> 5√3 cm</p>"
+  },
+  {
+    "questionText": "Solve the inequality 3x - 5 > x + 7.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>3x - 5 > x + 7.</p><p>Subtract x from both sides: 3x - x - 5 > 7.</p><p>2x - 5 > 7.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Add 5 to both sides: 2x > 7 + 5 = 12.</p><p>Divide by 2: x > 12 / 2 = 6.</p><p><strong>Final Answer:</strong> x > 6</p>"
+  },
+
+  {
+    "questionText": "Rationalise the denominator of 5 / (√3 + √2).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Multiply numerator and denominator by the conjugate of the denominator, √3 - √2.</p><p>(5 / (√3 + √2)) × ((√3 - √2) / (√3 - √2)) = (5(√3 - √2)) / ((√3 + √2)(√3 - √2)).</p><p><strong>Step 2:</strong> Simplify the denominator using the difference of squares.</p><p>(√3 + √2)(√3 - √2) = (√3)² - (√2)² = 3 - 2 = 1.</p><p>So, the expression becomes 5(√3 - √2) / 1 = 5(√3 - √2).</p><p><strong>Step 3:</strong> Write the final answer.</p><p>5(√3 - √2) cannot be simplified further.</p><p><strong>Final Answer:</strong> 5(√3 - √2)</p>"
+  },
+  {
+    "questionText": "Solve the simultaneous equations: x + y = 5 and x² - y² = 15.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Rewrite the second equation using the difference of squares.</p><p>x² - y² = (x + y)(x - y) = 15.</p><p>From the first equation, x + y = 5, so substitute into the second: 5(x - y) = 15.</p><p><strong>Step 2:</strong> Solve for x - y.</p><p>(x - y) = 15 / 5 = 3.</p><p><strong>Step 3:</strong> Solve the system of equations: x + y = 5 and x - y = 3.</p><p>Add the equations: (x + y) + (x - y) = 5 + 3 → 2x = 8 → x = 4.</p><p>Substitute x = 4 into x + y = 5: 4 + y = 5 → y = 1.</p><p><strong>Step 4:</strong> Verify the solution in the second equation.</p><p>x² - y² = 4² - 1² = 16 - 1 = 15, which satisfies the equation.</p><p><strong>Final Answer:</strong> x = 4, y = 1</p>"
+  },
+  {
+    "questionText": "In triangle PQR, angle PQR = 90°, PQ = 5 cm, and QR = 12 cm. Find the length of PR.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 100,150 250,300' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>P</text><text x='260' y='320' font-size='16'>R</text><text x='90' y='140' font-size='16'>Q</text><text x='120' y='310' font-size='14'>5 cm</text><text x='170' y='310' font-size='14'>12 cm</text><text x='150' y='200' font-size='14'>PR</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Apply Pythagoras’ theorem in right-angled triangle PQR.</p><p>PR² = PQ² + QR².</p><p>Given: PQ = 5 cm, QR = 12 cm.</p><p><strong>Step 2:</strong> Substitute the values.</p><p>PR² = 5² + 12² = 25 + 144 = 169.</p><p><strong>Step 3:</strong> Solve for PR.</p><p>PR = √169 = 13 cm.</p><p><strong>Final Answer:</strong> PR = 13 cm</p>"
+  },
+  {
+    "questionText": "Expand and simplify (3x - 2)(x + 5).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the FOIL method to expand.</p><p>(3x - 2)(x + 5) = 3x × x + 3x × 5 + (-2) × x + (-2) × 5.</p><p>= 3x² + 15x - 2x - 10.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>15x - 2x = 13x.</p><p>So, 3x² + 15x - 2x - 10 = 3x² + 13x - 10.</p><p><strong>Final Answer:</strong> 3x² + 13x - 10</p>"
+  },
+  {
+    "questionText": "Find the equation of the line perpendicular to y = 2x - 3 passing through (1, 4).",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='150' stroke='black' stroke-width='2'/><circle cx='150' cy='300' r='5' fill='black'/><text x='140' y='320' font-size='16'>(1, 4)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Find the gradient of the given line y = 2x - 3.</p><p>The gradient (m₁) is 2.</p><p><strong>Step 2:</strong> Find the gradient of the perpendicular line.</p><p>For perpendicular lines, m₁ × m₂ = -1, so m₂ = -1 / 2 = -0.5.</p><p><strong>Step 3:</strong> Use the point-slope form y - y₁ = m(x - x₁) with point (1, 4) and m = -0.5.</p><p>y - 4 = -0.5(x - 1).</p><p><strong>Step 4:</strong> Simplify to the form y = mx + c.</p><p>y - 4 = -0.5x + 0.5.</p><p>y = -0.5x + 0.5 + 4 = -0.5x + 4.5.</p><p><strong>Final Answer:</strong> y = -0.5x + 4.5</p>"
+  },
+  {
+    "questionText": "Prove that the opposite angles of a cyclic quadrilateral sum to 180°.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><polygon points='200,50 350,200 200,350 50,200' fill='none' stroke='black' stroke-width='2'/><text x='190' y='40' font-size='16'>A</text><text x='360' y='210' font-size='16'>B</text><text x='190' y='360' font-size='16'>C</text><text x='40' y='210' font-size='16'>D</text><text x='200' y='100' font-size='14'>∠A</text><text x='200' y='300' font-size='14'>∠C</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Consider a cyclic quadrilateral ABCD inscribed in a circle.</p><p><strong>Step 2:</strong> Draw diagonals AC and BD, splitting the quadrilateral into triangles ABC and ADC.</p><p><strong>Step 3:</strong> Use the circle theorem: the angle subtended by an arc at the circumference is half the angle subtended at the centre.</p><p>Angle ∠A (at A) and angle ∠C (at C) are opposite angles. They subtend arcs BCD and BAD, respectively.</p><p><strong>Step 4:</strong> The sum of the central angles subtended by arcs BCD and BAD is 360° (a full circle).</p><p>Thus, ∠A = (1/2) × central angle BCD, and ∠C = (1/2) × central angle BAD.</p><p>Sum of ∠A + ∠C = (1/2) × (central angle BCD + central angle BAD) = (1/2) × 360° = 180°.</p><p><strong>Final Answer:</strong> The opposite angles of a cyclic quadrilateral sum to 180°.</p>"
+  },
+  {
+    "questionText": "Simplify (2x² + 3x - 5) / (x + 2).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Attempt to factorise the numerator.</p><p>2x² + 3x - 5: Find numbers that multiply to 2 × (-5) = -10 and add to 3. These are 5 and -2.</p><p>Rewrite: 2x² + 5x - 2x - 5 = (2x² + 5x) - (2x + 5) = x(2x + 5) - 1(2x + 5) = (x - 1)(2x + 5).</p><p>So, the fraction is (x - 1)(2x + 5) / (x + 2).</p><p><strong>Step 2:</strong> Check for common factors.</p><p>No common factors exist between numerator and denominator.</p><p><strong>Final Answer:</strong> (x - 1)(2x + 5) / (x + 2)</p>"
+  },
+  {
+    "questionText": "Find the nth term of the sequence 5, 8, 12, 18, …",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Check if the sequence is arithmetic.</p><p>Differences: 8 - 5 = 3, 12 - 8 = 4, 18 - 12 = 6. The differences are not constant, so it’s not arithmetic.</p><p><strong>Step 2:</strong> Look for a quadratic pattern by examining second differences.</p><p>First differences: 3, 4, 6. Second differences: 4 - 3 = 1, 6 - 4 = 2. Inconsistent, so check for a quadratic nth term.</p><p><strong>Step 3:</strong> Assume nth term is an² + bn + c. Use the first three terms.</p><p>n = 1: a(1)² + b(1) + c = a + b + c = 5 (1).</p><p>n = 2: a(2)² + b(2) + c = 4a + 2b + c = 8 (2).</p><p>n = 3: a(3)² + b(3) + c = 9a + 3b + c = 12 (3).</p><p>Solve: Subtract (1) from (2): 3a + b = 3 (4).</p><p>Subtract (2) from (3): 5a + b = 4 (5).</p><p>Subtract (4) from (5): 2a = 1 → a = 0.5.</p><p>Substitute a = 0.5 into (4): 3(0.5) + b = 3 → 1.5 + b = 3 → b = 1.5.</p><p>Substitute a = 0.5, b = 1.5 into (1): 0.5 + 1.5 + c = 5 → c = 3.</p><p><strong>Step 4:</strong> Write the nth term.</p><p>nth term = 0.5n² + 1.5n + 3.</p><p><strong>Final Answer:</strong> 0.5n² + 1.5n + 3</p>"
+  },
+  {
+    "questionText": "In a circle with centre O, angle AOB = 80° and the radius is 6 cm. Find the length of arc AB.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><path d='M200,50 A150,150 0 0,1 320,110' fill='none' stroke='black' stroke-width='2'/><text x='190' y='40' font-size='16'>O</text><text x='190' y='60' font-size='16'>A</text><text x='330' y='120' font-size='16'>B</text><text x='200' y='100' font-size='14'>80°</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the arc length formula: Arc length = (θ / 360) × 2πr.</p><p>Given: θ = 80°, r = 6 cm.</p><p><strong>Step 2:</strong> Substitute the values.</p><p>Arc length = (80 / 360) × 2 × π × 6 = (2 / 9) × 12π = (24π / 9) = (8π / 3) cm.</p><p><strong>Final Answer:</strong> (8π / 3) cm</p>"
+  },
+  {
+    "questionText": "Solve the inequality 4x + 3 ≤ 2x + 11.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>4x + 3 ≤ 2x + 11.</p><p>Subtract 2x from both sides: 4x - 2x + 3 ≤ 11 → 2x + 3 ≤ 11.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Subtract 3: 2x ≤ 11 - 3 = 8.</p><p>Divide by 2: x ≤ 8 / 2 = 4.</p><p><strong>Final Answer:</strong> x ≤ 4</p>"
+  },
+  {
+    "questionText": "Simplify √72 + √18.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify each square root.</p><p>√72 = √(36 × 2) = √36 × √2 = 6√2.</p><p>√18 = √(9 × 2) = √9 × √2 = 3√2.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>6√2 + 3√2 = (6 + 3)√2 = 9√2.</p><p><strong>Final Answer:</strong> 9√2</p>"
+  },
+  {
+    "questionText": "Solve the quadratic equation x² - 6x + 8 = 0 by factorising.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>x² - 6x + 8: Find numbers that multiply to 8 and add to -6. These are -2 and -4.</p><p>x² - 6x + 8 = (x - 2)(x - 4) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>x - 2 = 0 → x = 2; x - 4 = 0 → x = 4.</p><p><strong>Final Answer:</strong> x = 2 or x = 4</p>"
+  },
+  {
+    "questionText": "In triangle XYZ, XY = XZ = 10 cm, and angle XYZ = 40°. Find the length of YZ.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 200,100 300,300' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>X</text><text x='190' y='90' font-size='16'>Y</text><text x='310' y='320' font-size='16'>Z</text><text x='130' y='200' font-size='14'>10 cm</text><text x='250' y='200' font-size='14'>10 cm</text><text x='200' y='310' font-size='14'>YZ</text><text x='190' y='130' font-size='14'>40°</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the cosine rule in triangle XYZ.</p><p>XY = XZ = 10 cm, so triangle XYZ is isosceles. Let YZ = a.</p><p>Cosine rule: a² = b² + c² - 2bc cos(A).</p><p>Here, a = YZ, b = XY = 10 cm, c = XZ = 10 cm, A = 40°.</p><p>a² = 10² + 10² - 2 × 10 × 10 × cos(40°).</p><p><strong>Step 2:</strong> Calculate.</p><p>a² = 100 + 100 - 200 cos(40°).</p><p>cos(40°) ≈ 0.766 (use exact form for non-calculator).</p><p>a² = 200 - 200 × 0.766 ≈ 200 - 153.2 = 46.8.</p><p>a = √46.8 (leave in exact form).</p><p><strong>Final Answer:</strong> YZ = √46.8 cm</p>"
+  },
+  {
+    "questionText": "Expand (x - 3)³.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the binomial expansion formula for (a + b)³ = a³ + 3a²b + 3ab² + b³.</p><p>Here, a = x, b = -3.</p><p>(x - 3)³ = x³ + 3x²(-3) + 3x(-3)² + (-3)³.</p><p><strong>Step 2:</strong> Calculate each term.</p><p>= x³ + 3x²(-3) + 3x(9) + (-27).</p><p>= x³ - 9x² + 27x - 27.</p><p><strong>Final Answer:</strong> x³ - 9x² + 27x - 27</p>"
+  },
+  {
+    "questionText": "Find the coordinates of the midpoint of the line segment joining (3, 2) and (7, 8).",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='150' y1='300' x2='250' y2='200' stroke='black' stroke-width='2'/><circle cx='150' cy='300' r='5' fill='black'/><circle cx='250' cy='200' r='5' fill='black'/><circle cx='200' cy='250' r='5' fill='red'/><text x='140' y='320' font-size='16'>(3, 2)</text><text x='260' y='210' font-size='16'>(7, 8)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the midpoint formula: ((x₁ + x₂)/2, (y₁ + y₂)/2).</p><p>Points: (3, 2) and (7, 8).</p><p><strong>Step 2:</strong> Calculate the x-coordinate.</p><p>(3 + 7) / 2 = 10 / 2 = 5.</p><p><strong>Step 3:</strong> Calculate the y-coordinate.</p><p>(2 + 8) / 2 = 10 / 2 = 5.</p><p><strong>Final Answer:</strong> (5, 5)</p>"
+  },
+  {
+    "questionText": "Prove that (n + 1)² - (n - 1)² = 4n for all integers n.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Expand both squares.</p><p>(n + 1)² = n² + 2n + 1.</p><p>(n - 1)² = n² - 2n + 1.</p><p><strong>Step 2:</strong> Subtract the expressions.</p><p>(n + 1)² - (n - 1)² = (n² + 2n + 1) - (n² - 2n + 1).</p><p>= n² + 2n + 1 - n² + 2n - 1.</p><p><strong>Step 3:</strong> Simplify.</p><p>= (2n + 2n) + (1 - 1) = 4n.</p><p><strong>Final Answer:</strong> (n + 1)² - (n - 1)² = 4n, which is true for all integers n.</p>"
+  },
+  {
+    "questionText": "Simplify (3√5 - 2√3)(√5 + √3).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the distributive property to expand.</p><p>(3√5 - 2√3)(√5 + √3) = 3√5 × √5 + 3√5 × √3 - 2√3 × √5 - 2√3 × √3.</p><p><strong>Step 2:</strong> Simplify each term.</p><p>= 3 × 5 + 3√15 - 2√15 - 2 × 3.</p><p>= 15 + 3√15 - 2√15 - 6.</p><p><strong>Step 3:</strong> Combine like terms.</p><p>15 - 6 = 9, and 3√15 - 2√15 = √15.</p><p>= 9 + √15.</p><p><strong>Final Answer:</strong> 9 + √15</p>"
+  },
+  {
+    "questionText": "Solve the equation 3x² - 12x + 9 = 0 by completing the square.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Divide the equation by 3 to make the coefficient of x² equal to 1.</p><p>3x² - 12x + 9 = 0 → x² - 4x + 3 = 0.</p><p><strong>Step 2:</strong> Move the constant term.</p><p>x² - 4x = -3.</p><p><strong>Step 3:</strong> Complete the square.</p><p>Take half of -4 (coefficient of x), which is -2, and square it: (-2)² = 4.</p><p>Add 4 to both sides: x² - 4x + 4 = -3 + 4.</p><p>(x - 2)² = 1.</p><p><strong>Step 4:</strong> Solve for x.</p><p>x - 2 = ±√1 = ±1.</p><p>x - 2 = 1 → x = 3; x - 2 = -1 → x = 1.</p><p><strong>Final Answer:</strong> x = 1 or x = 3</p>"
+  },
+  {
+    "questionText": "In a circle, angle ABC = 70° and point C lies on the circumference. Find angle BAC if AB is a diameter.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><line x1='50' y1='200' x2='350' y2='200' stroke='black' stroke-width='2'/><polygon points='50,200 350,200 200,350' fill='none' stroke='black' stroke-width='2'/><text x='40' y='210' font-size='16'>A</text><text x='360' y='210' font-size='16'>B</text><text x='190' y='360' font-size='16'>C</text><text x='200' y='300' font-size='14'>70°</text><text x='100' y='190' font-size='14'>∠BAC</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the circle theorem: angle in a semicircle is 90°.</p><p>Since AB is a diameter, angle ACB = 90°.</p><p><strong>Step 2:</strong> Use the sum of angles in triangle ABC.</p><p>Angle ABC = 70°.</p><p>Sum of angles = 180°, so ∠BAC + 70° + 90° = 180°.</p><p><strong>Step 3:</strong> Solve for ∠BAC.</p><p>∠BAC = 180° - 70° - 90° = 20°.</p><p><strong>Final Answer:</strong> ∠BAC = 20°</p>"
+  },
+  {
+    "questionText": "Find the inverse of the function f(x) = 2x + 3.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Set y = f(x) and solve for x.</p><p>y = 2x + 3.</p><p>Subtract 3: y - 3 = 2x.</p><p>Divide by 2: x = (y - 3) / 2.</p><p><strong>Step 2:</strong> Write the inverse function, swapping x and y.</p><p>f⁻¹(x) = (x - 3) / 2.</p><p><strong>Final Answer:</strong> f⁻¹(x) = (x - 3) / 2</p>"
+  },
+  {
+    "questionText": "Simplify (x² - 9) / (x² + 3x).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the numerator and denominator.</p><p>Numerator: x² - 9 = (x + 3)(x - 3).</p><p>Denominator: x² + 3x = x(x + 3).</p><p>So, the fraction is (x + 3)(x - 3) / (x(x + 3)).</p><p><strong>Step 2:</strong> Cancel common factors.</p><p>Cancel (x + 3), assuming x ≠ -3.</p><p>(x - 3) / x.</p><p><strong>Final Answer:</strong> (x - 3) / x</p>"
+  },
+  {
+    "questionText": "Find the nth term of the sequence 2, 5, 11, 20, …",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Check for a quadratic pattern.</p><p>First differences: 5 - 2 = 3, 11 - 5 = 6, 20 - 11 = 9.</p><p>Second differences: 6 - 3 = 3, 9 - 6 = 3. Constant, so the sequence is quadratic.</p><p><strong>Step 2:</strong> Assume nth term = an² + bn + c.</p><p>n = 1: a + b + c = 2 (1).</p><p>n = 2: 4a + 2b + c = 5 (2).</p><p>n = 3: 9a + 3b + c = 11 (3).</p><p>Subtract (1) from (2): 3a + b = 3 (4).</p><p>Subtract (2) from (3): 5a + b = 6 (5).</p><p>Subtract (4) from (5): 2a = 3 → a = 1.5.</p><p>Substitute a = 1.5 into (4): 3(1.5) + b = 3 → 4.5 + b = 3 → b = -1.5.</p><p>Substitute a = 1.5, b = -1.5 into (1): 1.5 - 1.5 + c = 2 → c = 2.</p><p><strong>Final Answer:</strong> 1.5n² - 1.5n + 2</p>"
+  },
+  {
+    "questionText": "In triangle ABC, AB = AC = 8 cm, and BC = 6 cm. Find the size of angle BAC.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon cittriangles points='100,300 250,300 175,150' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>A</text><text x='260' y='320' font-size='16'>C</text><text x='165' y='140' font-size='16'>B</text><text x='130' y='200' font-size='14'>8 cm</text><text x='200' y='200' font-size='14'>8 cm</text><text x='170' y='310' font-size='14'>6 cm</text><text x='165' y='180' font-size='14'>∠BAC</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Recognize that triangle ABC is isosceles (AB = AC).</p><p>Drop a perpendicular from B to AC, meeting at D, so AD = DC = 6 / 2 = 3 cm.</p><p><strong>Step 2:</strong> In right-angled triangle ABD, use Pythagoras to find BD.</p><p>AB² = AD² + BD².</p><p>8² = 3² + BD² → 64 = 9 + BD² → BD² = 55 → BD = √55 cm.</p><p><strong>Step 3:</strong> Use trigonometry to find ∠BAD (half of ∠BAC).</p><p>cos(∠BAD) = adjacent/hypotenuse = 3 / 8.</p><p>∠BAD = cos⁻¹(3/8).</p><p><strong>Step 4:</strong> Calculate ∠BAC.</p><p>∠BAC = 2 × ∠BAD = 2 × cos⁻¹(3/8).</p><p><strong>Final Answer:</strong> ∠BAC = 2 cos⁻¹(3/8)</p>"
+  },
+  {
+    "questionText": "Solve 2x² + 3x - 5 = 0 by factorising.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>2x² + 3x - 5: Find numbers that multiply to 2 × (-5) = -10 and add to 3. These are 5 and -2.</p><p>Rewrite: 2x² + 5x - 2x - 5 = (2x² + 5x) - (2x + 5) = x(2x + 5) - 1(2x + 5) = (x - 1)(2x + 5) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>x - 1 = 0 → x = 1; 2x + 5 = 0 → x = -5/2.</p><p><strong>Final Answer:</strong> x = 1 or x = -5/2</p>"
+  },
+  {
+    "questionText": "Find the equation of the line parallel to y = 3x + 1 passing through (2, 5).",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='50' stroke='black' stroke-width='2'/><circle cx='200' cy='250' r='5' fill='black'/><text x='190' y='270' font-size='16'>(2, 5)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Identify the gradient of the given line.</p><p>y = 3x + 1 has gradient m = 3. A parallel line has the same gradient.</p><p><strong>Step 2:</strong> Use point-slope form y - y₁ = m(x - x₁) with point (2, 5) and m = 3.</p><p>y - 5 = 3(x - 2).</p><p><strong>Step 3:</strong> Simplify to y = mx + c.</p><p>y - 5 = 3x - 6.</p><p>y = 3x - 6 + 5 = 3x - 1.</p><p><strong>Final Answer:</strong> y = 3x - 1</p>"
+  },
+  {
+    "questionText": "Simplify (4x + 3)/(2x - 1) - (2x + 1)/(2x - 1).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Combine the fractions over a common denominator.</p><p>Since both fractions have denominator 2x - 1, combine numerators.</p><p>((4x + 3) - (2x + 1)) / (2x - 1).</p><p><strong>Step 2:</strong> Simplify the numerator.</p><p>(4x + 3) - (2x + 1) = 4x + 3 - 2x - 1 = 2x + 2.</p><p>So, the expression is (2x + 2) / (2x - 1).</p><p><strong>Step 3:</strong> Factorise and simplify.</p><p>2x + 2 = 2(x + 1), so (2(x + 1)) / (2x - 1).</p><p>No common factors to cancel.</p><p><strong>Final Answer:</strong> 2(x + 1) / (2x - 1)</p>"
+  },
+  {
+    "questionText": "In a circle with centre O, chord PQ is 8 cm long, and the radius is 5 cm. Find the perpendicular distance from O to PQ.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><line x1='100' y1='250' x2='300' y2='250' stroke='black' stroke-width='2'/><line x1='200' y1='200' x2='200' y2='250' stroke='black' stroke-width='2' stroke-dasharray='5,5'/><text x='190' y='190' font-size='16'>O</text><text x='90' y='260' font-size='16'>P</text><text x='310' y='260' font-size='16'>Q</text><text x='200' y='270' font-size='14'>8 cm</text><text x='210' y='230' font-size='14'>d</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Let M be the midpoint of chord PQ. The perpendicular from O to PQ meets at M.</p><p>PQ = 8 cm, so PM = MQ = 4 cm. Radius OP = 5 cm.</p><p><strong>Step 2:</strong> In right-angled triangle OMP, use Pythagoras’ theorem.</p><p>OP² = OM² + PM².</p><p>5² = d² + 4².</p><p>25 = d² + 16.</p><p><strong>Step 3:</strong> Solve for d.</p><p>d² = 25 - 16 = 9.</p><p>d = √9 = 3 cm.</p><p><strong>Final Answer:</strong> 3 cm</p>"
+  },
+  {
+    "questionText": "Solve the inequality -2x + 7 > 3x - 8.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>-2x + 7 > 3x - 8.</p><p>Add 2x to both sides: 7 > 5x - 8.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Add 8: 7 + 8 > 5x → 15 > 5x.</p><p>Divide by 5: 3 > x → x < 3.</p><p><strong>Final Answer:</strong> x < 3</p>"
+  },
+  {
+    "questionText": "Simplify √200 - √50 + √8.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify each square root.</p><p>√200 = √(100 × 2) = 10√2.</p><p>√50 = √(25 × 2) = 5√2.</p><p>√8 = √(4 × 2) = 2√2.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>10√2 - 5√2 + 2√2 = (10 - 5 + 2)√2 = 7√2.</p><p><strong>Final Answer:</strong> 7√2</p>"
+  },
+  {
+    "questionText": "Solve the quadratic equation 4x² - 4x - 3 = 0 by factorising.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>4x² - 4x - 3: Find numbers that multiply to 4 × (-3) = -12 and add to -4. These are -6 and 2.</p><p>Rewrite: 4x² - 6x + 2x - 3 = (4x² - 6x) + (2x - 3) = 2x(2x - 3) + 1(2x - 3) = (2x + 1)(2x - 3) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>2x + 1 = 0 → x = -1/2; 2x - 3 = 0 → x = 3/2.</p><p><strong>Final Answer:</strong> x = -1/2 or x = 3/2</p>"
+  },
+  {
+    "questionText": "In triangle DEF, DE = DF, and angle EDF = 50°. Find angle DEF.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 250,300 175,150' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>D</text><text x='260' y='320' font-size='16'>F</text><text x='165' y='140' font-size='16'>E</text><text x='170' y='310' font-size='14'>50°</text><text x='130' y='200' font-size='14'>∠DEF</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Recognize that triangle DEF is isosceles (DE = DF).</p><p>Base angles at D and F are equal. Let each be x.</p><p><strong>Step 2:</strong> Use the sum of angles in a triangle.</p><p>∠EDF = 50°, so x + x + 50° = 180°.</p><p>2x + 50° = 180°.</p><p><strong>Step 3:</strong> Solve for x.</p><p>2x = 130° → x = B0 x = 65°.</p><p><strong>Final Answer:</strong> ∠DEF = 65°</p>"
+  },
+  {
+    "questionText": "Expand (2x + 1)³.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the binomial expansion formula: (a + b)³ = a³ + 3a²b + 3ab² + b³.</p><p>Here, a = 2x, b = 1.</p><p>(2x + 1)³ = (2x)³ + 3(2x)²(1) + 3(2x)(1)² + 1³.</p><p><strong>Step 2:</strong> Calculate each term.</p><p>= 8x³ + 3(4x²) + 3(2x) + 1.</p><p>= 8x³ + 12x² + 6x + 1.</p><p><strong>Final Answer:</strong> 8x³ + 12x² + 6x + 1</p>"
+  },
+  {
+    "questionText": "Find the coordinates of the point where the line y = x + 2 intersects y = 3x - 2.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='50' stroke='black' stroke-width='2'/><line x1='50' y1='300' x2='350' y2='100' stroke='black' stroke-width='2'/><circle cx='250' cy='150' r='5' fill='black'/><text x='240' y='170' font-size='16'>(2, 4)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Set the equations equal to find the intersection.</p><p>x + 2 = 3x - 2.</p><p><strong>Step 2:</strong> Solve for x.</p><p>2 + 2 = 3x - x.</p><p>4 = 2x → x = 2.</p><p><strong>Step 3:</strong> Substitute x = 2 into y = x + 2.</p><p>y = 2 + 2 = 4.</p><p><strong>Final Answer:</strong> (2, 4)</p>"
+  },
+  {
+    "questionText": "Prove that the sum of the squares of two consecutive integers is odd.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Let the two consecutive integers be n and n + 1.</p><p><strong>Step 2:</strong> Calculate the sum of their squares.</p><p>n² + (n + 1)² = n² + (n² + 2n + 1) = 2n² + 2n + 1.</p><p><strong>Step 3:</strong> Check if the result is odd.</p><p>2n² + 2n is even (divisible by 2), so 2n² + 2n + 1 = even + 1 = odd.</p><p><strong>Final Answer:</strong> The sum of the squares of two consecutive integers is odd.</p>"
+  },
+  {
+    "questionText": "Simplify (√7 + √2)(√7 - √2).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the difference of squares formula: (a + b)(a - b) = a² - b².</p><p>Here, a = √7, b = √2.</p><p>(√7 + √2)(√7 - √2) = (√7)² - (√2)².</p><p><strong>Step 2:</strong> Simplify.</p><p>= 7 - 2 = 5.</p><p><strong>Final Answer:</strong> 5</p>"
+  },
+  {
+    "questionText": "Solve 5x² - 2x - 3 = 0 by completing the square.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Divide by 5 to make the coefficient of x² equal to 1.</p><p>5x² - 2x - 3 = 0 → x² - (2/5)x - 3/5 = 0.</p><p><strong>Step 2:</strong> Move the constant term.</p><p>x² - (2/5)x = 3/5.</p><p><strong>Step 3:</strong> Complete the square.</p><p>Take half of -2/5, which is -1/5, and square it: (-1/5)² = 1/25.</p><p>Add 1/25 to both sides: x² - (2/5)x + 1/25 = 3/5 + 1/25.</p><p>Left: (x - 1/5)². Right: 3/5 = 15/25, so 15/25 + 1/25 = 16/25.</p><p>(x - 1/5)² = 16/25.</p><p><strong>Step 4:</strong> Solve for x.</p><p>x - 1/5 = ±√(16/25) = ±4/5.</p><p>x = 1/5 + 4/5 = 1 or x = 1/5 - 4/5 = -3/5.</p><p><strong>Final Answer:</strong> x = 1 or x = -3/5</p>"
+  },
+  {
+    "questionText": "In a circle, angle ABC = 65° and AB = AC. Find angle BAC.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 250,300 175,150' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>A</text><text x='260' y='320' font-size='16'>C</text><text x='165' y='140' font-size='16'>B</text><text x='200' y='280' font-size='14'>65°</text><text x='165' y='180' font-size='14'>∠BAC</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Recognize that triangle ABC is isosceles (AB = AC).</p><p>Base angles at B and C are equal. Given ∠ABC = 65°, so ∠ACB = 65°.</p><p><strong>Step 2:</strong> Use the sum of angles in a triangle.</p><p>∠BAC + 65° + 65° = 180°.</p><p><strong>Step 3:</strong> Solve for ∠BAC.</p><p>∠BAC = 180° - 130° = 50°.</p><p><strong>Final Answer:</strong> ∠BAC = 50°</p>"
+  },
+  {
+    "questionText": "Find the composite function f(g(x)) where f(x) = x² and g(x) = x + 1.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Compute g(x).</p><p>g(x) = x + 1.</p><p><strong>Step 2:</strong> Substitute g(x) into f(x).</p><p>f(g(x)) = f(x + 1) = (x + 1)².</p><p><strong>Step 3:</strong> Expand.</p><p>(x + 1)² = x² + 2x + 1.</p><p><strong>Final Answer:</strong> x² + 2x + 1</p>"
+  },
+  {
+    "questionText": "Simplify (x² - 16) / (x - 4).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the numerator.</p><p>x² - 16 = (x + 4)(x - 4).</p><p>So, the fraction is (x + 4)(x - 4) / (x - 4).</p><p><strong>Step 2:</strong> Cancel common factors.</p><p>Cancel (x - 4), assuming x ≠ 4.</p><p>x + 4.</p><p><strong>Final Answer:</strong> x + 4</p>"
+  },
+  {
+    "questionText": "Find the nth term of the sequence 4, 10, 18, 28, …",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Check for a quadratic pattern.</p><p>First differences: 10 - 4 = 6, 18 - 10 = 8, 28 - 18 = 10.</p><p>Second differences: 8 - 6 = 2, 10 - 8 = 2. Constant, so quadratic.</p><p><strong>Step 2:</strong> Assume nth term = an² + bn + c.</p><p>n = 1: a + b + c = 4 (1).</p><p>n = 2: 4a + 2b + c = 10 (2).</p><p>n = 3: 9a + 3b + c = 18 (3).</p><p>Subtract (1) from (2): 3a + b = 6 (4).</p><p>Subtract (2) from (3): 5a + b = 8 (5).</p><p>Subtract (4) from (5): 2a = 2 → a = 1.</p><p>Substitute a = 1 into (4): 3(1) + b = 6 → b = 3.</p><p>Substitute a = 1, b = 3 into (1): 1 + 3 + c = 4 → c = 0.</p><p><strong>Final Answer:</strong> n² + 3n</p>"
+  },
+  {
+    "questionText": "In triangle PQR, PQ = PR = 7 cm, and angle QPR = 60°. Find the length of QR.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 250,300 175,150' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>P</text><text x='260' y='320' font-size='16'>R</text><text x='165' y='140' font-size='16'>Q</text><text x='130' y='200' font-size='14'>7 cm</text><text x='200' y='200' font-size='14'>7 cm</text><text x='170' y='310' font-size='14'>QR</text><text x='165' y='180' font-size='14'>60°</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the cosine rule in triangle PQR.</p><p>PQ = PR = 7 cm, angle QPR = 60°. Let QR = a.</p><p>a² = PQ² + PR² - 2 × PQ × PR × cos(60°).</p><p><strong>Step 2:</strong> Substitute values.</p><p>a² = 7² + 7² - 2 × 7 × 7 × 0.5.</p><p>= 49 + 49 - 49 = 49.</p><p><strong>Step 3:</strong> Solve for a.</p><p>a = √49 = 7 cm.</p><p><strong>Final Answer:</strong> QR = 7 cm</p>"
+  },
+  {
+    "questionText": "Solve 3x² + 7x - 6 = 0 by factorising.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>3x² + 7x - 6: Find numbers that multiply to 3 × (-6) = -18 and add to 7. These are 9 and -2.</p><p>Rewrite: 3x² + 9x - 2x - 6 = (3x² + 9x) - (2x + 6) = 3x(x + 3) - 2(x + 3) = (3x - 2)(x + 3) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>3x - 2 = 0 → x = 2/3; x + 3 = 0 → x = -3.</p><p><strong>Final Answer:</strong> x = 2/3 or x = -3</p>"
+  },
+  {
+    "questionText": "Find the equation of the line passing through (0, 3) with gradient -2.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='150' stroke='black' stroke-width='2'/><circle cx='100' cy='300' r='5' fill='black'/><text -4><text x='90' y='320' font-size='16'>(0, 3)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the equation of a line y = mx + c.</p><p>Gradient m = -2, and the line passes through (0, 3), so c = 3.</p><p><strong>Step 2:</strong> Write the equation.</p><p>y = -2x + 3.</p><p><strong>Final Answer:</strong> y = -2x + 3</p>"
+  },
+  {
+    "questionText": "Simplify (2x - 3)/(x - 2) + (x + 1)/(x - 2).",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Combine the fractions over a common denominator.</p><p>Both have denominator x - 2, so combine numerators.</p><p>((2x - 3) + (x + 1)) / (x - 2).</p><p><strong>Step 2:</strong> Simplify the numerator.</p><p>(2x - 3) + (x + 1) = 2x - 3 + x + 1 = 3x - 2.</p><p>So, the expression is (3x - 2) / (x - 2).</p><p><strong>Final Answer:</strong> (3x - 2) / (x - 2)</p>"
+  },
+  {
+    "questionText": "In a circle with centre O, angle AOB = 100° and radius 4 cm. Find the area of sector AOB.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><circle cx='200' cy='200' r='150' fill='none' stroke='black' stroke-width='2'/><path d='M200,50 A150,150 0 0,1 300,100' fill='lightgray' stroke='black' stroke-width='2'/><text x='190' y='40' font-size='16'>O</text><text x='190' y='60' font-size='16'>A</text><text x='310' y='110' font-size='16'>B</text><text x='200' y='100' font-size='14'>100°</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the sector area formula: Area = (θ / 360) × πr².</p><p>θ = 100°, r = 4 cm.</p><p><strong>Step 2:</strong> Substitute values.</p><p>Area = (100 / 360) × π × 4² = (5 / 18) × 16π = (80π / 18) = (40π / 9) cm².</p><p><strong>Final Answer:</strong> (40π / 9) cm²</p>"
+  },
+  {
+    "questionText": "Solve the inequality 5 - 2x ≥ x + 8.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Isolate the variable terms.</p><p>5 - 2x ≥ x + 8.</p><p>Add 2x to both sides: 5 ≥ 3x + 8.</p><p><strong>Step 2:</strong> Isolate x.</p><p>Subtract 8: 5 - 8 ≥ 3x → -3 ≥ 3x.</p><p>Divide by 3: -1 ≥ x → x ≤ -1.</p><p><strong>Final Answer:</strong> x ≤ -1</p>"
+  },
+  {
+    "questionText": "Simplify √98 - √32.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Simplify each square root.</p><p>√98 = √(49 × 2) = 7√2.</p><p>√32 = √(16 × 2) = 4√2.</p><p><strong>Step 2:</strong> Combine like terms.</p><p>7√2 - 4√2 = (7 - 4)√2 = 3√2.</p><p><strong>Final Answer:</strong> 3√2</p>"
+  },
+  {
+    "questionText": "Solve 6x² + x - 2 = 0 by factorising.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Factorise the quadratic.</p><p>6x² + x - 2: Find numbers that multiply to 6 × (-2) = -12 and add to 1. These are 4 and -3.</p><p>Rewrite: 6x² + 4x - 3x - 2 = (6x² + 4x) - (3x + 2) = 2x(3x + 2) - 1(3x + 2) = (2x - 1)(3x + 2) = 0.</p><p><strong>Step 2:</strong> Solve for x.</p><p>2x - 1 = 0 → x = 1/2; 3x + 2 = 0 → x = -2/3.</p><p><strong>Final Answer:</strong> x = 1/2 or x = -2/3</p>"
+  },
+  {
+    "questionText": "In triangle XYZ, XY = XZ, and angle XYZ = 72°. Find angle XZY.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><polygon points='100,300 250,300 175,150' fill='none' stroke='black' stroke-width='2'/><text x='90' y='320' font-size='16'>X</text><text x='260' y='320' font-size='16'>Z</text><text x='165' y='140' font-size='16'>Y</text><text x='200' y='280' font-size='14'>72°</text><text x='220' y='280' font-size='14'>∠XZY</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Recognize that triangle XYZ is isosceles (XY = XZ).</p><p>Base angles at Y and Z are equal. Given ∠XYZ = 72°, so ∠XZY = 72°.</p><p><strong>Step 2:</strong> Use the sum of angles in a triangle.</p><p>∠XZY + 72° + ∠ZXY = 180°.</p><p>72° + 72° + ∠ZXY = 180°.</p><p><strong>Step 3:</strong> Solve for ∠ZXY.</p><p>∠ZXY = 180° - 144° = 36°.</p><p><strong>Final Answer:</strong> ∠XZY = 72°</p>"
+  },
+  {
+    "questionText": "Expand (x - 2)³.",
+    "svgDiagram": "",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Use the binomial expansion formula: (a + b)³ = a³ + 3a²b + 3ab² + b³.</p><p>Here, a = x, b = -2.</p><p>(x - 2)³ = x³ + 3x²(-2) + 3x(-2)² + (-2)³.</p><p><strong>Step 2:</strong> Calculate each term.</p><p>= x³ + 3x²(-2) + 3x(4) + (-8).</p><p>= x³ - 6x² + 12x - 8.</p><p><strong>Final Answer:</strong> x³ - 6x² + 12x - 8</p>"
+  },
+  {
+    "questionText": "Find the coordinates of the point where the line y = 2x - 1 intersects y = -x + 5.",
+    "svgDiagram": "<svg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><line x1='50' y1='350' x2='350' y2='50' stroke='black' stroke-width='2'/><line x1='50' y1='300' x2='350' y2='100' stroke='black' stroke-width='2'/><circle cx='200' cy='200' r='5' fill='black'/><text x='190' y='220' font-size='16'>(2, 3)</text><line x1='50' y1='350' x2='350' y2='350' stroke='black' stroke-width='2'/><line x1='50' y1='350' x2='50' y2='50' stroke='black' stroke-width='2'/><text x='360' y='350' font-size='16'>x</text><text x='40' y='40' font-size='16'>y</text></svg>",
+    "answerText": "<p><strong>Model Answer:</strong></p><p><strong>Step 1:</strong> Set the equations equal to find the intersection.</p><p>2x - 1 = -x + 5.</p><p><strong>Step 2:</strong> Solve for x.</p><p>2x + x = 5 + 1.</p><p>3x = 6 → x = 2.</p><p><strong>Step 3:</strong> Substitute x = 2 into y = 2x - 1.</p><p>y = 2(2) - 1 = 4 - 1 = 3.</p><p><strong>Final Answer:</strong> (2, 3)</p>"
+  }
+
+        ];
+
+
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none'; // Hide answer when new question loads
+            answerAreaEl.innerHTML = ''; // Clear previous answer
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            // Ensure we don't pick the same question twice in a row if there's more than one question
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0; // Only one question, so always pick it
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        // Event Listeners
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        // Initial Load
+        loadNextQuestion();
+    </script>
+</body>
+</html>
