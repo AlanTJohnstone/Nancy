@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nancy’s Chemistry Paper 4 Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden;
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain;
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none;
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nancy’s Chemistry Paper 4 Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area"></div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    {
+        questionText: "What is the purpose of a salt bridge in an electrochemical cell?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The salt bridge completes the circuit by allowing ions to flow between the two half-cells, maintaining electrical neutrality. It prevents the buildup of charge that would stop the reaction.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows an electrolysis setup for copper sulfate solution. Identify components A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Beaker -->
+                <rect x="50" y="30" width="100" height="80" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="50" y="60" width="100" height="50" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <!-- Anode (A) -->
+                <rect x="70" y="20" width="10" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="65" y="15" font-family="Arial" font-size="8">A</text>
+                <!-- Cathode (B) -->
+                <rect x="120" y="20" width="10" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="115" y="15" font-family="Arial" font-size="8">B</text>
+                <!-- Wires -->
+                <line x1="75" y1="20" x2="75" y2="10" stroke="#000" stroke-width="1"/>
+                <line x1="125" y1="20" x2="125" y2="10" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Anode (positive electrode)</li>
+                <li><strong>B:</strong> Cathode (negative electrode)</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Explain why electrolysis of sodium chloride solution produces chlorine gas at the anode.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>During electrolysis, chloride ions (Cl⁻) are attracted to the anode. At the anode, chloride ions lose electrons (oxidation), forming chlorine gas: 2Cl⁻ → Cl₂ + 2e⁻.</p>
+        `
+    },
+    {
+        questionText: "Calculate the volume of hydrogen gas produced at RTP when 0.5 moles of electrons are passed during the electrolysis of water. (1 mole of gas occupies 24 dm³ at RTP)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Half-equation: 2H⁺ + 2e⁻ → H₂. 2 moles of electrons produce 1 mole of H₂. 0.5 moles of electrons produce 0.5 ÷ 2 = 0.25 moles of H₂. Volume = 0.25 × 24 = 6 dm³.</p>
+        `
+    },
+    {
+        questionText: "What is observed when aqueous sodium hydroxide is added to a solution containing Fe³⁺ ions?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A reddish-brown precipitate of iron(III) hydroxide, Fe(OH)₃, is formed.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a titration setup. Identify components A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Burette (A) -->
+                <rect x="80" y="10" width="10" height="100" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <path d="M85,110 L85,120 L80,120 L85,130 L90,120 L85,120" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <text x="75" y="60" font-family="Arial" font-safety: 8">A</text>
+                <!-- Conical flask (B) -->
+                <path d="M100,70 L80,120 L120,120 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <text x="95" y="100" font-family="Arial" font-size="8">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Burette</li>
+                <li><strong>B:</strong> Conical flask</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Explain how a catalyst increases the rate of a chemical reaction.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A catalyst provides an alternative reaction pathway with a lower activation energy, allowing more reactant particles to collide successfully, increasing the reaction rate.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows the structure of ethanoic acid. Identify the functional group.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Carbon (CH3) -->
+                <circle cx="50" cy="75" r="5" fill="#000"/>
+                <text x="45" y="65" font-family="Arial" font-size="8">C</text>
+                <text x="45" y="85" font-family="Arial" font-size="8">H₃</text>
+                <!-- Carbon (COOH) -->
+                <circle cx="80" cy="75" r="5" fill="#000"/>
+                <text x="75" y="65" font-family="Arial" font-size="8">C</text>
+                <!-- Oxygen (C=O) -->
+                <circle cx="110" cy="60" r="5" fill="#FF0000"/>
+                <text x="105" y="50" font-family="Arial" font-size="8">O</text>
+                <!-- Oxygen (OH) -->
+                <circle cx="110" cy="90" r="5" fill="#FF0000"/>
+                <text x="105" y="100" font-family="Arial" font-size="8">O</text>
+                <text x="120" y="90" font-family="Arial" font-size="8">H</text>
+                <!-- Bonds -->
+                <line x1="55" y1="75" x2="75" y2="75" stroke="#000" stroke-width="1"/>
+                <line x1="85" y1="75" x2="105" y2="60" stroke="#000" stroke-width="2"/>
+                <line x1="85" y1="75" x2="105" y2="90" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The functional group in ethanoic acid is the carboxyl group, -COOH.</p>
+        `
+    },
+    {
+        questionText: "Describe the test for sulfate ions in solution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add dilute hydrochloric acid followed by barium chloride solution. If sulfate ions (SO₄²⁻) are present, a white precipitate of barium sulfate (BaSO₄) forms.</p>
+        `
+    },
+    {
+        questionText: "Calculate the rate of reaction if 50 cm³ of gas is produced in 25 seconds.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Rate of reaction = volume of gas ÷ time = 50 ÷ 25 = 2 cm³/s.</p>
+        `
+    },
+    {
+        questionText: "Explain why increasing temperature increases the rate of a chemical reaction.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing temperature gives reactant particles more kinetic energy, increasing collision frequency and the proportion of collisions with energy above the activation energy, thus increasing the reaction rate.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a blank titration in an experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A blank titration determines the volume of titrant needed to react with impurities or the indicator, ensuring the actual titration measures only the analyte, improving accuracy.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of reaction between marble chips and hydrochloric acid. Identify component A.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Gas syringe (A) -->
+                <rect x="130" y="20" width="50" height="20" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <line x1="130" y1="30" x2="100" y2="30" stroke="#000" stroke-width="1"/>
+                <text x="150" y="15" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Gas syringe</p>
+        `
+    },
+    {
+        questionText: "What is meant by a reversible reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A reversible reaction is one where the products can react to reform the reactants, reaching a dynamic equilibrium where forward and reverse reaction rates are equal.</p>
+        `
+    },
+    {
+        questionText: "Calculate the concentration of a sodium hydroxide solution if 25 cm³ reacts with 20 cm³ of 0.1 mol/dm³ hydrochloric acid.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Reaction: NaOH + HCl → NaCl + H₂O (1:1 ratio). Moles of HCl = 0.1 × 0.02 = 0.002 mol. Moles of NaOH = 0.002 mol. Concentration of NaOH = 0.002 ÷ 0.025 = 0.08 mol/dm³.</p>
+        `
+    },
+    {
+        questionText: "Explain Le Chatelier’s principle using the Haber process as an example.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Le Chatelier’s principle states that a system at equilibrium adjusts to counteract changes. In the Haber process (N₂ + 3H₂ ⇌ 2NH₃), increasing pressure shifts equilibrium to the right (fewer gas molecules), increasing ammonia yield.</p>
+        `
+    },
+    {
+        questionText: "What is the test for carbonate ions in solution?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add dilute hydrochloric acid. If carbonate ions (CO₃²⁻) are present, carbon dioxide gas is produced, which turns limewater cloudy when bubbled through it.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a fractional distillation column. Identify the part where the most volatile fraction is collected.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Column -->
+                <rect x="90" y="20" width="20" height="100" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <!-- Top outlet (most volatile) -->
+                <line x1="110" y1="20" x2="130" y2="20" stroke="#000" stroke-width="1"/>
+                <text x="120" y="15" font-family="Arial" font-size="8">A</text>
+                <!-- Middle outlet -->
+                <line x1="110" y1="60" x2="130" y2="60" stroke="#000" stroke-width="1"/>
+                <!-- Bottom outlet -->
+                <line x1="110" y1="100" x2="130" y2="100" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> The top outlet, where the most volatile fraction (lowest boiling point) is collected.</p>
+        `
+    },
+    {
+        questionText: "Why are alkanes unreactive compared to alkenes?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alkanes have only single C-C and C-H bonds, which are strong and non-polar, making them unreactive. Alkenes have a C=C double bond, which is more reactive due to high electron density.</p>
+        `
+    },
+    {
+        questionText: "Calculate the percentage yield if 4.8 g of product is obtained when the theoretical yield is 6.0 g.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Percentage yield = (actual yield ÷ theoretical yield) × 100 = (4.8 ÷ 6.0) × 100 = 80%.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a flame test to identify lithium ions.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Dip a clean nichrome wire in hydrochloric acid, then into the lithium compound. Place the wire in a blue Bunsen flame. A crimson-red flame indicates lithium ions.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a Haber process setup. Identify the component where ammonia is condensed.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Reactor -->
+                <rect x="50" y="50" width="40" height="60" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <!-- Condenser (A) -->
+                <rect x="100" y="60" width="40" height="40" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <text x="120" y="55" font-family="Arial" font-size="8">A</text>
+                <!-- Pipes -->
+                <line x1="90" y1="80" x2="100" y2="80" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Condenser</p>
+        `
+    },
+    {
+        questionText: "Explain why fractional distillation separates crude oil into fractions.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Crude oil contains hydrocarbons with different boiling points. During fractional distillation, the mixture is heated, and fractions vaporize at different temperatures, condensing at specific heights in the column based on their boiling points.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of increasing pressure on the equilibrium of the reaction N₂ + 3H₂ ⇌ 2NH₃?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing pressure shifts the equilibrium to the right, favoring ammonia (NH₃), as there are fewer gas molecules (2 moles) on the product side compared to the reactant side (4 moles).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the rate of reaction. Identify the component used to measure gas volume.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Gas syringe -->
+                <rect x="130" y="20" width="50" height="20" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <line x1="130" y1="30" x2="100" y2="30" stroke="#000" stroke-width="1"/>
+                <text x="150" y="15" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Gas syringe</p>
+        `
+    },
+    {
+        questionText: "What is the role of the indicator in a titration?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The indicator changes color at the endpoint of the titration, showing when the reaction between the acid and base is complete (neutralization).</p>
+        `
+    },
+    {
+        questionText: "Calculate the atom economy for the reaction CH₄ + 2O₂ → CO₂ + 2H₂O, where CO₂ is the desired product.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Atom economy = (mass of atoms in desired product ÷ mass of atoms in all products) × 100. Molar mass: CO₂ = 44 g/mol, 2H₂O = 36 g/mol. Total product mass = 44 + 36 = 80 g/mol. Atom economy = (44 ÷ 80) × 100 = 55%.</p>
+        `
+    },
+    {
+        questionText: "Describe the test for chloride ions in solution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add dilute nitric acid followed by silver nitrate solution. If chloride ions (Cl⁻) are present, a white precipitate of silver chloride (AgCl) forms.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a molecule of ethanol. Identify the functional group.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Carbon (CH3) -->
+                <circle cx="50" cy="75" r="5" fill="#000"/>
+                <text x="45" y="65" font-family="Arial" font-size="8">C</text>
+                <text x="45" y="85" font-family="Arial" font-size="8">H₃</text>
+                <!-- Carbon (CH2) -->
+                <circle cx="80" cy="75" r="5" fill="#000"/>
+                <text x="75" y="65" font-family="Arial" font-size="8">C</text>
+                <text x="75" y="85" font-family="Arial" font-size="8">H₂</text>
+                <!-- Oxygen (OH) -->
+                <circle cx="110" cy="75" r="5" fill="#FF0000"/>
+                <text x="105" y="65" font-family="Arial" font-size="8">O</text>
+                <text x="120" y="75" font-family="Arial" font-size="8">H</text>
+                <!-- Bonds -->
+                <line x1="55" y1="75" x2="75" y2="75" stroke="#000" stroke-width="1"/>
+                <line x1="85" y1="75" x2="105" y2="75" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The functional group in ethanol is the hydroxyl group, -OH.</p>
+        `
+    },
+    {
+        questionText: "Explain why biofuels are considered carbon neutral.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Biofuels are carbon neutral because the CO₂ released during combustion is roughly equal to the CO₂ absorbed by plants during photosynthesis, resulting in no net increase in atmospheric CO₂.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a control experiment in a rate of reaction study?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A control experiment establishes a baseline by keeping all variables constant except the one being tested, allowing comparison to determine the effect of the variable on the reaction rate.</p>
+        `
+    },
+    {
+        questionText: "Calculate the moles of sulfuric acid in 50 cm³ of 0.2 mol/dm³ solution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Moles = concentration × volume = 0.2 × 0.05 = 0.01 mol.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for electrolysis of brine. Identify the gas produced at the anode.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Beaker -->
+                <rect x="50" y="30" width="100" height="80" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="50" y="60" width="100" height="50" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <!-- Anode -->
+                <rect x="70" y="20" width="10" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="65" y="15" font-family="Arial" font-size="8">A</text>
+                <!-- Cathode -->
+                <rect x="120" y="20" width="10" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <line x1="75" y1="20" x2="75" y2="10" stroke="#000" stroke-width="1"/>
+                <line x1="125" y1="20" x2="125" y2="10" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Chlorine gas is produced at the anode.</p>
+        `
+    },
+    {
+        questionText: "Explain the greenhouse effect and its impact on global temperatures.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The greenhouse effect occurs when greenhouse gases (e.g., CO₂, CH₄) trap infrared radiation, warming the Earth. Increased gas concentrations enhance this effect, raising global temperatures and causing climate change.</p>
+        `
+    },
+    {
+        questionText: "What is the test for ammonium ions in solution?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add sodium hydroxide solution and warm gently. If ammonium ions (NH₄⁺) are present, ammonia gas is produced, which turns damp red litmus paper blue.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of reaction between sodium thiosulfate and hydrochloric acid. Identify the component used to time the reaction.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Cross on paper -->
+                <line x1="90" y1="110" x2="110" y2="130" stroke="#000" stroke-width="1"/>
+                <line x1="90" y1="130" x2="110" y2="110" stroke="#000" stroke-width="1"/>
+                <!-- Stopwatch -->
+                <circle cx="150" cy="30" r="15" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <text x="145" y="25" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Stopwatch</p>
+        `
+    },
+    {
+        questionText: "Calculate the relative formula mass of calcium carbonate (CaCO₃). (Ar: Ca = 40, C = 12, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Relative formula mass = 40 + 12 + (16 × 3) = 40 + 12 + 48 = 100.</p>
+        `
+    },
+    {
+        questionText: "Explain why complete combustion of hydrocarbons produces carbon dioxide and water.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Complete combustion occurs with sufficient oxygen. Hydrocarbons (containing C and H) react with oxygen, forming carbon dioxide (CO₂) from carbon atoms and water (H₂O) from hydrogen atoms.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a risk assessment in a practical experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A risk assessment identifies hazards, evaluates risks, and outlines precautions to ensure the experiment is conducted safely, minimizing harm to participants and equipment.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a molecule of propene. Identify the functional group.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Carbon (CH3) -->
+                <circle cx="50" cy="75" r="5" fill="#000"/>
+                <text x="45" y="65" font-family="Arial" font-size="8">C</text>
+                <text x="45" y="85" font-family="Arial" font-size="8">H₃</text>
+                <!-- Carbon (C=) -->
+                <circle cx="80" cy="75" r="5" fill="#000"/>
+                <text x="75" y="65" font-family="Arial" font-size="8">C</text>
+                <!-- Carbon (=CH2) -->
+                <circle cx="110" cy="75" r="5" fill="#000"/>
+                <text x="105" y="65" font-family="Arial" font-size="8">C</text>
+                <text x="105" y="85" font-family="Arial" font-size="8">H₂</text>
+                <!-- Bonds -->
+                <line x1="55" y1="75" x2="75" y2="75" stroke="#000" stroke-width="1"/>
+                <line x1="85" y1="75" x2="105" y2="75" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The functional group in propene is the carbon-carbon double bond, C=C.</p>
+        `
+    },
+    {
+        questionText: "Explain the difference between exothermic and endothermic reactions.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Exothermic reactions release energy to the surroundings, usually as heat, causing a temperature increase (e.g., combustion). Endothermic reactions absorb energy, causing a temperature decrease (e.g., photosynthesis).</p>
+        `
+    },
+    {
+        questionText: "Calculate the volume of 0.5 mol of carbon dioxide gas at RTP. (1 mole of gas occupies 24 dm³ at RTP)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Volume = moles × molar volume = 0.5 × 24 = 12 dm³.</p>
+        `
+    },
+    {
+        questionText: "Describe how to measure the rate of reaction between magnesium and hydrochloric acid.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Place magnesium ribbon in a conical flask with hydrochloric acid. Connect to a gas syringe. Record the volume of hydrogen gas produced at regular intervals. Calculate rate as volume ÷ time.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for chromatography. Identify the component where the sample is spotted.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Chromatography paper -->
+                <rect x="80" y="20" width="40" height="100" fill="#FFF" stroke="#000" stroke-width="1"/>
+                <!-- Baseline (A) -->
+                <line x1="80" y1="110" x2="120" y2="110" stroke="#000" stroke-width="1" stroke-dasharray="2"/>
+                <text x="75" y="105" font-family="Arial" font-size="8">A</text>
+                <!-- Solvent -->
+                <rect x="70" y="120" width="60" height="10" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Baseline</p>
+        `
+    },
+    {
+        questionText: "Explain why recycling metals is beneficial for the environment.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Recycling metals reduces mining, conserving resources and habitats. It saves energy compared to extracting metals from ores and reduces landfill waste.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a burette in a titration experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A burette accurately measures and delivers precise volumes of a solution (titrant) into the conical flask during a titration, allowing the endpoint to be determined.</p>
+        `
+    },
+    {
+        questionText: "Calculate the empirical formula of a compound with 40% carbon, 6.7% hydrogen, and 53.3% oxygen. (Ar: C = 12, H = 1, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Assume 100 g. Moles: C = 40 ÷ 12 = 3.33, H = 6.7 ÷ 1 = 6.7, O = 53.3 ÷ 16 = 3.33. Ratio: 3.33 ÷ 3.33 = 1 (C), 6.7 ÷ 3.33 = 2 (H), 3.33 ÷ 3.33 = 1 (O). Empirical formula: CH₂O.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of concentration on reaction rate. Identify the component used to deliver acid.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Pipette (A) -->
+                <path d="M90,10 L90,20 L95,30 L100,20 L100,10" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Pipette</p>
+        `
+    },
+    {
+        questionText: "Explain why alkenes undergo addition reactions.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alkenes have a C=C double bond, which has high electron density, making it reactive. This allows molecules like hydrogen or halogens to add across the double bond, breaking it to form a single bond.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of a catalyst on the equilibrium position of a reversible reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A catalyst does not affect the equilibrium position. It speeds up both forward and reverse reactions equally by lowering activation energy, allowing equilibrium to be reached faster.</p>
+        `
+    },
+    {
+        questionText: "Calculate the mass of sodium chloride produced when 0.1 mol of chlorine gas reacts with sodium. (Ar: Na = 23, Cl = 35.5)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Reaction: 2Na + Cl₂ → 2NaCl. 0.1 mol Cl₂ produces 0.2 mol NaCl. Molar mass of NaCl = 23 + 35.5 = 58.5 g/mol. Mass = 0.2 × 58.5 = 11.7 g.</p>
+        `
+    },
+    {
+        questionText: "Describe how to test for the presence of water using cobalt chloride paper.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add a drop of the liquid to blue cobalt chloride paper. If water is present, the paper turns pink.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of decomposition of hydrogen peroxide. Identify the component used to collect oxygen gas.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Delivery tube -->
+                <path d="M100,30 L130,30 L130,70" stroke="#000" stroke-width="1"/>
+                <!-- Gas jar (A) -->
+                <rect x="130" y="70" width="30" height="40" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <text x="145" y="65" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Gas jar</p>
+        `
+    },
+    {
+        questionText: "Explain why the Earth’s atmosphere has changed over time.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The early atmosphere was rich in CO₂ and water vapor from volcanoes. Photosynthesis by plants reduced CO₂ and increased O₂. Human activities, like burning fossil fuels, have increased CO₂ levels.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a pilot light in a gas chromatograph?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The pilot light ignites the carrier gas and sample, allowing detection by burning compounds and producing a signal for analysis.</p>
+        `
+    },
+    {
+        questionText: "Calculate the energy change for combusting 1 mol of methane, given: CH₄ + 2O₂ → CO₂ + 2H₂O, ΔH = -890 kJ/mol.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The energy change for combusting 1 mol of methane is -890 kJ/mol (exothermic, as indicated by the negative ΔH).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of temperature on reaction rate. Identify the component used to heat the reaction.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Water bath (A) -->
+                <rect x="70" y="100" width="60" height="30" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <text x="100" y="95" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Water bath</p>
+        `
+    },
+    {
+        questionText: "Explain why the yield of ammonia in the Haber process is a compromise between rate and equilibrium.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>High temperatures increase the rate but shift equilibrium left, reducing ammonia yield. Low temperatures favor higher yield but slow the reaction. A compromise (e.g., 450°C) balances rate and yield.</p>
+        `
+    },
+    {
+        questionText: "What is the test for oxygen gas?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Insert a glowing splint into the gas. If oxygen is present, the splint relights.</p>
+        `
+    },
+    {
+        questionText: "Calculate the moles of oxygen gas in 48 dm³ at RTP. (1 mole of gas occupies 24 dm³ at RTP)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Moles = volume ÷ molar volume = 48 ÷ 24 = 2 mol.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a titration to find the concentration of an acid.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Pipette a known volume of acid into a conical flask, add an indicator (e.g., phenolphthalein). Fill a burette with a standard base solution. Add base slowly until the indicator changes color. Record volume and calculate concentration.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for preparing a salt. Identify the component used to evaporate the solution.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Evaporating dish (A) -->
+                <path d="M70,100 L130,100 L120,120 L80,120 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <text x="100" y="95" font-family="Arial" font-size="8">A</text>
+                <!-- Bunsen burner -->
+                <rect x="90" y="120" width="20" height="20" fill="#808080" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Evaporating dish</p>
+        `
+    },
+    {
+        questionText: "Explain why incomplete combustion of hydrocarbons is dangerous.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Incomplete combustion with limited oxygen produces carbon monoxide (CO), a toxic gas that binds to hemoglobin, reducing oxygen transport in the blood, potentially causing death.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a delivery tube in a gas collection experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A delivery tube directs the gas produced to a collection vessel, such as a gas jar or syringe, preventing loss of gas to the surroundings.</p>
+        `
+    },
+    {
+        questionText: "Calculate the percentage composition of carbon in ethane (C₂H₆). (Ar: C = 12, H = 1)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Molar mass of C₂H₆ = (2 × 12) + (6 × 1) = 30 g/mol. Mass of carbon = 24 g. Percentage = (24 ÷ 30) × 100 = 80%.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of a catalyst. Identify the component used to add the catalyst.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Spatula (A) -->
+                <rect x="90" y="10" width="20" height="10" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Spatula</p>
+        `
+    },
+    {
+        questionText: "Explain why the pH of a solution changes during a titration.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>During titration, pH changes as acid or base is neutralized. Initially, the solution is acidic or basic. As titrant is added, H⁺ or OH⁻ ion concentrations change, altering pH until the endpoint.</p>
+        `
+    },
+    {
+        questionText: "What is the test for hydrogen gas?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Hold a lit splint near the gas. If hydrogen is present, it produces a ‘pop’ sound.</p>
+        `
+    },
+    {
+        questionText: "Calculate the mass of 0.25 mol of sodium hydroxide (NaOH). (Ar: Na = 23, O = 16, H = 1)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Molar mass of NaOH = 23 + 16 + 1 = 40 g/mol. Mass = 0.25 × 40 = 10 g.</p>
+        `
+    },
+    {
+        questionText: "Describe how to prepare a pure, dry sample of copper sulfate crystals from copper oxide and sulfuric acid.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add excess copper oxide to warm dilute sulfuric acid and stir until no more reacts. Filter to remove unreacted solid. Heat the filtrate to evaporate some water, then leave to crystallize. Filter and dry the crystals.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of reaction using a balance. Identify the component used to measure mass.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Balance (A) -->
+                <rect x="70" y="100" width="60" height="20" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="100" y="95" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Balance</p>
+        `
+    },
+    {
+        questionText: "Explain why the ozone layer is important for life on Earth.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The ozone layer absorbs harmful UV radiation from the sun, protecting organisms from DNA damage, skin cancer, and ecosystem disruption.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a thermometer in a rate of reaction experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A thermometer monitors the temperature of the reaction mixture, ensuring it remains constant or allowing the effect of temperature changes on the reaction rate to be studied.</p>
+        `
+    },
+    {
+        questionText: "Calculate the concentration of a solution containing 0.02 mol of solute in 400 cm³ of solution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Concentration = moles ÷ volume = 0.02 ÷ 0.4 = 0.05 mol/dm³.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of surface area on reaction rate. Identify the component used to crush the reactant.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pestle and mortar (A) -->
+                <path d="M80,100 L120,100 L110,120 L90,120 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <rect x="95" y="80" width="10" height="20" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="100" y="75" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Pestle and mortar</p>
+        `
+    },
+    {
+        questionText: "Explain why the rate of reaction decreases as reactants are used up.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>As reactants are used up, their concentration decreases, reducing the frequency of collisions between particles, which slows the reaction rate.</p>
+        `
+    },
+    {
+        questionText: "What is the test for carbon dioxide gas?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Bubble the gas through limewater. If carbon dioxide is present, the limewater turns cloudy due to calcium carbonate formation.</p>
+        `
+    },
+    {
+        questionText: "Calculate the number of particles in 0.5 mol of oxygen gas. (Avogadro constant = 6.02 × 10²³ mol⁻¹)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Number of particles = moles × Avogadro constant = 0.5 × 6.02 × 10²³ = 3.01 × 10²³ particles.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a test for alkenes using bromine water.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add bromine water to the sample. If an alkene is present, the orange bromine water is decolorized, forming a colorless product due to an addition reaction.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of reaction using light transmission. Identify the component used to measure light intensity.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Light sensor (A) -->
+                <rect x="130" y="70" width="20" height="20" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="140" y="65" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Light sensor</p>
+        `
+    },
+    {
+        questionText: "Explain why sustainable resources are important for future generations.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Sustainable resources are used at a rate that allows replenishment, ensuring availability for future generations, reducing environmental damage, and minimizing resource depletion.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a pipette in a titration experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A pipette accurately measures and transfers a precise volume of solution (e.g., acid or base) into the conical flask at the start of a titration.</p>
+        `
+    },
+    {
+        questionText: "Calculate the volume of 0.1 mol of nitrogen gas at RTP. (1 mole of gas occupies 24 dm³ at RTP)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Volume = moles × molar volume = 0.1 × 24 = 2.4 dm³.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of pH on reaction rate. Identify the component used to measure pH.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- pH meter (A) -->
+                <rect x="90" y="20" width="10" height="30" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> pH meter</p>
+        `
+    },
+    {
+        questionText: "Explain why catalysts are not consumed in a reaction.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Catalysts provide an alternative pathway with lower activation energy but are regenerated at the end of the reaction, allowing reuse without being consumed.</p>
+        `
+    },
+    {
+        questionText: "What is the test for nitrate ions in solution?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add sodium hydroxide and Devarda’s alloy, then warm. If nitrate ions (NO₃⁻) are present, ammonia gas is produced, turning damp red litmus paper blue.</p>
+        `
+    },
+    {
+        questionText: "Calculate the mass of water produced when 16 g of methane is completely combusted. (Ar: C = 12, H = 1, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Reaction: CH₄ + 2O₂ → CO₂ + 2H₂O. Molar mass of CH₄ = 16 g/mol. 16 g = 1 mol CH₄, producing 2 mol H₂O. Molar mass of H₂O = 18 g/mol. Mass = 2 × 18 = 36 g.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a test for sulfate ions using a precipitation reaction.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add dilute hydrochloric acid, followed by barium chloride solution. If sulfate ions are present, a white precipitate of barium sulfate forms.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of reaction using pressure change. Identify the component used to measure pressure.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Pressure sensor (A) -->
+                <circle cx="130" cy="30" r="10" fill="#808080" stroke="#000" stroke-width="1"/>
+                <line x1="100" y1="30" x2="130" y2="30" stroke="#000" stroke-width="1"/>
+                <text x="125" y="25" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Pressure sensor</p>
+        `
+    },
+    {
+        questionText: "Explain why the use of renewable energy sources reduces carbon emissions.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Renewable energy sources, like solar and wind, do not burn fossil fuels, which release CO₂. Using renewables reduces greenhouse gas emissions, mitigating climate change.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a funnel in a filtration experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A funnel holds the filter paper and directs the liquid through it, separating the solid residue from the filtrate during filtration.</p>
+        `
+    },
+    {
+        questionText: "Calculate the number of moles in 44 g of carbon dioxide. (Ar: C = 12, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Molar mass of CO₂ = 12 + (16 × 2) = 44 g/mol. Moles = mass ÷ molar mass = 44 ÷ 44 = 1 mol.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of light on a reaction. Identify the component used to provide light.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Lamp (A) -->
+                <circle cx="150" cy="30" r="10" fill="#FFFF00" stroke="#000" stroke-width="1"/>
+                <text x="145" y="25" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Lamp</p>
+        `
+    },
+    {
+        questionText: "Explain why the boiling points of alkanes increase with chain length.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <        <p>Longer alkane chains have more electrons and greater surface area, increasing van der Waals forces between molecules. More energy is needed to overcome these forces, raising the boiling point.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a condenser in a distillation experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A condenser cools and condenses the vapor produced during distillation back into a liquid, allowing collection of the distilled product.</p>
+        `
+    },
+    {
+        questionText: "Calculate the percentage of oxygen in magnesium oxide (MgO). (Ar: Mg = 24, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Molar mass of MgO = 24 + 16 = 40 g/mol. Mass of oxygen = 16 g. Percentage = (16 ÷ 40) × 100 = 40%.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of a variable on reaction rate. Identify the component used to stir the reaction mixture.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Magnetic stirrer (A) -->
+                <rect x="90" y="100" width="20" height="10" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="100" y="95" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Magnetic stirrer</p>
+        `
+    },
+    {
+        questionText: "Explain why the pH of rainwater is slightly acidic.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Rainwater dissolves CO₂ from the air, forming carbonic acid (H₂CO₃), which partially dissociates, lowering the pH to around 5.6, making it slightly acidic.</p>
+        `
+    },
+    {
+        questionText: "What is the test for iodine in solution?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add starch solution to the sample. If iodine is present, a blue-black color forms due to the starch-iodine complex.</p>
+        `
+    },
+    {
+        questionText: "Calculate the volume of oxygen required to completely combust 10 dm³ of methane at RTP.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Reaction: CH₄ + 2O₂ → CO₂ + 2H₂O. 1 volume of CH₄ requires 2 volumes of O₂. For 10 dm³ of CH₄, volume of O₂ = 10 × 2 = 20 dm³.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a test for metal ions using sodium hydroxide solution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add sodium hydroxide solution dropwise. Observe the color of any precipitate. For example, Cu²⁺ forms a blue precipitate, Fe²⁺ forms a green precipitate.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring the rate of reaction using temperature change. Identify the component used to measure temperature.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M100,30 L80,100 L120,100 Z" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Thermometer (A) -->
+                <rect x="90" y="20" width="5" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Thermometer</p>
+        `
+    },
+    {
+        questionText: "Explain why the use of CFCs has been phased out.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>CFCs release chlorine atoms in the stratosphere, catalyzing ozone breakdown, depleting the ozone layer. This increases UV radiation, so CFCs were banned under the Montreal Protocol.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a clamp stand in a practical experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A clamp stand holds equipment, such as burettes or flasks, securely, ensuring safety and accuracy.</p>
+        `
+    },
+    {
+        questionText: "Calculate the moles of hydrochloric acid in 25 cm³ of 0.4 mol/dm³ solution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Moles = concentration × volume = 0.4 × 0.025 = 0.01 mol.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for testing the effect of a variable on electrolysis. Identify the component used to supply current.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Beaker -->
+                <rect x="50" y="30" width="100" height="80" fill="#E6F3FF" stroke="#000" stroke-width="1"/>
+                <!-- Electrodes -->
+                <rect x="70" y="20" width="10" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <rect x="120" y="20" width="10" height="40" fill="#808080" stroke="#000" stroke-width="1"/>
+                <!-- Power pack (A) -->
+                <rect x="90" y="10" width="20" height="10" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="100" y="5" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Power pack</p>
+        `
+    }
+];
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none';
+            answerAreaEl.innerHTML = '';
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0;
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        loadNextQuestion();
+    </script>
+</body>
+</html>
