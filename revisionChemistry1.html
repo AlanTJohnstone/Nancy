@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nancy’s Chemistry Paper 3 Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden;
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain;
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none;
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nancy’s Chemistry Paper 3 Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area"></div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    {
+        questionText: "What is the relative atomic mass of an element?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The relative atomic mass of an element is the weighted average mass of its isotopes, measured relative to 1/12th the mass of a carbon-12 atom.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows the structure of an atom. Identify parts A, B, and C.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Nucleus (A) -->
+                <circle cx="100" cy="100" r="20" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <text x="90" y="95" font-family="Arial" font-size="8">A</text>
+                <!-- Electron (B) -->
+                <circle cx="150" cy="100" r="5" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <text x="155" y="105" font-family="Arial" font-size="8">B</text>
+                <!-- Electron shell (C) -->
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="5,5"/>
+                <text x="160" y="120" font-family="Arial" font-size="8">C</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Nucleus</li>
+                <li><strong>B:</strong> Electron</li>
+                <li><strong>C:</strong> Electron shell</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Calculate the number of neutrons in an atom of chlorine-37, given its atomic number is 17.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Number of neutrons = Mass number - Atomic number = 37 - 17 = 20 neutrons.</p>
+        `
+    },
+    {
+        questionText: "What is an isotope?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Isotopes are atoms of the same element with the same number of protons but different numbers of neutrons, resulting in different mass numbers.</p>
+        `
+    },
+    {
+        questionText: "Describe the arrangement and movement of particles in a solid.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Particles in a solid -->
+                <circle cx="50" cy="50" r="10" fill="#2196F3" stroke="#000" stroke-width="1"/>
+                <circle cx="80" cy="50" r="10" fill="#2196F3" stroke="#000" stroke-width="1"/>
+                <circle cx="50" cy="80" r="10" fill="#2196F3" stroke="#000" stroke-width="1"/>
+                <circle cx="80" cy="80" r="10" fill="#2196F3" stroke="#000" stroke-width="1"/>
+                <text x="100" y="100" font-family="Arial" font-size="8">Particles in a solid</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In a solid, particles are closely packed in a fixed, regular arrangement and vibrate about their positions due to strong forces of attraction.</p>
+        `
+    },
+    {
+        questionText: "What is the electron configuration of a sodium atom (atomic number 11)?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The electron configuration of sodium is 2,8,1.</p>
+        `
+    },
+    {
+        questionText: "Explain why noble gases are unreactive.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Noble gases are unreactive because they have a full outer electron shell, making them stable and unlikely to gain, lose, or share electrons.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows the apparatus used for paper chromatography. Identify parts A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Beaker (A) -->
+                <rect x="50" y="100" width="100" height="150" fill="none" stroke="#000" stroke-width="1"/>
+                <text x="45" y="175" font-family="Arial" font-size="8">A</text>
+                <!-- Chromatography paper (B) -->
+                <rect x="90" y="50" width="20" height="150" fill="#FFF" stroke="#000" stroke-width="1"/>
+                <text x="115" y="100" font-family="Arial" font-size="8">B</text>
+                <!-- Solvent -->
+                <rect x="50" y="200" width="100" height="50" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Beaker</li>
+                <li><strong>B:</strong> Chromatography paper</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "What is the relative formula mass of water (H₂O)? (H = 1, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Relative formula mass = (2 × 1) + 16 = 2 + 16 = 18.</p>
+        `
+    },
+    {
+        questionText: "Describe how ionic bonding occurs between sodium and chlorine.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Sodium (Na) loses one electron to form Na⁺, and chlorine (Cl) gains one electron to form Cl⁻. The oppositely charged ions attract, forming an ionic bond.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of filtration in separating a solid from a liquid?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Funnel -->
+                <path d="M50,50 L150,50 L120,150 L80,150 Z" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Filter paper -->
+                <path d="M60,60 L140,60 L110,140 L90,140 Z" fill="#FFF" stroke="#000" stroke-width="1"/>
+                <!-- Beaker below -->
+                <rect x="50" y="150" width="100" height="50" fill="none" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Filtration separates an insoluble solid from a liquid by passing the mixture through filter paper, which traps the solid while allowing the liquid to pass through.</p>
+        `
+    },
+    {
+        questionText: "What is the trend in reactivity down Group 1 of the periodic table?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Reactivity increases down Group 1 because the outer electron is further from the nucleus and more easily lost due to increased shielding and atomic size.</p>
+        `
+    },
+    {
+        questionText: "Calculate the empirical formula of a compound with 40% carbon, 6.7% hydrogen, and 53.3% oxygen. (C = 12, H = 1, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Assume 100g of compound:<br>
+            C: 40 ÷ 12 = 3.33 mol<br>
+            H: 6.7 ÷ 1 = 6.7 mol<br>
+            O: 53.3 ÷ 16 = 3.33 mol<br>
+            Ratio: 3.33 : 6.7 : 3.33 = 1 : 2 : 1<br>
+            Empirical formula: CH₂O</p>
+        `
+    },
+    {
+        questionText: "Explain why covalent compounds have low melting points.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Covalent compounds have low melting points because they consist of simple molecules with weak intermolecular forces that require little energy to break.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows an electrolysis setup. Identify parts A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Beaker with electrolyte -->
+                <rect x="50" y="50" width="100" height="100" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <!-- Anode (A) -->
+                <rect x="70" y="30" width="10" height="50" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="65" y="25" font-family="Arial" font-size="8">A</text>
+                <!-- Cathode (B) -->
+                <rect x="120" y="30" width="10" height="50" fill="#808080" stroke="#000" stroke-width="1"/>
+                <text x="115" y="25" font-family="Arial" font-size="8">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Anode (positive electrode)</li>
+                <li><strong>B:</strong> Cathode (negative electrode)</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "What is the rate of reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The rate of reaction is the speed at which reactants are converted into products, often measured by the change in concentration of a substance per unit time.</p>
+        `
+    },
+    {
+        questionText: "How does increasing temperature affect the rate of a chemical reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing temperature increases the rate of reaction because particles gain kinetic energy, collide more frequently, and have more collisions with sufficient energy to react.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a catalyst in a chemical reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A catalyst increases the rate of a reaction by providing an alternative reaction pathway with a lower activation energy, without being consumed itself.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows a titration setup. Identify parts A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Burette (A) -->
+                <rect x="90" y="50" width="20" height="200" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <text x="85" y="45" font-family="Arial" font-size="8">A</text>
+                <!-- Conical flask (B) -->
+                <path d="M50,250 L150,250 L120,150 L80,150 Z" fill="#FFF" stroke="#000" stroke-width="1"/>
+                <text x="145" y="200" font-family="Arial" font-size="8">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Burette</li>
+                <li><strong>B:</strong> Conical flask</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "What is meant by the term 'activation energy'?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Activation energy is the minimum energy required for a chemical reaction to occur when reactant particles collide.</p>
+        `
+    },
+    {
+        questionText: "Describe the structure of a metallic bond.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Metal ions -->
+                <circle cx="50" cy="50" r="10" fill="#B0C4DE" stroke="#000" stroke-width="1"/>
+                <circle cx="80" cy="50" r="10" fill="#B0C4DE" stroke="#000" stroke-width="1"/>
+                <circle cx="50" cy="80" r="10" fill="#B0C4DE" stroke="#000" stroke-width="1"/>
+                <circle cx="80" cy="80" r="10" fill="#B0C4DE" stroke="#000" stroke-width="1"/>
+                <!-- Delocalised electrons -->
+                <circle cx="65" cy="65" r="3" fill="#FF4500" stroke="#000" stroke-width="1"/>
+                <text x="100" y="100" font-family="Arial" font-size="8">Metal ions and delocalised electrons</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Metallic bonding consists of a lattice of positive metal ions surrounded by a 'sea' of delocalised electrons, which are free to move and hold the structure together.</p>
+        `
+    },
+    {
+        questionText: "What is the formula of magnesium oxide?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of magnesium oxide is MgO.</p>
+        `
+    },
+    {
+        questionText: "Explain why diamond has a high melting point.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Diamond has a high melting point because it has a giant covalent structure with strong covalent bonds between carbon atoms, requiring a lot of energy to break.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a control experiment in a scientific investigation?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A control experiment is used to compare results by keeping all variables constant except the one being tested, ensuring the effect of the independent variable is clear.</p>
+        `
+    },
+    {
+        questionText: "Calculate the percentage composition of carbon in CO₂. (C = 12, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Relative formula mass of CO₂ = 12 + (2 × 16) = 44<br>
+            Percentage of carbon = (12 ÷ 44) × 100 = 27.27%</p>
+        `
+    },
+    {
+        questionText: "What is the difference between an exothermic and an endothermic reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An exothermic reaction releases heat to the surroundings, increasing the temperature, while an endothermic reaction absorbs heat, decreasing the temperature.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows the periodic table. Identify the group and period of element X.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Simplified periodic table -->
+                <rect x="10" y="10" width="180" height="120" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Rows (periods) -->
+                <line x1="10" y1="40" x2="190" y2="40" stroke="#000" stroke-width="1"/>
+                <line x1="10" y1="70" x2="190" y2="70" stroke="#000" stroke-width="1"/>
+                <line x1="10" y1="100" x2="190" y2="100" stroke="#000" stroke-width="1"/>
+                <!-- Columns (groups) -->
+                <line x1="40" y1="10" x2="40" y2="130" stroke="#000" stroke-width="1"/>
+                <line x1="70" y1="10" x2="70" y2="130" stroke="#000" stroke-width="1"/>
+                <line x1="100" y1="10" x2="100" y2="130" stroke="#000" stroke-width="1"/>
+                <!-- Element X -->
+                <rect x="40" y="40" width="30" height="30" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <text x="50" y="60" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Element X is in Group 2 and Period 2.</p>
+        `
+    },
+    {
+        questionText: "What is the role of the electrolyte in electrolysis?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The electrolyte conducts electricity by allowing ions to move between electrodes, enabling the chemical reactions at the anode and cathode.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a flame test to identify metal ions.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Dip a clean nichrome wire in a metal salt solution, then place it in a blue Bunsen flame. Observe the colour of the flame to identify the metal ion (e.g., sodium gives yellow).</p>
+        `
+    },
+    {
+        questionText: "What is the molecular formula of ethane?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The molecular formula of ethane is C₂H₆.</p>
+        `
+    },
+    {
+        questionText: "Explain why graphite conducts electricity.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Graphite conducts electricity because each carbon atom forms three covalent bonds, leaving one delocalised electron per atom that is free to move and carry charge.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of distillation in separating liquids?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Flask -->
+                <circle cx="50" cy="150" r="30" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <!-- Condenser -->
+                <rect x="80" y="100" width="80" height="20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Receiving flask -->
+                <circle cx="170" cy="150" r="20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Connecting tube -->
+                <path d="M50,120 L80,120" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M160,120 L170,130" fill="none" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Distillation separates liquids with different boiling points by heating the mixture to evaporate the liquid with the lower boiling point, then condensing it back to a liquid.</p>
+        `
+    },
+    {
+        questionText: "What is the charge of a proton?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The charge of a proton is +1 (positive).</p>
+        `
+    },
+    {
+        questionText: "Calculate the number of moles in 44g of CO₂. (C = 12, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Molar mass of CO₂ = 12 + (2 × 16) = 44 g/mol<br>
+            Number of moles = Mass ÷ Molar mass = 44 ÷ 44 = 1 mol</p>
+        `
+    },
+    {
+        questionText: "What is the difference between a compound and a mixture?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A compound is a substance formed by chemically bonded elements in a fixed ratio, while a mixture contains elements or compounds physically combined in any proportion.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows a covalent molecule. Identify the type of bonding shown.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Two atoms -->
+                <circle cx="50" cy="50" r="20" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="150" cy="50" r="20" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <!-- Bond -->
+                <line x1="70" y1="50" x2="130" y2="50" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The diagram shows covalent bonding, where atoms share electrons to form a molecule.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a risk assessment in a practical experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A risk assessment identifies potential hazards, evaluates risks, and outlines precautions to ensure safety during an experiment.</p>
+        `
+    },
+    {
+        questionText: "Explain why alkali metals are stored in oil.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alkali metals are stored in oil to prevent them from reacting with oxygen or water in the air, which could cause violent reactions or fires.</p>
+        `
+    },
+    {
+        questionText: "What is the formula of sulfuric acid?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of sulfuric acid is H₂SO₄.</p>
+        `
+    },
+    {
+        questionText: "Describe the process of fractional distillation of crude oil.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Crude oil is heated, and its fractions vaporise at different boiling points. These vapours rise through a fractionating column, condensing at different heights based on their boiling points, separating them into fractions like petrol and diesel.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of increasing surface area on the rate of reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing surface area increases the rate of reaction by providing more area for particle collisions, especially in reactions involving solids.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows a model of a sodium chloride lattice. Identify the ions shown.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Sodium ions -->
+                <circle cx="50" cy="50" r="10" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <circle cx="100" cy="100" r="10" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <!-- Chloride ions -->
+                <circle cx="100" cy="50" r="15" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="50" cy="100" r="15" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <text x="120" y="120" font-family="Arial" font-size="8">Ionic lattice</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The diagram shows sodium ions (Na⁺) and chloride ions (Cl⁻) arranged in an ionic lattice.</p>
+        `
+    },
+    {
+        questionText: "What is the atomic number of an element?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The atomic number of an element is the number of protons in the nucleus of its atoms, which defines the element.</p>
+        `
+    },
+    {
+        questionText: "Explain why ionic compounds conduct electricity when molten but not when solid.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>When molten, ionic compounds have free-moving ions that can carry charge, allowing conduction. In solid form, the ions are fixed in a lattice and cannot move, so they do not conduct.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a thermometer in a reaction rate experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A thermometer measures the temperature of the reaction mixture to ensure it remains constant or to investigate its effect on the rate of reaction.</p>
+        `
+    },
+    {
+        questionText: "Calculate the relative formula mass of CaCO₃. (Ca = 40, C = 12, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Relative formula mass = 40 + 12 + (3 × 16) = 40 + 12 + 48 = 100</p>
+        `
+    },
+    {
+        questionText: "What is the difference between a physical and a chemical change?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A physical change involves a change in state or appearance without forming new substances (e.g., melting ice), while a chemical change forms new substances through chemical reactions (e.g., burning wood).</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows a reaction profile. Identify the activation energy.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Reactants -->
+                <line x1="20" y1="100" x2="50" y2="100" stroke="#000" stroke-width="2"/>
+                <!-- Peak (activation energy) -->
+                <path d="M50,100 C80,50 120,50 150,80" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Products -->
+                <line x1="150" y1="80" x2="180" y2="80" stroke="#000" stroke-width="2"/>
+                <text x="100" y="45" font-family="Arial" font-size="8">Activation energy</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The activation energy is the energy difference between the reactants and the peak of the reaction profile, shown as the highest point on the curve.</p>
+        `
+    },
+    {
+        questionText: "What is the formula of ammonia?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of ammonia is NH₃.</p>
+        `
+    },
+    {
+        questionText: "Describe how to measure the rate of reaction by collecting gas produced.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Conical flask -->
+                <path d="M50,150 L150,150 L120,50 L80,50 Z" fill="#FFF" stroke="#000" stroke-width="1"/>
+                <!-- Delivery tube -->
+                <path d="M100,50 L100,30 L150,30" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Gas syringe -->
+                <rect x="150" y="20" width="30" height="20" fill="none" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Connect a gas syringe to a conical flask containing the reactants via a delivery tube. Measure the volume of gas produced at regular time intervals to calculate the rate.</p>
+        `
+    },
+    {
+        questionText: "What is the trend in boiling points down Group 7 of the periodic table?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Boiling points increase down Group 7 because the molecular size increases, leading to stronger intermolecular forces that require more energy to overcome.</p>
+        `
+    },
+    {
+        questionText: "Explain why alloys are harder than pure metals.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alloys are harder than pure metals because the different-sized atoms disrupt the regular lattice, making it more difficult for layers of atoms to slide over each other.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a burette in a titration experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A burette is used to accurately measure and deliver a precise volume of a solution (e.g., an acid) into a conical flask during a titration.</p>
+        `
+    },
+    {
+        questionText: "Calculate the number of protons, neutrons, and electrons in an atom of potassium-39 (atomic number 19).",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Protons = Atomic number = 19<br>
+            Electrons = Protons (neutral atom) = 19<br>
+            Neutrons = Mass number - Atomic number = 39 - 19 = 20</p>
+        `
+    },
+    {
+        questionText: "What is the formula of sodium carbonate?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of sodium carbonate is Na₂CO₃.</p>
+        `
+    },
+    {
+        questionText: "Describe the structure of a water molecule.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Oxygen atom -->
+                <circle cx="100" cy="50" r="20" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <!-- Hydrogen atoms -->
+                <circle cx="60" cy="30" r="10" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="60" cy="70" r="10" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <!-- Bonds -->
+                <line x1="80" y1="40" x2="90" y2="45" stroke="#000" stroke-width="2"/>
+                <line x1="80" y1="60" x2="90" y2="55" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A water molecule (H₂O) consists of one oxygen atom covalently bonded to two hydrogen atoms, with a bent shape due to lone pairs on the oxygen atom.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a repeat reading in an experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Repeat readings improve the reliability of results by allowing calculation of an average and identification of anomalies, reducing the impact of random errors.</p>
+        `
+    },
+    {
+        questionText: "Explain why halogens are less reactive as you go down Group 7.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Halogens become less reactive down Group 7 because the outer electron shell is further from the nucleus, reducing the attraction for gaining an electron due to increased shielding.</p>
+        `
+    },
+    {
+        questionText: "What is the formula of hydrochloric acid?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of hydrochloric acid is HCl.</p>
+        `
+    },
+    {
+        questionText: "Describe how to separate a mixture of sand and salt.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Add water to dissolve the salt, then filter to separate the insoluble sand. Evaporate the filtrate to recover the salt.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of a catalyst on the activation energy of a reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A catalyst lowers the activation energy of a reaction by providing an alternative pathway, increasing the rate of reaction.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows a model of a methane molecule. Identify the atoms shown.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Carbon atom -->
+                <circle cx="100" cy="75" r="20" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <!-- Hydrogen atoms -->
+                <circle cx="70" cy="45" r="10" fill="#4CAF balconies" stroke="#000" stroke-width="1"/>
+                <circle cx="130" cy="45" r="10" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="70" cy="105" r="10" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="130" cy="105" r="10" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <!-- Bonds -->
+                <line x1="80" y1="55" x2="90" y2="65" stroke="#000" stroke-width="2"/>
+                <line x1="110" y1="55" x2="120" y2="65" stroke="#000" stroke-width="2"/>
+                <line x1="80" y1="95" x2="90" y2="85" stroke="#000" stroke-width="2"/>
+                <line x1="110" y1="95" x2="120" y2="85" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The diagram shows one carbon atom bonded to four hydrogen atoms, representing a methane molecule (CH₄).</p>
+        `
+    },
+    {
+        questionText: "What is the mass number of an atom?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The mass number of an atom is the total number of protons and neutrons in its nucleus.</p>
+        `
+    },
+    {
+        questionText: "Explain why metals are good conductors of electricity.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Metals are good conductors of electricity because they have delocalised electrons that are free to move and carry an electric current.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a stopwatch in a reaction rate experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A stopwatch is used to measure the time taken for a reaction to occur, allowing the rate of reaction to be calculated.</p>
+        `
+    },
+    {
+        questionText: "Calculate the percentage yield if 50g of product is obtained when the theoretical yield is 80g.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Percentage yield = (Actual yield ÷ Theoretical yield) × 100 = (50 ÷ 80) × 100 = 62.5%</p>
+        `
+    },
+    {
+        questionText: "What is the formula of calcium hydroxide?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of calcium hydroxide is Ca(OH)₂.</p>
+        `
+    },
+    {
+        questionText: "Describe the structure of an ionic compound.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Positive ions -->
+                <circle cx="50" cy="50" r="10" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <circle cx="100" cy="100" r="10" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <!-- Negative ions -->
+                <circle cx="100" cy="50" r="15" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="50" cy="100" r="15" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <text x="120" y="120" font-family="Arial" font-size="8">Ionic lattice</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An ionic compound consists of a giant lattice of alternating positive and negative ions held together by strong electrostatic forces of attraction.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a variable in a scientific experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Variables are factors that can be changed, controlled, or measured in an experiment to investigate their effect on the outcome (e.g., independent, dependent, and control variables).</p>
+        `
+    },
+    {
+        questionText: "Explain why covalent bonds are strong.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Covalent bonds are strong because they involve the sharing of electrons between atoms, creating a stable attraction that requires significant energy to break.</p>
+        `
+    },
+    {
+        questionText: "What is the formula of potassium nitrate?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of potassium nitrate is KNO₃.</p>
+        `
+    },
+    {
+        questionText: "Describe how to carry out a titration experiment.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Fill a burette with a standard solution (e.g., acid). Pipette a known volume of another solution (e.g., alkali) into a conical flask, add an indicator, and slowly add the burette solution until the endpoint is reached, noting the volume used.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of increasing concentration on the rate of reaction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing concentration increases the rate of reaction by increasing the frequency of particle collisions, as there are more particles in the same volume.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows an atom’s electron shells. Identify the number of electrons in the outer shell.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Nucleus -->
+                <circle cx="100" cy="100" r="10" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <!-- Inner shell (2 electrons) -->
+                <circle cx="100" cy="100" r="30" fill="none" stroke="#000" stroke-width="1"/>
+                <circle cx="90" cy="90" r="3" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <circle cx="110" cy="110" r="3" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+                <!-- Outer shell (1 electron) -->
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#000" stroke-width="1"/>
+                <circle cx="150" cy="100" r="3" fill="#4CAF50" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The outer shell has 1 electron.</p>
+        `
+    },
+    {
+        questionText: "What is the relative mass of an electron?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The relative mass of an electron is approximately 1/1840 (or negligible) compared to a proton or neutron.</p>
+        `
+    },
+    {
+        questionText: "Explain why ionic compounds have high melting points.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Ionic compounds have high melting points because they consist of a giant lattice of ions held together by strong electrostatic forces, requiring significant energy to break.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a gas syringe in a practical experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A gas syringe is used to accurately measure the volume of gas produced or consumed during a reaction, often to determine the rate of reaction.</p>
+        `
+    },
+    {
+        questionText: "Calculate the number of moles in 18g of water (H₂O). (H = 1, O = 16)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Molar mass of H₂O = (2 × 1) + 16 = 18 g/mol<br>
+            Number of moles = Mass ÷ Molar mass = 18 ÷ 18 = 1 mol</p>
+        `
+    },
+    {
+        questionText: "What is the formula of carbon dioxide?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of carbon dioxide is CO₂.</p>
+        `
+    },
+    {
+        questionText: "Describe the structure of a graphene sheet.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Carbon atoms -->
+                <circle cx="50" cy="50" r="5" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <circle cx="80" cy="50" r="5" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <circle cx="65" cy="80" r="5" fill="#FF6F61" stroke="#000" stroke-width="1"/>
+                <!-- Bonds -->
+                <line x1="55" y1="50" x2="75" y2="50" stroke="#000" stroke-width="2"/>
+                <line x1="55" y1="55" x2="60" y2="75" stroke="#000" stroke-width="2"/>
+                <line x1="75" y1="55" x2="70" y2="75" stroke="#000" stroke-width="2"/>
+                <text x="100" y="100" font-family="Arial" font-size="8">Graphene structure</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Graphene is a single layer of carbon atoms arranged in a hexagonal lattice, with each carbon atom covalently bonded to three others, forming a strong, two-dimensional structure.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a hypothesis in a scientific investigation?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A hypothesis is a testable prediction about the relationship between variables, guiding the design and interpretation of an experiment.</p>
+        `
+    },
+    {
+        questionText: "Explain why transition metals have variable oxidation states.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Transition metals have variable oxidation states because their d-orbital electrons can be lost in different numbers, allowing them to form ions with different charges.</p>
+        `
+    },
+    {
+        questionText: "What is the formula of methane?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The formula of methane is CH₄.</p>
+        `
+    },
+    {
+        questionText: "Describe how to test for the presence of oxygen gas.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Insert a glowing splint into a test tube containing the gas. If oxygen is present, the splint will relight.</p>
+        `
+    }
+];
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none';
+            answerAreaEl.innerHTML = '';
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0;
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        loadNextQuestion();
+    </script>
+</body>
+</html>
