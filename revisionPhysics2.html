@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Paper 6 Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden; /* Prevent SVG overflow */
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px; /* Limit SVG height */
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain; /* Ensure SVG scales properly */
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none; /* Hidden by default */
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Physics Paper 6 Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area">
+            <!-- Model answer will be injected here -->
+        </div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+       const questions = [
+    {
+        questionText: "What is the main source of energy for Earth's climate system?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The main source of energy for Earth's climate system is the Sun. Solar radiation provides the energy that drives weather patterns, ocean currents, and the water cycle.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows a bar magnet. Label the poles A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bar magnet -->
+                <rect x="50" y="30" width="100" height="40" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <!-- Left pole (A) -->
+                <text x="60" y="50" font-family="Arial" font-size="10">A</text>
+                <!-- Right pole (B) -->
+                <text x="140" y="50" font-family="Arial" font-size="10">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> North pole</li>
+                <li><strong>B:</strong> South pole</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Explain how an electromagnet is made.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An electromagnet is made by wrapping a coil of insulated wire around a soft iron core and passing an electric current through the wire. The current creates a magnetic field, which is strengthened by the iron core, producing a strong, temporary magnet that can be turned on or off.</p>
+        `
+    },
+    {
+        questionText: "The diagram below shows magnetic field lines around a bar magnet. Identify the direction of the field at point X.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bar magnet -->
+                <rect x="50" y="50" width="100" height="40" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                <!-- Magnetic field lines -->
+                <path d="M150,70 C180,70 180,30 150,30" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M150,70 C170,70 170,90 150,90" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M50,70 C20,70 20,30 50,30" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M50,70 C30,70 30,90 50,90" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Point X -->
+                <circle cx="170" cy="70" r="3" fill="#FF0000"/>
+                <text x="175" y="75" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The magnetic field at point X is directed from the north pole to the south pole. In the diagram, the field lines curve from the right (north) to the left (south), so the direction at X is towards the left.</p>
+        `
+    },
+    {
+        questionText: "What is the motor effect?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The motor effect occurs when a current-carrying conductor in a magnetic field experiences a force. This force is perpendicular to both the current direction and the magnetic field, as described by Fleming's left-hand rule.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a simple electric motor. Identify components A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Coil (A) -->
+                <rect x="80" y="80" width="40" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <text x="100" y="100" font-family="Arial" font-size="8">A</text>
+                <!-- Commutator (B) -->
+                <circle cx="150" cy="100" r="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <text x="150" y="90" font-family="Arial" font-size="8">B</text>
+                <!-- Magnets -->
+                <rect x="50" y="50" width="20" height="100" fill="#FF0000" stroke="#000" stroke-width="1"/>
+                <rect x="130" y="50" width="20" height="100" fill="#0000FF" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Coil</li>
+                <li><strong>B:</strong> Commutator</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Calculate the force on a 0.5 m wire carrying 2 A in a 0.3 T magnetic field perpendicular to the wire.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the formula F = BIL, where F is force, B is magnetic field strength, I is current, and L is length.</p>
+            <p>F = 0.3 T × 2 A × 0.5 m = 0.3 N</p>
+            <p>The force is 0.3 N.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of the commutator in a DC motor?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The commutator reverses the direction of the current in the coil every half-turn, ensuring the coil continues to rotate in the same direction by maintaining the motor effect force.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave. Identify the amplitude and wavelength.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Wave -->
+                <path d="M0,75 C50,25 50,125 100,75 C150,25 150,125 200,75" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Amplitude -->
+                <line x1="100" y1="75" x2="100" y2="25" stroke="#FF0000" stroke-width="1"/>
+                <text x="105" y="50" font-family="Arial" font-size="8">Amplitude</text>
+                <!-- Wavelength -->
+                <line x1="50" y1="100" x2="150" y2="100" stroke="#0000FF" stroke-width="1"/>
+                <text x="80" y="115" font-family="Arial" font-size="8">Wavelength</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>Amplitude:</strong> The maximum displacement from the equilibrium position, shown by the vertical distance from the center line to the peak.</li>
+                <li><strong>Wavelength:</strong> The distance between two consecutive points in phase, such as two peaks, shown by the horizontal distance.</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "What is the difference between transverse and longitudinal waves?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Transverse waves have particle oscillations perpendicular to the direction of wave travel (e.g., light waves), while longitudinal waves have particle oscillations parallel to the direction of wave travel (e.g., sound waves).</p>
+        `
+    },
+    {
+        questionText: "Calculate the speed of a wave with a frequency of 5 Hz and a wavelength of 2 m.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the wave equation: v = fλ, where v is speed, f is frequency, and λ is wavelength.</p>
+            <p>v = 5 Hz × 2 m = 10 m/s</p>
+            <p>The speed is 10 m/s.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a ripple tank experiment. What does the bright area at point X represent?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Water surface -->
+                <rect x="0" y="0" width="200" height="150" fill="#ADD8E6"/>
+                <!-- Wave crests -->
+                <path d="M0,50 C50,30 50,70 100,50 C150,30 150,70 200,50" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Point X (bright area) -->
+                <circle cx="100" cy="50" r="5" fill="#FFFF00"/>
+                <text x="105" y="55" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The bright area at point X represents a wave crest, where the water is at its maximum height due to constructive interference or the peak of the wave in the ripple tank.</p>
+        `
+    },
+    {
+        questionText: "What is the frequency of a wave that completes 20 cycles in 4 seconds?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Frequency (f) is calculated as the number of cycles divided by time: f = cycles / time.</p>
+            <p>f = 20 cycles / 4 s = 5 Hz</p>
+            <p>The frequency is 5 Hz.</p>
+        `
+    },
+    {
+        questionText: "Explain why sound waves cannot travel through a vacuum.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Sound waves are longitudinal waves that require a medium (e.g., air, water) to travel, as they rely on particle vibrations. A vacuum has no particles, so sound cannot propagate.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a sound wave on an oscilloscope. What does the vertical axis represent?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Oscilloscope grid -->
+                <rect x="0" y="0" width="200" height="150" fill="#000000"/>
+                <!-- Sound wave -->
+                <path d="M0,75 C50,25 50,125 100,75 C150,25 150,125 200,75" fill="none" stroke="#00FF00" stroke-width="2"/>
+                <!-- Vertical axis -->
+                <line x1="10" y1="0" x2="10" y2="150" stroke="#FFFFFF" stroke-width="1"/>
+                <text x="15" y="20" font-family="Arial" font-size="8" fill="#FFFFFF">Vertical Axis</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The vertical axis on the oscilloscope represents the amplitude of the sound wave, which corresponds to the pressure or intensity of the sound.</p>
+        `
+    },
+    {
+        questionText: "What is the half-life of a radioactive isotope?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The half-life is the time taken for half of the radioactive nuclei in a sample to decay or for the activity of the sample to reduce to half its initial value.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a decay curve for a radioactive isotope. Estimate the half-life.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line x1="30" y1="20" x2="30" y2="130" stroke="#000" stroke-width="1"/>
+                <line x1="30" y1="130" x2="180" y2="130" stroke="#000" stroke-width="1"/>
+                <!-- Decay curve -->
+                <path d="M30,20 C60,40 100,80 180,120" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Initial activity (100%) -->
+                <text x="20" y="25" font-family="Arial" font-size="8">100</text>
+                <!-- Half activity (50%) -->
+                <text x="20" y="75" font-family="Arial" font-size="8">50</text>
+                <!-- Time axis -->
+                <text x="100" y="140" font-family="Arial" font-size="8">Time</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Find the time when the activity drops from 100 to 50 on the decay curve. From the graph, this occurs approximately at the midpoint of the curve. Estimate the time corresponding to this point (e.g., if the x-axis is scaled, read the time value). The half-life is the time taken for this drop, approximately [insert estimated time, e.g., 2 days] based on the curve.</p>
+        `
+    },
+    {
+        questionText: "What type of radiation is stopped by a sheet of paper?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alpha radiation is stopped by a sheet of paper. Alpha particles have low penetrating power and can be blocked by a few centimeters of air or thin materials like paper.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a Geiger counter setup. What does it measure?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Geiger counter -->
+                <rect x="50" y="20" width="100" height="60" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <circle cx="60" cy="50" r="5" fill="#FF0000"/>
+                <text x="80" y="50" font-family="Arial" font-size="8">Geiger Counter</text>
+                <!-- Radioactive source -->
+                <circle cx="20" cy="50" r="10" fill="#FFFF00" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The Geiger counter measures the level of ionizing radiation (alpha, beta, or gamma) by detecting the number of particles or photons emitted from a radioactive source.</p>
+        `
+    },
+    {
+        questionText: "Calculate the activity of a sample that reduces from 800 Bq to 200 Bq in 12 hours. What is the half-life?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The activity reduces from 800 Bq to 200 Bq, which is 1/4 of the original (800 → 400 → 200). This indicates two half-lives.</p>
+            <p>Total time = 12 hours, so one half-life = 12 / 2 = 6 hours.</p>
+            <p>The half-life is 6 hours.</p>
+        `
+    },
+    {
+        questionText: "What is the main source of background radiation?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The main source of background radiation is natural sources, such as radon gas from the ground, cosmic rays from space, and radioactive materials in rocks and soil.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a nuclear fission reaction. What is released during this process?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Neutron -->
+                <circle cx="50" cy="75" r="5" fill="#0000FF"/>
+                <!-- Nucleus -->
+                <circle cx="100" cy="75" r="20" fill="#FF0000"/>
+                <!-- Fission products -->
+                <circle cx="140" cy="50" r="10" fill="#FFFF00"/>
+                <circle cx="140" cy="100" r="10" fill="#FFFF00"/>
+                <!-- Arrows -->
+                <path d="M55,75 H80" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M120,65 L135,55" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M120,85 L135,95" fill="none" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>During nuclear fission, a large nucleus splits into two smaller nuclei (fission products), releasing energy, neutrons, and sometimes gamma radiation.</p>
+        `
+    },
+    {
+        questionText: "Explain the difference between nuclear fission and fusion.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Nuclear fission involves splitting a large nucleus into smaller nuclei, releasing energy (e.g., in nuclear reactors). Nuclear fusion involves combining small nuclei to form a larger nucleus, releasing energy (e.g., in stars). Fusion releases more energy per reaction but requires extreme conditions.</p>
+        `
+    },
+    {
+        questionText: "What is the unit of radioactive activity?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The unit of radioactive activity is the becquerel (Bq), which measures the number of radioactive decays per second.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave experiment with two sources. What is happening at point X?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Wave sources -->
+                <circle cx="50" cy="75" r="5" fill="#000"/>
+                <circle cx="150" cy="75" r="5" fill="#000"/>
+                <!-- Wavefronts -->
+                <circle-shapes cx="50" cy="75" r="20" fill="none" stroke="#000" stroke-width="1"/>
+                <circle-shapes cx="50" cy="75" r="40" fill="none" stroke="#000" stroke-width="1"/>
+                <circle-shapes cx="150" cy="75" r="20" fill="none" stroke="#000" stroke-width="1"/>
+                <circle-shapes cx="150" cy="75" r="40" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Point X -->
+                <circle cx="100" cy="75" r="3" fill="#FF0000"/>
+                <text x="105" y="80" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>At point X, constructive interference is occurring. The waves from the two sources are in phase, causing their amplitudes to add together, creating a larger wave amplitude.</p>
+        `
+    },
+    {
+        questionText: "What is the speed of electromagnetic waves in a vacuum?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The speed of electromagnetic waves in a vacuum is approximately 3 × 10^8 m/s, the speed of light.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a transformer. Identify the primary and secondary coils.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Iron core -->
+                <rect x="80" y="20" width="40" height="110" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Primary coil (A) -->
+                <path d="M60,30 C60,50 60,70 60,90" fill="none" stroke="#FFD700" stroke-width="5"/>
+                <text x="50" y="60" font-family="Arial" font-size="8">A</text>
+                <!-- Secondary coil (B) -->
+                <path d="M140,30 C140,50 140,70 140,90" fill="none" stroke="#FFD700" stroke-width="5"/>
+                <text x="145" y="60" font-family="Arial" font-size="8">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Primary coil</li>
+                <li><strong>B:</strong> Secondary coil</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Calculate the output voltage of a transformer with 100 primary turns, 400 secondary turns, and an input voltage of 12 V.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the transformer equation: Vs / Vp = Ns / Np, where Vs is secondary voltage, Vp is primary voltage, Ns is secondary turns, and Np is primary turns.</p>
+            <p>Vs / 12 = 400 / 100</p>
+            <p>Vs = 12 × 4 = 48 V</p>
+            <p>The output voltage is 48 V.</p>
+        `
+    },
+    {
+        questionText: "What is the role of the iron core in a transformer?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The iron core in a transformer channels the magnetic field produced by the primary coil to the secondary coil, increasing the efficiency of energy transfer between the coils.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a practical setup to measure wave speed. Describe the method.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ripple tank -->
+                <rect x="20" y="20" width="160" height="60" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <!-- Wave generator -->
+                <circle cx="30" cy="50" r="5" fill="#000"/>
+                <!-- Ruler -->
+                <rect x="50" y="80" width="100" height="5" fill="#A9A9A9"/>
+                <text x="100" y="95" font-family="Arial" font-size="8">Ruler</text>
+                <!-- Stopwatch -->
+                <rect x="170" y="30" width="20" height="20" fill="#FF0000"/>
+                <text x="175" y="25" font-family="Arial" font-size="8">Stopwatch</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the ripple tank to generate waves with a known frequency using the wave generator. Measure the wavelength by using the ruler to find the distance between two consecutive crests. Time several wave cycles with the stopwatch to calculate the period, then find frequency (f = 1/T). Calculate wave speed using v = fλ.</p>
+        `
+    },
+    {
+        questionText: "What is meant by the term 'ionizing radiation'?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Ionizing radiation is radiation with enough energy to remove electrons from atoms, creating ions. Examples include alpha, beta, and gamma radiation.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a magnetic field around a current-carrying wire. What is the direction of the field at point X?",
+        svgDiagram: `
+            <svg viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Wire (current out of page) -->
+                <circle cx="75" cy="75" r="5" fill="#FFD700"/>
+                <text x="70" y="70" font-family="Arial" font-size="8">•</text>
+                <!-- Magnetic field lines -->
+                <circle cx="75" cy="75" r="20" fill="none" stroke="#000" stroke-width="1"/>
+                <circle cx="75" cy="75" r="30" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Point X -->
+                <circle cx="95" cy="75" r="3" fill="#FF0000"/>
+                <text x="100" y="80" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The magnetic field around a current-carrying wire is circular. Using the right-hand rule (thumb points in the direction of current, fingers curl in the direction of the field), if the current is out of the page, the field at point X is clockwise, so the field direction is downward at X.</p>
+        `
+    },
+    {
+        questionText: "Explain how a loudspeaker uses the motor effect.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In a loudspeaker, a coil of wire is placed in a magnetic field. When an alternating current passes through the coil, the motor effect causes the coil to move back and forth due to the force generated. This movement vibrates a cone, producing sound waves.</p>
+        `
+    },
+    {
+        questionText: "What is the period of a wave with a frequency of 10 Hz?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The period (T) is the inverse of frequency: T = 1/f.</p>
+            <p>T = 1 / 10 Hz = 0.1 s</p>
+            <p>The period is 0.1 seconds.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a radiation experiment. What type of radiation is detected after passing through 3 mm of aluminum?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Radioactive source -->
+                <circle cx="20" cy="50" r="10" fill="#FFFF00"/>
+                <!-- Aluminum sheet -->
+                <rect x="80" y="20" width="10" height="60" fill="#A9A9A9"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">3 mm Al</text>
+                <!-- Detector -->
+                <rect x="150" y="40" width="30" height="20" fill="#FF0000"/>
+                <text x="155" y="35" font-family="Arial" font-size="8">Detector</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alpha radiation is stopped by paper, and beta radiation is stopped by a few millimeters of aluminum. Gamma radiation can penetrate 3 mm of aluminum. Therefore, the radiation detected is gamma radiation.</p>
+        `
+    },
+    {
+        questionText: "What is the electromagnetic spectrum?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The electromagnetic spectrum is the range of all electromagnetic waves, arranged by frequency or wavelength, including radio waves, microwaves, infrared, visible light, ultraviolet, X-rays, and gamma rays.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a practical setup to investigate magnetic fields. Describe the method.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bar magnet -->
+                <rect x="50" y="30" width="100" height="20" fill="#D3D3D3"/>
+                <!-- Compass -->
+                <circle cx="170" cy="40" r="5" fill="#000"/>
+                <text x="175" y="45" font-family="Arial" font-size="8">Compass</text>
+                <!-- Paper -->
+                <rect x="20" y="10" width="160" height="80" fill="#FFFFFF" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Place a bar magnet on a sheet of paper. Use a compass to trace the magnetic field lines by marking the direction the compass needle points at various points around the magnet. Connect the points to draw field lines, showing the field’s direction from north to south.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of doubling the current in an electromagnet?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Doubling the current in an electromagnet doubles the strength of the magnetic field, as the field strength is directly proportional to the current.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave reflected off a barrier. What is the angle of reflection?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Barrier -->
+                <rect x="100" y="20" width="10" height="110" fill="#A9A9A9"/>
+                <!-- Incident wave -->
+                <path d="M20,100 L100,50" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Reflected wave -->
+                <path d="M100,50 L180,100" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Normal -->
+                <path d="M100,30 L100,70" fill="none" stroke="#000" stroke-dasharray="5,5"/>
+                <text x="105" y="40" font-family="Arial" font-size="8">Normal</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The angle of reflection equals the angle of incidence, according to the law of reflection. If the incident wave makes an angle with the normal, the reflected wave makes the same angle. From the diagram, estimate the angle (e.g., 45°) based on symmetry.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a Geiger-Müller tube?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A Geiger-Müller tube detects ionizing radiation by producing an electrical pulse each time a particle or photon enters the tube, allowing the measurement of radiation levels.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with an electromagnet. What happens if the switch is opened?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="40" width="20" height="10" fill="#FF0000"/>
+                <!-- Switch (closed) -->
+                <path d="M50,45 L70,45" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Coil -->
+                <path d="M80,30 C80,50 80,70 80,90" fill="none" stroke="#FFD700" stroke-width="5"/>
+                <!-- Iron core -->
+                <rect x="75" y="30" width="10" height="60" fill="#A9A9A9"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>If the switch is opened, the circuit is broken, stopping the current flow. The electromagnet loses its magnetic field, as it requires a current to maintain magnetism.</p>
+        `
+    },
+    {
+        questionText: "What is the wavelength of a sound wave with a speed of 340 m/s and a frequency of 170 Hz?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the wave equation: v = fλ, so λ = v / f.</p>
+            <p>λ = 340 m/s / 170 Hz = 2 m</p>
+            <p>The wavelength is 2 meters.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a motor. What is the role of the brushes?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Coil -->
+                <rect x="80" y="60" width="40" height="40" fill="#FFD700"/>
+                <!-- Commutator -->
+                <circle cx="130" cy="80" r="10" fill="#A9A9A9"/>
+                <!-- Brushes -->
+                <rect x="140" y="70" width="10" height="20" fill="#000"/>
+                <rect x="120" y="70" width="10" height="20" fill="#000"/>
+                <text x="145" y="65" font-family="Arial" font-size="8">Brushes</text>
+                <!-- Magnets -->
+                <rect x="50" y="30" width="20" height="100" fill="#FF0000"/>
+                <rect x="130" y="30" width="20" height="100" fill="#0000FF"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The brushes maintain electrical contact with the commutator, allowing current to flow into the coil while it rotates, ensuring continuous operation of the motor.</p>
+        `
+    },
+    {
+        questionText: "What is meant by 'constructive interference'?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Constructive interference occurs when two waves meet in phase, with their crests or troughs aligned, resulting in a wave with larger amplitude.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a radioactive decay experiment. Why is the count rate corrected for background radiation?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Radioactive source -->
+                <circle cx="20" cy="50" r="10" fill="#FFFF00"/>
+                <!-- Geiger counter -->
+                <rect x="150" y="30" width="30" height="20" fill="#FF0000"/>
+                <text x="155" y="25" font-family="Arial" font-size="8">Geiger Counter</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The count rate is corrected for background radiation to isolate the radiation emitted by the source. Background radiation from natural sources (e.g., cosmic rays) contributes to the total count, so subtracting it gives the true activity of the sample.</p>
+        `
+    },
+    {
+        questionText: "What is the role of neutrons in nuclear fission?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In nuclear fission, a neutron strikes a large nucleus (e.g., uranium-235), causing it to split into smaller nuclei. The reaction releases more neutrons, which can trigger further fission reactions in a chain reaction.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave on a rope. What is the direction of particle motion at point X?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Wave -->
+                <path d="M0,75 C50,25 50,125 100,75 C150,25 150,125 200,75" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Point X (crest) -->
+                <circle cx="50" cy="25" r="3" fill="#FF0000"/>
+                <text x="55" y="30" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The wave on the rope is transverse. At point X (a crest), particles are at their maximum upward displacement and momentarily stationary before moving downward.</p>
+        `
+    },
+    {
+        questionText: "What is the energy source for nuclear reactors",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The energy source for nuclear reactors is nuclear fission, where large nuclei (e.g., uranium-235) split into smaller nuclei, releasing energy in the form of heat, which is used to generate electricity.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a solenoid. What is the shape of the magnetic field inside?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Solenoid -->
+                <rect x="50" y="20" width="100" height="60" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Field lines -->
+                <path d="M75,40 H125" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M75,60 H125" fill="none" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The magnetic field inside a solenoid is uniform and parallel to the axis of the solenoid, with field lines running straight through the core from one end to the other.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a step-up transformer?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A step-up transformer increases the voltage while decreasing the current, used in power transmission to reduce energy loss over long distances.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a practical setup to measure radiation absorption. Describe the method.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Radioactive source -->
+                <circle cx="20" cy="50" r="10" fill="#FFFF00"/>
+                <!-- Material -->
+                <rect x="80" y="20" width="20" height="60" fill="#A9A9A9"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">Material</text>
+                <!-- Geiger counter -->
+                <rect x="150" y="30" width="30" height="20" fill="#FF0000"/>
+                <text x="155" y="25" font-family="Arial" font-size="8">Geiger Counter</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Place a radioactive source in front of a Geiger counter and record the initial count rate. Insert a material (e.g., paper, aluminum) between the source and counter, varying its thickness. Measure the count rate for each thickness. Plot count rate against thickness to determine how the material absorbs radiation.</p>
+        `
+    },
+    {
+        questionText: "What is the difference between alpha and beta decay?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Alpha decay involves the emission of an alpha particle (2 protons, 2 neutrons), reducing the atomic number by 2 and mass number by 4. Beta decay involves the emission of a beta particle (electron or positron), changing the atomic number by ±1 with no change in mass number.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave diffraction pattern. What happens at point X?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Barrier with gap -->
+                <rect x="80" y="20" width="40" height="60" fill="#A9A9A9"/>
+                <rect x="80" y="100" width="40" height="30" fill="#A9A9A9"/>
+                <!-- Wavefronts -->
+                <path d="M100,80 C120,60 120,100 140,80" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Point X -->
+                <circle cx="140" cy="80" r="3" fill="#FF0000"/>
+                <text x="145" y="85" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>At point X, diffraction occurs. The wave spreads out after passing through a narrow gap, creating a curved wavefront, as the gap is comparable to the wavelength.</p>
+        `
+    },
+    {
+        questionText: "What is the significance of the critical mass in nuclear fission?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The critical mass is the minimum amount of fissile material (e.g., uranium-235) needed to sustain a chain reaction, where each fission event triggers further fissions, releasing continuous energy.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a motor effect experiment. What is the direction of the force on the wire?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Magnets -->
+                <rect x="50" y="20" width="20" height="60" fill="#FF0000"/>
+                <rect x="130" y="20" width="20" height="60" fill="#0000FF"/>
+                <!-- Wire -->
+                <path d="M70,50 H130" fill="none" stroke="#FFD700" stroke-width="5"/>
+                <text x="100" y="45" font-family="Arial" font-size="8">Wire</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Fleming’s left-hand rule: point fingers in the direction of current (left to right) and magnetic field (north to south, left to right). The thumb points in the direction of the force, which is upward.</p>
+        `
+    },
+    {
+        questionText: "What is the Doppler effect?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The Doppler effect is the change in frequency or wavelength of a wave (e.g., sound or light) observed when the source and observer move relative to each other, such as a siren’s pitch changing as it approaches.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a transformer circuit. What happens if the secondary coil is open-circuited?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Iron core -->
+                <rect x="80" y="20" width="40" height="110" fill="#A9A9A9"/>
+                <!-- Primary coil -->
+                <path d="M60,30 C60,50 60,70 60,90" fill="none" stroke="#FFD700" stroke-width="5"/>
+                <!-- Secondary coil (open) -->
+                <path d="M140,30 C140,50 140,70 140,90" fill="none" stroke="#FFD700" stroke-width="5" stroke-dasharray="5,5"/>
+                <text x="145" y="60" font-family="Arial" font-size="8">Open</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>If the secondary coil is open-circuited, no current flows in the secondary coil, so no voltage is induced. The primary coil continues to draw a small current due to the magnetic field, but no power is transferred.</p>
+        `
+    },
+    {
+        questionText: "What is the role of control rods in a nuclear reactor?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Control rods absorb neutrons in a nuclear reactor, regulating the rate of the fission chain reaction. They are inserted or withdrawn to control the reactor’s power output or stop the reaction.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave experiment with a single slit. What is observed at point X?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Slit -->
+                <rect x="90" y="20" width="20" height="40" fill="#A9A9A9"/>
+                <!-- Wavefronts -->
+                <path d="M100,60 C120,40 120,80 140,60" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Point X -->
+                <circle cx="140" cy="60" r="3" fill="#FF0000"/>
+                <text x="145" y="65" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>At point X, diffraction is observed. The wave spreads out after passing through the slit, forming a curved wavefront due to the slit’s width being comparable to the wavelength.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of shielding in a nuclear reactor?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Shielding in a nuclear reactor absorbs harmful radiation (e.g., gamma rays, neutrons) to protect workers and the environment from exposure, typically using materials like concrete or lead.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a magnetic field experiment with iron filings. What do the filings show?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bar magnet -->
+                <rect x="50" y="30" width="100" height="20" fill="#D3D3D3"/>
+                <!-- Iron filings -->
+                <path d="M150,40 C170,40 170,20 150,20" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M50,40 C30,40 30,20 50,20" fill="none" stroke="#000" stroke-width="1"/>
+                <text x="100" y="70" font-family="Arial" font-size="8">Iron Filings</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The iron filings align along the magnetic field lines, showing the shape and direction of the magnetic field around the magnet, from the north pole to the south pole.</p>
+        `
+    },
+    {
+        questionText: "What is the frequency of a wave with a period of 0.02 seconds?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Frequency (f) is the inverse of period: f = 1/T.</p>
+            <p>f = 1 / 0.02 s = 50 Hz</p>
+            <p>The frequency is 50 Hz.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a nuclear reactor core. What is the role of the coolant?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Reactor core -->
+                <rect x="50" y="20" width="100" height="60" fill="#A9A9A9"/>
+                <!-- Coolant pipes -->
+                <path d="M50,30 H20 V70 H50" fill="none" stroke="#0000FF" stroke-width="5"/>
+                <path d="M150,30 H180 V70 H150" fill="none" stroke="#0000FF" stroke-width="5"/>
+                <text x="100" y="90" font-family="Arial" font-size="8">Coolant</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The coolant absorbs heat generated by the fission reaction in the reactor core and transfers it to a heat exchanger or turbine to produce electricity, while keeping the core at a safe temperature.</p>
+        `
+    },
+    {
+        questionText: "What is meant by a chain reaction in nuclear fission?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A chain reaction in nuclear fission occurs when neutrons released from one fission event trigger further fission reactions in nearby nuclei, sustaining the reaction and releasing continuous energy.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a wave interference pattern. What is happening at point X?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Wave sources -->
+                <circle cx="50" cy="75" r="5" fill="#000"/>
+                <circle cx="150" cy="75" r="5" fill="#000"/>
+                <!-- Wavefronts -->
+                <circle-shapes cx="50" cy="75" r="20" fill="none" stroke="#000" stroke-width="1"/>
+                <circle-shapes cx="50" cy="75" r="40" fill="none" stroke="#000" stroke-width="1"/>
+                <circle-shapes cx="150" cy="75" r="20" fill="none" stroke="#000" stroke-width="1"/>
+                <circle-shapes cx="150" cy="75" r="40" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Point X (destructive) -->
+                <circle cx="100" cy="100" r="3" fill="#FF0000"/>
+                <text x="105" y="105" font-family="Arial" font-size="8">X</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>At point X, destructive interference is occurring. The crest of one wave meets the trough of another, canceling each other out, resulting in zero amplitude.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a moderator in a nuclear reactor?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The moderator in a nuclear reactor slows down fast neutrons produced during fission, increasing the likelihood of further fission reactions by making the neutrons more effective at triggering fission in fissile nuclei.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a loudspeaker. How does it produce sound?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Coil -->
+                <rect x="80" y="40" width="20" height="20" fill="#FFD700"/>
+                <!-- Magnet -->
+                <rect x="70" y="30" width="40" height="40" fill="#FF0000"/>
+                <!-- Cone -->
+                <path d="M100,50 L130,20 L130,80 L100,50" fill="#A9A9A9"/>
+                <text x="100" y="90" font-family="Arial" font-size="8">Cone</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The loudspeaker produces sound by passing an alternating current through a coil in a magnetic field. The motor effect causes the coil to vibrate, moving the attached cone, which pushes air particles to create sound waves.</p>
+        `
+    },
+    {
+        questionText: "What is the difference between a step-up and step-down transformer?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A step-up transformer increases voltage and decreases current, used for power transmission. A step-down transformer decreases voltage and increases current, used for household appliances.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a radiation safety setup. Why is lead used?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Radioactive source -->
+                <circle cx="20" cy="50" r="10" fill="#FFFF00"/>
+                <!-- Lead shield -->
+                <rect x="80" y="20" width="20" height="60" fill="#A9A9A9"/>
+                <text x="85" y="15" font-family="Arial" font-size="8">Lead</text>
+                <!-- Detector -->
+                <rect x="150" y="30" width="30" height="20" fill="#FF0000"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Lead is used because it is dense and effectively absorbs gamma radiation and X-rays, providing a barrier to protect against harmful ionizing radiation.</p>
+        `
+    }
+];
+
+
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none'; // Hide answer when new question loads
+            answerAreaEl.innerHTML = ''; // Clear previous answer
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            // Ensure we don't pick the same question twice in a row if there's more than one question
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0; // Only one question, so always pick it
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        // Event Listeners
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        // Initial Load
+        loadNextQuestion();
+    </script>
+</body>
+</html>
