@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Phsyics Paper 5 Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden; /* Prevent SVG overflow */
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px; /* Limit SVG height */
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain; /* Ensure SVG scales properly */
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none; /* Hidden by default */
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculator Pysics Paper 5 Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area">
+            <!-- Model answer will be injected here -->
+        </div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+       const questions = [
+    {
+        questionText: "What is the definition of density?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Density is the mass per unit volume of a substance, measured in kg/m³. It is calculated using the formula: density = mass / volume (ρ = m / V).</p>
+        `
+    },
+    {
+        questionText: "A block has a mass of 2.5 kg and a volume of 0.005 m³. Calculate its density.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the formula: density = mass / volume.</p>
+            <p>Mass = 2.5 kg, Volume = 0.005 m³.</p>
+            <p>Density = 2.5 / 0.005 = 500 kg/m³.</p>
+            <p><strong>Final Answer:</strong> 500 kg/m³.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a block on a table. Calculate the pressure exerted by the block on the table.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Table -->
+                <rect x="10" y="100" width="180" height="20" fill="#8B4513" stroke="#000" stroke-width="1"/>
+                <!-- Block -->
+                <rect x="70" y="50" width="60" height="50" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <text x="100" y="75" font-family="Arial" font-size="8" text-anchor="middle">Block</text>
+                <!-- Force arrow -->
+                <path d="M100,100 L100,120" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M95,115 L100,120 L105,115" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="110" y="110" font-family="Arial" font-size="8">Force</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Pressure = force / area. Assume the block’s mass is 2 kg, so force = weight = 2 × 9.8 = 19.6 N.</p>
+            <p>Area of base = 0.06 m × 0.06 m = 0.0036 m² (assuming square base from diagram).</p>
+            <p>Pressure = 19.6 / 0.0036 ≈ 5444.44 Pa.</p>
+            <p><strong>Final Answer:</strong> 5444 Pa (to 4 s.f.).</p>
+        `
+    },
+    {
+        questionText: "Explain how the particle model explains the low density of gases compared to solids.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In the particle model, gases have particles that are far apart with large spaces between them, resulting in a low mass per unit volume. Solids have tightly packed particles, so their mass per unit volume is higher, leading to greater density.</p>
+        `
+    },
+    {
+        questionText: "What is specific heat capacity?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Specific heat capacity is the energy required to raise the temperature of 1 kg of a substance by 1 °C, measured in J/kg°C.</p>
+        `
+    },
+    {
+        questionText: "Calculate the energy needed to heat 0.5 kg of water from 20 °C to 80 °C. (Specific heat capacity of water = 4200 J/kg°C)",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the formula: energy = mass × specific heat capacity × temperature change.</p>
+            <p>Mass = 0.5 kg, specific heat capacity = 4200 J/kg°C, temperature change = 80 - 20 = 60 °C.</p>
+            <p>Energy = 0.5 × 4200 × 60 = 126,000 J = 126 kJ.</p>
+            <p><strong>Final Answer:</strong> 126 kJ.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a gas in a sealed container. Explain why increasing the temperature increases the pressure.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Container -->
+                <rect x="20" y="20" width="160" height="100" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Gas particles -->
+                <circle cx="50" cy="50" r="3" fill="#FF0000"/>
+                <circle cx="80" cy="80" r="3" fill="#FF0000"/>
+                <circle cx="120" cy="60" r="3" fill="#FF0000"/>
+                <circle cx="150" cy="90" r="3" fill="#FF0000"/>
+                <text x="100" y="130" font-family="Arial" font-size="8" text-anchor="middle">Gas particles</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing the temperature increases the kinetic energy of gas particles, causing them to move faster. They collide more frequently and with greater force on the container walls, increasing the pressure.</p>
+        `
+    },
+    {
+        questionText: "What is the unit of pressure?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The unit of pressure is the pascal (Pa).</p>
+        `
+    },
+    {
+        questionText: "Describe an experiment to measure the density of an irregular object.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Measure the mass of the object using a balance (in kg).</p>
+            <p>2. Fill a measuring cylinder with water and record the initial volume.</p>
+            <p>3. Submerge the object in the water and record the new volume.</p>
+            <p>4. Calculate the volume of the object: volume = final volume - initial volume (in m³).</p>
+            <p>5. Calculate density using: density = mass / volume (in kg/m³).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a force acting on an object. Calculate the resultant force.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Object -->
+                <rect x="80" y="30" width="40" height="40" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Force arrow right -->
+                <path d="M120,50 L160,50" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M155,45 L160,50 L155,55" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="140" y="40" font-family="Arial" font-size="8">20 N</text>
+                <!-- Force arrow left -->
+                <path d="M80,50 L40,50" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M45,45 L40,50 L45,55" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="60" y="40" font-family="Arial" font-size="8">15 N</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Resultant force = sum of forces in one direction - sum of forces in opposite direction.</p>
+            <p>Forces: 20 N (right), 15 N (left).</p>
+            <p>Resultant = 20 - 15 = 5 N to the right.</p>
+            <p><strong>Final Answer:</strong> 5 N to the right.</p>
+        `
+    },
+    {
+        questionText: "What is Newton’s First Law of Motion?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An object remains at rest or in uniform motion unless acted upon by an unbalanced force.</p>
+        `
+    },
+    {
+        questionText: "Calculate the acceleration of a 10 kg object with a resultant force of 50 N.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Newton’s Second Law: force = mass × acceleration (F = ma).</p>
+            <p>Force = 50 N, mass = 10 kg.</p>
+            <p>Acceleration = force / mass = 50 / 10 = 5 m/s².</p>
+            <p><strong>Final Answer:</strong> 5 m/s².</p>
+        `
+    },
+    {
+        questionText: "The diagram shows an object moving with constant velocity. Explain why the forces are balanced.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Object -->
+                <rect x="80" y="30" width="40" height="40" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Velocity arrow -->
+                <path d="M120,50 L160,50" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M155,45 L160,50 L155,55" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="140" y="40" font-family="Arial" font-size="8">Velocity</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>According to Newton’s First Law, an object moving with constant velocity has no acceleration, so the resultant force is zero. This means all forces (e.g., friction, thrust) are balanced.</p>
+        `
+    },
+    {
+        questionText: "What is the difference between mass and weight?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Mass is the amount of matter in an object (kg), constant everywhere. Weight is the force due to gravity (N), calculated as mass × gravitational field strength, and varies with location.</p>
+        `
+    },
+    {
+        questionText: "Calculate the weight of a 5 kg object on Earth (g = 9.8 N/kg).",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Weight = mass × gravitational field strength.</p>
+            <p>Mass = 5 kg, g = 9.8 N/kg.</p>
+            <p>Weight = 5 × 9.8 = 49 N.</p>
+            <p><strong>Final Answer:</strong> 49 N.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a velocity-time graph. Calculate the acceleration.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <path d="M20,130 L180,130" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M20,130 L20,20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Graph line -->
+                <path d="M20,130 L100,50" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="190" y="130" font-family="Arial" font-size="8">Time (s)</text>
+                <text x="10" y="20" font-family="Arial" font-size="8">Velocity (m/s)</text>
+                <text x="20" y="140" font-family="Arial" font-size="8">0</text>
+                <text x="100" y="140" font-family="Arial" font-size="8">4</text>
+                <text x="10" y="50" font-family="Arial" font-size="8">20</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Acceleration = change in velocity / time.</p>
+            <p>From graph: velocity changes from 0 to 20 m/s in 4 s.</p>
+            <p>Acceleration = 20 / 4 = 5 m/s².</p>
+            <p><strong>Final Answer:</strong> 5 m/s².</p>
+        `
+    },
+    {
+        questionText: "What is meant by terminal velocity?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Terminal velocity is the constant maximum speed reached by a falling object when the air resistance equals the weight, resulting in no further acceleration.</p>
+        `
+    },
+    {
+        questionText: "Explain why a parachute reduces terminal velocity.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A parachute increases air resistance by increasing the surface area. This balances the weight at a lower speed, reducing the terminal velocity.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a distance-time graph. Describe the motion.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <path d="M20,130 L180,130" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M20,130 L20,20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Graph line -->
+                <path d="M20,130 L100,50" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="190" y="130" font-family="Arial" font-size="8">Time (s)</text>
+                <text x="10" y="20" font-family="Arial" font-size="8">Distance (m)</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The graph shows a straight line, indicating constant speed. The object is moving at a steady pace, covering equal distances in equal time intervals.</p>
+        `
+    },
+    {
+        questionText: "What is the formula for calculating speed?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Speed = distance / time (s = d / t).</p>
+        `
+    },
+    {
+        questionText: "A car travels 200 m in 10 s. Calculate its speed.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Speed = distance / time.</p>
+            <p>Distance = 200 m, time = 10 s.</p>
+            <p>Speed = 200 / 10 = 20 m/s.</p>
+            <p><strong>Final Answer:</strong> 20 m/s.</p>
+        `
+    },
+    {
+        questionText: "What is an electric current?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Electric current is the flow of electric charge (usually electrons) through a conductor, measured in amperes (A).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a simple circuit. Calculate the current.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="80" y="20" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="90" y="30" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistor -->
+                <rect x="80" y="80" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M100,40 L100,80" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,90 L100,120 L80,120 L80,60" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="110" y="30" font-family="Arial" font-size="8">6 V</text>
+                <text x="110" y="85" font-family="Arial" font-size="8">3 Ω</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Ohm’s Law: V = IR.</p>
+            <p>Voltage = 6 V, resistance = 3 Ω.</p>
+            <p>Current (I) = V / R = 6 / 3 = 2 A.</p>
+            <p><strong>Final Answer:</strong> 2 A.</p>
+        `
+    },
+    {
+        questionText: "What is the unit of resistance?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The unit of resistance is the ohm (Ω).</p>
+        `
+    },
+    {
+        questionText: "Calculate the resistance of a component with a voltage of 12 V and a current of 4 A.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Ohm’s Law: V = IR.</p>
+            <p>Voltage = 12 V, current = 4 A.</p>
+            <p>Resistance (R) = V / I = 12 / 4 = 3 Ω.</p>
+            <p><strong>Final Answer:</strong> 3 Ω.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a series circuit. Calculate the total resistance.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistors -->
+                <rect x="60" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <rect x="120" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L60,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,70 L120,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M160,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="80" y="55" font-family="Arial" font-size="8">2 Ω</text>
+                <text x="140" y="55" font-family="Arial" font-size="8">3 Ω</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In a series circuit, total resistance = R₁ + R₂.</p>
+            <p>R₁ = 2 Ω, R₂ = 3 Ω.</p>
+            <p>Total resistance = 2 + 3 = 5 Ω.</p>
+            <p><strong>Final Answer:</strong> 5 Ω.</p>
+        `
+    },
+    {
+        questionText: "Explain the difference between series and parallel circuits.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In a series circuit, components are connected end-to-end, so the same current flows through all components, but voltage splits. In a parallel circuit, components are connected across the same voltage, so the voltage is the same, but current splits.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a parallel circuit. Calculate the total resistance.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistors -->
+                <rect x="60" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <rect x="60" y="100" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L60,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M40,110 L60,110" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,70 L120,70 L120,110 L100,110" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L180,70 L180,110 L120,110" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M40,70 L40,110" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="80" y="55" font-family="Arial" font-size="8">4 Ω</text>
+                <text x="80" y="95" font-family="Arial" font-size="8">6 Ω</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>In a parallel circuit, 1/R_total = 1/R₁ + 1/R₂.</p>
+            <p>R₁ = 4 Ω, R₂ = 6 Ω.</p>
+            <p>1/R_total = 1/4 + 1/6 = 3/12 + 2/12 = 5/12.</p>
+            <p>R_total = 12/5 = 2.4 Ω.</p>
+            <p><strong>Final Answer:</strong> 2.4 Ω.</p>
+        `
+    },
+    {
+        questionText: "What is potential difference?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Potential difference (voltage) is the energy transferred per unit charge, measured in volts (V).</p>
+        `
+    },
+    {
+        questionText: "Calculate the potential difference across a 5 Ω resistor with a current of 2 A.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Ohm’s Law: V = IR.</p>
+            <p>Current = 2 A, resistance = 5 Ω.</p>
+            <p>Voltage = 2 × 5 = 10 V.</p>
+            <p><strong>Final Answer:</strong> 10 V.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows an experiment to measure resistance. Describe the method.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistor -->
+                <rect x="80" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Ammeter -->
+                <circle cx="150" cy="65" r="10" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <text x="150" y="65" font-family="Arial" font-size="8" text-anchor="middle">A</text>
+                <!-- Voltmeter -->
+                <circle cx="100" cy="100" r="10" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <text x="100" y="100" font-family="Arial" font-size="8" text-anchor="middle">V</text>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L140,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M160,70 L180,70 L180,100 L120,100" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M80,100 L90,100" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M110,100 L120,100" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Set up the circuit with a battery, resistor, ammeter in series, and voltmeter in parallel with the resistor.</p>
+            <p>2. Switch on the circuit and record the current (I) from the ammeter and voltage (V) from the voltmeter.</p>
+            <p>3. Calculate resistance using Ohm’s Law: R = V / I.</p>
+            <p>4. Repeat for different voltages to ensure accuracy.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a fuse in a circuit?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A fuse is a safety device that melts and breaks the circuit if the current is too high, preventing overheating or fire.</p>
+        `
+    },
+    {
+        questionText: "Explain why a wire heats up when current flows through it.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Electrons collide with ions in the wire, transferring energy to the ions, which increases their vibration and raises the wire’s temperature.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a graph of current against voltage for a resistor. Describe the relationship.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <path d="M20,130 L180,130" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M20,130 L20,20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Graph line -->
+                <path d="M20,130 L100,50" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="190" y="130" font-family="Arial" font-size="8">Voltage (V)</text>
+                <text x="10" y="20" font-family="Arial" font-size="8">Current (A)</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The graph is a straight line through the origin, showing that current is directly proportional to voltage, obeying Ohm’s Law (V = IR).</p>
+        `
+    },
+    {
+        questionText: "What is meant by the term ‘ohmic conductor’?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An ohmic conductor is a component where the current is directly proportional to the voltage across it, following Ohm’s Law, with constant resistance.</p>
+        `
+    },
+    {
+        questionText: "Describe how to measure the specific heat capacity of a metal.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Measure the mass of the metal block (kg).</p>
+            <p>2. Connect a heater to the block and measure the power (W).</p>
+            <p>3. Record the initial temperature and heat for a set time, measuring the final temperature.</p>
+            <p>4. Calculate energy supplied: energy = power × time.</p>
+            <p>5. Use: energy = mass × specific heat capacity × temperature change to find specific heat capacity.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a force diagram for a car. Calculate the resultant force.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Car -->
+                <rect x="60" y="40" width="80" height="40" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Forward force -->
+                <path d="M140,60 L180,60" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M175,55 L180,60 L175,65" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="160" y="50" font-family="Arial" font-size="8">1000 N</text>
+                <!-- Backward force -->
+                <path d="M60,60 L20,60" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M25,55 L20,60 L25,65" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="40" y="50" font-family="Arial" font-size="8">400 N</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Resultant force = forward force - backward force.</p>
+            <p>Forward = 1000 N, backward = 400 N.</p>
+            <p>Resultant = 1000 - 400 = 600 N forward.</p>
+            <p><strong>Final Answer:</strong> 600 N forward.</p>
+        `
+    },
+    {
+        questionText: "What is the formula for pressure in a gas?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Pressure = force / area (P = F / A).</p>
+        `
+    },
+    {
+        questionText: "Calculate the pressure in a gas container with a force of 200 N over an area of 0.04 m².",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Pressure = force / area.</p>
+            <p>Force = 200 N, area = 0.04 m².</p>
+            <p>Pressure = 200 / 0.04 = 5000 Pa.</p>
+            <p><strong>Final Answer:</strong> 5000 Pa.</p>
+        `
+    },
+    {
+        questionText: "Explain how to improve the accuracy of a density measurement experiment.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Use a more precise balance for mass measurement.</p>
+            <p>2. Use a measuring cylinder with smaller graduations for volume.</p>
+            <p>3. Repeat measurements and calculate an average to reduce random errors.</p>
+            <p>4. Ensure the object is fully submerged and no air bubbles are trapped when measuring volume.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a variable resistor. Explain how changing the resistance affects the current.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Variable resistor -->
+                <rect x="80" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <path d="M100,55 L100,75" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Label -->
+                <text x="100" y="50" font-family="Arial" font-size="8" text-anchor="middle">Variable Resistor</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>According to Ohm’s Law (V = IR), for a constant voltage, increasing the resistance decreases the current, and decreasing the resistance increases the current.</p>
+        `
+    },
+    {
+        questionText: "What is meant by ‘work done’ in physics?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Work done is the energy transferred when a force moves an object over a distance, calculated as work = force × distance (W = F × d), measured in joules (J).</p>
+        `
+    },
+    {
+        questionText: "Calculate the work done when a 20 N force moves an object 5 m.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Work = force × distance.</p>
+            <p>Force = 20 N, distance = 5 m.</p>
+            <p>Work = 20 × 5 = 100 J.</p>
+            <p><strong>Final Answer:</strong> 100 J.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a graph of force against extension for a spring. Calculate the spring constant.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <path d="M20,130 L180,130" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M20,130 L20,20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Graph line -->
+                <path d="M20,130 L100,50" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="190" y="130" font-family="Arial" font-size="8">Extension (m)</text>
+                <text x="10" y="20" font-family="Arial" font-size="8">Force (N)</text>
+                <text x="100" y="140" font-family="Arial" font-size="8">0.2</text>
+                <text x="10" y="50" font-family="Arial" font-size="8">40</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Hooke’s Law: F = kx, where k is the spring constant.</p>
+            <p>From graph: force = 40 N, extension = 0.2 m.</p>
+            <p>k = F / x = 40 / 0.2 = 200 N/m.</p>
+            <p><strong>Final Answer:</strong> 200 N/m.</p>
+        `
+    },
+    {
+        questionText: "What is Hooke’s Law?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Hooke’s Law states that the force applied to a spring is directly proportional to its extension, provided the limit of proportionality is not exceeded. F = kx, where k is the spring constant.</p>
+        `
+    },
+    {
+        questionText: "Describe an experiment to investigate the effect of mass on acceleration.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Set up a trolley on a frictionless track connected to a fixed force (e.g., a hanging mass over a pulley).</p>
+            <p>2. Add different masses to the trolley and measure the acceleration using a motion sensor.</p>
+            <p>3. Keep the pulling force constant.</p>
+            <p>4. Plot a graph of acceleration against 1/mass to show inverse proportionality (F = ma).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a bulb. Explain why the bulb lights up.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Bulb -->
+                <circle cx="100" cy="70" r="10" fill="#FFFFE0" stroke="#000" stroke-width="1"/>
+                <path d="M95,70 L105,70 M97,67 L103,73" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L90,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M110,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The battery provides a potential difference, causing electrons to flow through the circuit. The current passes through the filament in the bulb, heating it and causing it to glow.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of doubling the length of a wire on its resistance?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Resistance is directly proportional to the length of a wire. Doubling the length doubles the resistance.</p>
+        `
+    },
+    {
+        questionText: "Calculate the acceleration of a 2 kg object with a force of 10 N, accounting for 4 N of friction.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Resultant force = applied force - friction = 10 N - 4 N = 6 N.</p>
+            <p>Use F = ma: 6 = 2 × a.</p>
+            <p>Acceleration = 6 / 2 = 3 m/s².</p>
+            <p><strong>Final Answer:</strong> 3 m/s².</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a pressure experiment. Explain the results.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Gas syringe -->
+                <rect x="20" y="50" width="100" height="20" fill="none" stroke="#000" stroke-width="2"/>
+                <rect x="100" y="50" width="20" height="20" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Weights -->
+                <rect x="90" y="30" width="40" height="20" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <text x="110" y="25" font-family="Arial" font-size="8">Weights</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Adding weights increases the force on the gas, reducing its volume. According to Boyle’s Law, pressure increases as volume decreases (P ∝ 1/V), assuming constant temperature.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a variable resistor in a circuit?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A variable resistor allows the resistance in a circuit to be adjusted, controlling the current or voltage across components.</p>
+        `
+    },
+    {
+        questionText: "Calculate the energy transferred in a circuit with a current of 3 A and voltage of 12 V for 10 s.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Energy = power × time, where power = voltage × current.</p>
+            <p>Power = 12 × 3 = 36 W.</p>
+            <p>Energy = 36 × 10 = 360 J.</p>
+            <p><strong>Final Answer:</strong> 360 J.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a motion sensor experiment. Describe how to measure acceleration.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Track -->
+                <rect x="20" y="80" width="160" height="10" fill="#8B4513" stroke="#000" stroke-width="1"/>
+                <!-- Trolley -->
+                <rect x="50" y="60" width="40" height="20" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Motion sensor -->
+                <rect x="150" y="50" width="20" height="20" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <text x="160" y="45" font-family="Arial" font-size="8">Sensor</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Set up a trolley on a track with a motion sensor connected to a computer.</p>
+            <p>2. Release the trolley and record velocity-time data.</p>
+            <p>3. Plot a velocity-time graph and calculate the gradient to find acceleration.</p>
+        `
+    },
+    {
+        questionText: "What is the difference between scalar and vector quantities?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Scalar quantities have magnitude only (e.g., speed, mass). Vector quantities have magnitude and direction (e.g., velocity, force).</p>
+        `
+    },
+    {
+        questionText: "Calculate the momentum of a 5 kg object moving at 10 m/s.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Momentum = mass × velocity.</p>
+            <p>Mass = 5 kg, velocity = 10 m/s.</p>
+            <p>Momentum = 5 × 10 = 50 kg m/s.</p>
+            <p><strong>Final Answer:</strong> 50 kg m/s.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a switch. Explain the effect of opening the switch.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistor -->
+                <rect x="80" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Switch (open) -->
+                <path d="M140,70 L150,60" fill="none" stroke="#000" stroke-width="2"/>
+                <circle cx="140" cy="70" r="3" fill="#000"/>
+                <circle cx="150" cy="60" r="3" fill="#000"/>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L140,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M150,60 L180,60 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Opening the switch breaks the circuit, stopping the flow of current. No charge can flow, so components like resistors or bulbs stop functioning.</p>
+        `
+    },
+    {
+        questionText: "What is the law of conservation of momentum?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The law of conservation of momentum states that the total momentum before a collision equals the total momentum after, provided no external forces act.</p>
+        `
+    },
+    {
+        questionText: "Calculate the force required to accelerate a 4 kg object at 3 m/s².",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use F = ma.</p>
+            <p>Mass = 4 kg, acceleration = 3 m/s².</p>
+            <p>Force = 4 × 3 = 12 N.</p>
+            <p><strong>Final Answer:</strong> 12 N.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with two resistors in series. Calculate the current.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistors -->
+                <rect x="60" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <rect x="120" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L60,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,70 L120,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M160,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="50" y="55" font-family="Arial" font-size="8">9 V</text>
+                <text x="80" y="55" font-family="Arial" font-size="8">2 Ω</text>
+                <text x="140" y="55" font-family="Arial" font-size="8">4 Ω</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Total resistance = 2 Ω + 4 Ω = 6 Ω.</p>
+            <p>Use Ohm’s Law: V = IR.</p>
+            <p>Voltage = 9 V, resistance = 6 Ω.</p>
+            <p>Current = V / R = 9 / 6 = 1.5 A.</p>
+            <p><strong>Final Answer:</strong> 1.5 A.</p>
+        `
+    },
+    {
+        questionText: "Explain why parallel circuits are used in household wiring.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Parallel circuits ensure each appliance receives the same voltage and can operate independently. If one appliance fails, others continue to work, unlike in series circuits.</p>
+        `
+    },
+    {
+        questionText: "What is the role of an ammeter in a circuit?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An ammeter measures the electric current flowing through a circuit, connected in series with the component.</p>
+        `
+    },
+    {
+        questionText: "Calculate the density of a liquid if 0.02 m³ has a mass of 24 kg.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Density = mass / volume.</p>
+            <p>Mass = 24 kg, volume = 0.02 m³.</p>
+            <p>Density = 24 / 0.02 = 1200 kg/m³.</p>
+            <p><strong>Final Answer:</strong> 1200 kg/m³.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a velocity-time graph. Calculate the distance traveled.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <path d="M20,130 L180,130" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M20,130 L20,20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Graph line -->
+                <path d="M20,130 L20,50 L100,50" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="190" y="130" font-family="Arial" font-size="8">Time (s)</text>
+                <text x="10" y="20" font-family="Arial" font-size="8">Velocity (m/s)</text>
+                <text x="100" y="140" font-family="Arial" font-size="8">8</text>
+                <text x="10" y="50" font-family="Arial" font-size="8">20</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Distance = area under velocity-time graph.</p>
+            <p>Graph shows constant velocity of 20 m/s for 8 s.</p>
+            <p>Distance = 20 × 8 = 160 m.</p>
+            <p><strong>Final Answer:</strong> 160 m.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of temperature on the resistance of a metal wire?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing the temperature of a metal wire increases its resistance because the ions vibrate more, causing more collisions with electrons.</p>
+        `
+    },
+    {
+        questionText: "Calculate the extension of a spring with a spring constant of 100 N/m when a 20 N force is applied.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Hooke’s Law: F = kx.</p>
+            <p>Force = 20 N, spring constant = 100 N/m.</p>
+            <p>Extension (x) = F / k = 20 / 100 = 0.2 m.</p>
+            <p><strong>Final Answer:</strong> 0.2 m.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a practical setup for measuring density. Identify a source of error.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Measuring cylinder -->
+                <rect x="80" y="20" width="40" height="100" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Water -->
+                <rect x="80" y="60" width="40" height="60" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <!-- Object -->
+                <circle cx="100" cy="100" r="10" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Labels -->
+                <text x="130" y="80" font-family="Arial" font-size="8">Water</text>
+                <text x="130" y="100" font-family="Arial" font-size="8">Object</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A source of error is air bubbles trapped around the object, which would increase the measured volume, leading to a lower calculated density.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a voltmeter in a circuit?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A voltmeter measures the potential difference (voltage) across a component, connected in parallel with the component.</p>
+        `
+    },
+    {
+        questionText: "Calculate the power in a circuit with a current of 5 A and a voltage of 10 V.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Power = voltage × current.</p>
+            <p>Voltage = 10 V, current = 5 A.</p>
+            <p>Power = 10 × 5 = 50 W.</p>
+            <p><strong>Final Answer:</strong> 50 W.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a force acting at an angle. Calculate the horizontal component.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Object -->
+                <rect x="80" y="40" width="40" height="40" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Force arrow -->
+                <path d="M80,60 L120,20" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M115,25 L120,20 L115,15" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="100" y="15" font-family="Arial" font-size="8">50 N</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Horizontal component = force × cos(θ).</p>
+            <p>Assume angle = 45° (from diagram), force = 50 N.</p>
+            <p>Horizontal = 50 × cos(45°) = 50 × 0.707 ≈ 35.4 N.</p>
+            <p><strong>Final Answer:</strong> 35.4 N.</p>
+        `
+    },
+    {
+        questionText: "What is the difference between direct and alternating current?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Direct current (DC) flows in one direction, e.g., from a battery. Alternating current (AC) reverses direction periodically, e.g., in mains electricity.</p>
+        `
+    },
+    {
+        questionText: "Calculate the time taken for a 100 N force to do 500 J of work.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Work = force × distance, and power = work / time.</p>
+            <p>Assume constant force and distance; use power = force × velocity.</p>
+            <p>Without velocity, assume power context: time = work / power.</p>
+            <p>Need more data; typical assumption yields no direct answer without velocity.</p>
+            <p><strong>Final Answer:</strong> Insufficient data (requires velocity or power).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a diode. Explain the role of the diode.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Diode -->
+                <path d="M80,70 L100,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,60 L100,80" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M95,65 L100,70 L95,75" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A diode allows current to flow in one direction only, preventing reverse current that could damage components.</p>
+        `
+    },
+    {
+        questionText: "What is the formula for kinetic energy?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Kinetic energy = ½ × mass × velocity² (KE = ½mv²).</p>
+        `
+    },
+    {
+        questionText: "Calculate the kinetic energy of a 2 kg object moving at 5 m/s.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Kinetic energy = ½ × mass × velocity².</p>
+            <p>Mass = 2 kg, velocity = 5 m/s.</p>
+            <p>KE = ½ × 2 × 5² = 1 × 25 = 25 J.</p>
+            <p><strong>Final Answer:</strong> 25 J.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a practical setup for measuring current. Evaluate the setup.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Resistor -->
+                <rect x="80" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Ammeter -->
+                <circle cx="150" cy="65" r="10" fill="#ADD8E6" stroke="#000" stroke-width="1"/>
+                <text x="150" y="65" font-family="Arial" font-size="8" text-anchor="middle">A</text>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L140,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M160,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The setup is correct: the ammeter is in series with the resistor, allowing accurate current measurement. However, no voltmeter is included to measure voltage, limiting the ability to calculate resistance. Adding a voltmeter in parallel would improve the experiment.</p>
+        `
+    },
+    {
+        questionText: "What is the effect of increasing the cross-sectional area of a wire on its resistance?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Increasing the cross-sectional area of a wire decreases its resistance, as resistance is inversely proportional to area.</p>
+        `
+    },
+    {
+        questionText: "Calculate the resultant force on an object with three forces: 10 N north, 15 N south, 5 N north.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Combine forces in the same direction and subtract opposing forces.</p>
+            <p>North: 10 N + 5 N = 15 N.</p>
+            <p>South: 15 N.</p>
+            <p>Resultant = 15 N (north) - 15 N (south) = 0 N.</p>
+            <p><strong>Final Answer:</strong> 0 N.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a spring experiment. Describe how to find the spring constant.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Spring -->
+                <path d="M100,20 L100,40 L90,50 L110,60 L90,70 L110,80 L100,90 L100,110" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Weight -->
+                <rect x="90" y="110" width="20" height="20" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Support -->
+                <rect x="90" y="10" width="20" height="10" fill="#8B4513" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Hang a known mass on the spring and measure the extension.</p>
+            <p>2. Calculate the force: force = mass × g (g = 9.8 N/kg).</p>
+            <p>3. Use Hooke’s Law: F = kx, to find k = F / x.</p>
+            <p>4. Repeat with different masses to confirm consistency.</p>
+        `
+    },
+    {
+        questionText: "What is the unit of power?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The unit of power is the watt (W).</p>
+        `
+    },
+    {
+        questionText: "Calculate the distance traveled by an object moving at 8 m/s for 20 s.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Distance = speed × time.</p>
+            <p>Speed = 8 m/s, time = 20 s.</p>
+            <p>Distance = 8 × 20 = 160 m.</p>
+            <p><strong>Final Answer:</strong> 160 m.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a motor. Explain why the motor rotates.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Motor -->
+                <circle cx="100" cy="70" r="15" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <text x="100" y="70" font-family="Arial" font-size="8" text-anchor="middle">M</text>
+                <!-- Wires -->
+                <path d="M40,70 L85,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M115,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Current flows through the motor’s coil in a magnetic field, producing a force (motor effect). This force causes the coil to rotate, driving the motor.</p>
+        `
+    },
+    {
+        questionText: "What is the formula for pressure in a fluid?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Pressure = height × density × gravitational field strength (P = hρg).</p>
+        `
+    },
+    {
+        questionText: "Calculate the pressure at a depth of 10 m in water (density = 1000 kg/m³, g = 9.8 N/kg).",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Pressure = hρg.</p>
+            <p>Height = 10 m, density = 1000 kg/m³, g = 9.8 N/kg.</p>
+            <p>Pressure = 10 × 1000 × 9.8 = 98,000 Pa.</p>
+            <p><strong>Final Answer:</strong> 98,000 Pa.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a thermistor. Explain how temperature affects the circuit.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Thermistor -->
+                <rect x="80" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <path d="M90,55 L110,75" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Label -->
+                <text x="100" y="50" font-family="Arial" font-size="8" text-anchor="middle">Thermistor</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A thermistor’s resistance decreases as temperature increases. In the circuit, higher temperatures reduce resistance, increasing the current (by Ohm’s Law, V = IR).</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a circuit breaker?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A circuit breaker automatically cuts off the circuit if the current is too high, protecting the circuit from damage or fire.</p>
+        `
+    },    
+    {
+        questionText: "Calculate the velocity of an object that travels 50 m in 10 s.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Velocity = distance / time.</p>
+            <p>Distance = 50 m, time = 10 s.</p>
+            <p>Velocity = 50 / 10 = 5 m/s.</p>
+            <p><strong>Final Answer:</strong> 5 m/s.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a force applied to a lever. Calculate the moment.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pivot -->
+                <circle cx="50" cy="50" r="5" fill="#000"/>
+                <!-- Lever arm -->
+                <rect x="50" y="45" width="100" height="10" fill="#8B4513" stroke="#000" stroke-width="1"/>
+                <!-- Force arrow -->
+                <path d="M150,50 L150,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M145,65 L150,70 L155,65" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="160" y="60" font-family="Arial" font-size="8">20 N</text>
+                <text x="100" y="40" font-family="Arial" font-size="8">0.5 m</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Moment = force × perpendicular distance from pivot.</p>
+            <p>Force = 20 N, distance = 0.5 m.</p>
+            <p>Moment = 20 × 0.5 = 10 Nm.</p>
+            <p><strong>Final Answer:</strong> 10 Nm.</p>
+        `
+    },
+    {
+        questionText: "What is the principle of moments?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The principle of moments states that for an object in equilibrium, the sum of clockwise moments about a pivot equals the sum of anticlockwise moments.</p>
+        `
+    },
+    {
+        questionText: "Describe an experiment to investigate the relationship between force and extension for a spring.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Hang a spring from a clamp and measure its unstretched length.</p>
+            <p>2. Add a known mass (e.g., 100 g) and measure the new length to calculate extension.</p>
+            <p>3. Repeat for increasing masses, recording force (mass × 9.8) and extension.</p>
+            <p>4. Plot a graph of force against extension; a straight line through the origin confirms Hooke’s Law.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with a light-dependent resistor (LDR). Explain how light intensity affects the circuit.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- LDR -->
+                <rect x="80" y="60" width="40" height="10" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <path d="M90,55 L110,75" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M85,50 L95,40 M105,40 L115,50" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L80,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L180,70 L180,100 L20,100 L20,70" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="100" y="50" font-family="Arial" font-size="8" text-anchor="middle">LDR</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An LDR’s resistance decreases as light intensity increases. In the circuit, higher light intensity reduces resistance, increasing the current (by Ohm’s Law, V = IR).</p>
+        `
+    },
+    {
+        questionText: "Calculate the specific heat capacity of a 0.2 kg metal heated with 4000 J, raising its temperature by 50 °C.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use the formula: energy = mass × specific heat capacity × temperature change.</p>
+            <p>Energy = 4000 J, mass = 0.2 kg, temperature change = 50 °C.</p>
+            <p>4000 = 0.2 × c × 50.</p>
+            <p>c = 4000 / (0.2 × 50) = 400 J/kg°C.</p>
+            <p><strong>Final Answer:</strong> 400 J/kg°C.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a trolley experiment. Explain how to measure the resultant force.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Track -->
+                <rect x="20" y="80" width="160" height="10" fill="#8B4513" stroke="#000" stroke-width="1"/>
+                <!-- Trolley -->
+                <rect x="50" y="60" width="40" height="20" fill="#4682B4" stroke="#000" stroke-width="1"/>
+                <!-- Pulley and weight -->
+                <circle cx="180" cy="80" r="5" fill="#000"/>
+                <rect x="175" y="85" width="10" height="15" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- String -->
+                <path d="M90,70 L180,70 L180,85" fill="none" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>1. Measure the mass of the hanging weight and calculate the force (force = mass × 9.8).</p>
+            <p>2. This force pulls the trolley, assuming no friction.</p>
+            <p>3. If friction is present, measure it separately (e.g., force to move trolley at constant speed).</p>
+            <p>4. Resultant force = pulling force - frictional force.</p>
+        `
+    },
+    {
+        questionText: "Explain why a thicker wire has lower resistance than a thinner wire.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A thicker wire has a larger cross-sectional area, providing more space for electrons to flow, reducing collisions with ions and lowering resistance.</p>
+        `
+    },
+    
+    {
+        questionText: "What is the formula for resultant force?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Resultant force is the vector sum of all forces acting on an object, calculated by adding forces in the same direction and subtracting those in opposite directions.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a circuit with two bulbs in parallel. Calculate the total current.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Battery -->
+                <rect x="20" y="50" width="10" height="40" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <rect x="30" y="60" width="10" height="20" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                <!-- Bulbs -->
+                <circle cx="80" cy="70" r="10" fill="#FFFFE0" stroke="#000" stroke-width="1"/>
+                <path d="M75,70 L85,70 M77,67 L83,73" fill="none" stroke="#000" stroke-width="1"/>
+                <circle cx="80" cy="110" r="10" fill="#FFFFE0" stroke="#000" stroke-width="1"/>
+                <path d="M75,110 L85,110 M77,107 L83,113" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Wires -->
+                <path d="M40,70 L60,70" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M40,110 L60,110" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M100,70 L120,70 L120,110 L100,110" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M120,70 L180,70 L180,110 L120,110" fill="none" stroke="#000" stroke-width="2"/>
+                <path d="M40,70 L40,110" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="50" y="50" font-family="Arial" font-size="8">6 V</text>
+                <text x="90" y="65" font-family="Arial" font-size="8">3 Ω</text>
+                <text x="90" y="105" font-family="Arial" font-size="8">3 Ω</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Each bulb has resistance = 3 Ω. In parallel, 1/R_total = 1/3 + 1/3 = 2/3.</p>
+            <p>R_total = 3/2 = 1.5 Ω.</p>
+            <p>Use Ohm’s Law: I = V / R.</p>
+            <p>Voltage = 6 V, R_total = 1.5 Ω.</p>
+            <p>Current = 6 / 1.5 = 4 A.</p>
+            <p><strong>Final Answer:</strong> 4 A.</p>
+        `
+    },
+    {
+        questionText: "Calculate the force needed to give a 3 kg object an acceleration of 4 m/s².",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use F = ma.</p>
+            <p>Mass = 3 kg, acceleration = 4 m/s².</p>
+            <p>Force = 3 × 4 = 12 N.</p>
+            <p><strong>Final Answer:</strong> 12 N.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a pressure-volume graph for a gas. Describe the relationship.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <path d="M20,130 L180,130" fill="none" stroke="#000" stroke-width="1"/>
+                <path d="M20,130 L20,20" fill="none" stroke="#000" stroke-width="1"/>
+                <!-- Graph curve (hyperbola) -->
+                <path d="M20,20 Q100,100 180,130" fill="none" stroke="#FF0000" stroke-width="2"/>
+                <!-- Labels -->
+                <text x="190" y="130" font-family="Arial" font-size="8">Volume (m³)</text>
+                <text x="10" y="20" font-family="Arial" font-size="8">Pressure (Pa)</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The graph shows an inverse relationship, following Boyle’s Law (P ∝ 1/V). As volume increases, pressure decreases, and their product remains constant at constant temperature.</p>
+        `
+    },
+    {
+        questionText: "What is the unit of momentum?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The unit of momentum is kg m/s.</p>
+        `
+    },
+    {
+        questionText: "Calculate the resistance of a wire with a current of 0.5 A and a voltage of 10 V.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Use Ohm’s Law: V = IR.</p>
+            <p>Voltage = 10 V, current = 0.5 A.</p>
+            <p>Resistance = V / I = 10 / 0.5 = 20 Ω.</p>
+            <p><strong>Final Answer:</strong> 20 Ω.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a setup for measuring specific heat capacity. Identify a source of error.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Metal block -->
+                <rect x="80" y="60" width="40" height="40" fill="#A9A9A9" stroke="#000" stroke-width="1"/>
+                <!-- Heater -->
+                <rect x="90" y="50" width="20" height="10" fill="#FF4500" stroke="#000" stroke-width="1"/>
+                <!-- Thermometer -->
+                <line x1="130" y1="50" x2="130" y2="80" stroke="#000" stroke-width="2"/>
+                <circle cx="130" cy="50" r="5" fill="#ADD8E6"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A source of error is heat loss to the surroundings, which reduces the energy used to heat the metal, leading to an overestimate of the specific heat capacity.</p>
+        `
+    },
+    {
+        questionText: "Explain why a car’s brakes get hot when used.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Friction between the brake pads and the wheel converts kinetic energy into thermal energy, heating the brakes.</p>
+        `
+    }
+];
+
+
+
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none'; // Hide answer when new question loads
+            answerAreaEl.innerHTML = ''; // Clear previous answer
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            // Ensure we don't pick the same question twice in a row if there's more than one question
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0; // Only one question, so always pick it
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        // Event Listeners
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        // Initial Load
+        loadNextQuestion();
+    </script>
+</body>
+</html>
