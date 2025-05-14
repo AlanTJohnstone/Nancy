@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nancy's Biology II Revision</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            width: 100%;
+            overflow: hidden;
+        }
+        .diagram-container svg {
+            max-width: 100%;
+            max-height: 300px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            object-fit: contain;
+        }
+        .answer-area {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #007bff;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            display: none;
+        }
+        .buttons-area {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#next-button {
+            background-color: #28a745;
+        }
+        button#next-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nancy’s Biology II Revision</h1>
+
+        <div class="question-area">
+            <div class="question-text" id="question-text">Loading question...</div>
+            <div class="diagram-container" id="diagram-container"></div>
+        </div>
+
+        <div class="answer-area" id="answer-area"></div>
+
+        <div class="buttons-area">
+            <button id="answer-button">Answer</button>
+            <button id="next-button">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+       const questions = [
+    {
+        questionText: "What is the role of decomposers in an ecosystem?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Decomposers, such as bacteria and fungi, break down dead organic matter and waste, releasing nutrients like carbon and nitrogen back into the soil. This recycles nutrients for use by producers, maintaining ecosystem balance.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a quadrat used to sample plants in a field. What is the purpose of using a quadrat?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Quadrat frame -->
+                <rect x="50" y="50" width="100" height="100" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Plants inside quadrat -->
+                <circle cx="80" cy="80" r="5" fill="#27AE60"/>
+                <circle cx="100" cy="90" r="5" fill="#27AE60"/>
+                <circle cx="120" cy="110" r="5" fill="#27AE60"/>
+                <text x="90" y="40" font-family="Arial" font-size="8">Quadrat</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A quadrat is used to estimate the population size or distribution of organisms, such as plants, in a specific area. It provides a standardized sample to calculate species density or frequency.</p>
+        `
+    },
+    {
+        questionText: "Define biodiversity.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Biodiversity is the variety of life in an ecosystem, including the number of different species, genetic variation within species, and diversity of habitats.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a food web. Identify one producer and one secondary consumer.",
+        svgDiagram: `
+            <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grass (Producer) -->
+                <rect x="50" y="150" width="50" height="20" fill="#27AE60"/>
+                <text x="55" y="165" font-family="Arial" font-size="8">Grass</text>
+                <!-- Rabbit -->
+                <rect x="120" y="100" width="50" height="20" fill="#F5B7B1"/>
+                <text x="125" y="115" font-family="Arial" font-size="8">Rabbit</text>
+                <!-- Fox -->
+                <rect x="200" y="50" width="50" height="20" fill="#D35400"/>
+                <text x="205" y="65" font-family="Arial" font-size="8">Fox</text>
+                <!-- Arrows -->
+                <path d="M100,150 L120,120" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <path d="M170,100 L200,70" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L9,3 Z" fill="#000"/>
+                    </marker>
+                </defs>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>Producer:</strong> Grass</li>
+                <li><strong>Secondary Consumer:</strong> Fox</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Explain how deforestation affects biodiversity.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Deforestation reduces biodiversity by destroying habitats, leading to loss of species that depend on forests. It disrupts food chains and reduces genetic diversity, as populations decline or become isolated.</p>
+        `
+    },
+    {
+        questionText: "What is meant by a 'stable community' in an ecosystem?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A stable community is an ecosystem where populations of species remain relatively constant over time, with balanced interactions like predation and competition, and the ability to recover from disturbances.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a microscope slide. Identify parts A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Slide (A) -->
+                <rect x="50" y="100" width="100" height="20" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <text x="45" y="110" font-family="Arial" font-size="8">A</text>
+                <!-- Coverslip (B) -->
+                <rect x="60" y="90" width="80" height="10" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <text x="55" y="95" font-family="Arial" font-size="8">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Slide</li>
+                <li><strong>B:</strong> Coverslip</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Describe how to calculate the population size of daisies using a quadrat.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Place quadrats randomly in the field. Count the number of daisies in each quadrat. Calculate the average number of daisies per quadrat. Multiply by the total number of quadrats that fit in the field to estimate the total population.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a control in a biological experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A control provides a baseline for comparison, ensuring that any observed effects are due to the variable being tested, not other factors.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a pyramid of biomass. Explain why the biomass decreases at each trophic level.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Producers -->
+                <rect x="20" y="150" width="160" height="40" fill="#27AE60"/>
+                <text x="80" y="170" font-family="Arial" font-size="8">Producers</text>
+                <!-- Primary Consumers -->
+                <rect x="40" y="100" width="120" height="30" fill="#F5B7B1"/>
+                <text x="80" y="115" font-family="Arial" font-size="8">Primary Consumers</text>
+                <!-- Secondary Consumers -->
+                <rect x="60" y="60" width="80" height="20" fill="#D35400"/>
+                <text x="80" y="70" font-family="Arial" font-size="8">Secondary Consumers</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Biomass decreases because energy is lost at each trophic level through respiration, heat, and waste. Only about 10% of energy is transferred to the next level, reducing the biomass of organisms.</p>
+        `
+    },
+    {
+        questionText: "What is meant by 'genetic variation'?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Genetic variation refers to differences in the DNA sequences or alleles within a population, leading to diverse traits like eye color or height.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a DNA molecule. Identify parts A and B.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Sugar-phosphate backbone (A) -->
+                <rect x="50" y="20" width="20" height="260" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                <rect x="130" y="20" width="20" height="260" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                <text x="45" y="150" font-family="Arial" font-size="8">A</text>
+                <!-- Base pairs (B) -->
+                <rect x="70" y="100" width="60" height="10" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                <rect x="70" y="150" width="60" height="10" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                <text x="125" y="130" font-family="Arial" font-size="8">B</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <ul>
+                <li><strong>A:</strong> Sugar-phosphate backbone</li>
+                <li><strong>B:</strong> Base pairs</li>
+            </ul>
+        `
+    },
+    {
+        questionText: "Explain how natural selection leads to evolution.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Natural selection occurs when individuals with advantageous traits survive and reproduce more successfully. Over generations, these traits become more common, leading to evolutionary changes in the population.</p>
+        `
+    },
+    {
+        questionText: "What is a gene?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A gene is a segment of DNA that codes for a specific protein or trait, such as eye color or enzyme production.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a Punnett square for a monohybrid cross. What is the probability of offspring being homozygous recessive?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid -->
+                <rect x="50" y="50" width="100" height="100" fill="none" stroke="#000" stroke-width="1"/>
+                <line x1="100" y1="50" x2="100" y2="150" stroke="#000" stroke-width="1"/>
+                <line x1="50" y1="100" x2="150" y2="100" stroke="#000" stroke-width="1"/>
+                <!-- Labels -->
+                <text x="75" y="45" font-family="Arial" font-size="8">A</text>
+                <text x="125" y="45" font-family="Arial" font-size="8">a</text>
+                <text x="45" y="75" font-family="Arial" font-size="8">A</text>
+                <text x="45" y="125" font-family="Arial" font-size="8">a</text>
+                <!-- Genotypes -->
+                <text x="75" y="75" font-family="Arial" font-size="8">AA</text>
+                <text x="125" y="75" font-family="Arial" font-size="8">Aa</text>
+                <text x="75" y="125" font-family="Arial" font-size="8">Aa</text>
+                <text x="125" y="125" font-family="Arial" font-size="8">aa</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The Punnett square shows one out of four outcomes as 'aa' (homozygous recessive). The probability is 1/4 or 25%.</p>
+        `
+    },
+    {
+        questionText: "What is selective breeding?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Selective breeding is the process of choosing organisms with desirable traits to reproduce, increasing the frequency of those traits in future generations, e.g., breeding cows for higher milk yield.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a bacterial cell. Identify part A.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cell body -->
+                <rect x="50" y="20" width="100" height="60" rx="20" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                <!-- Plasmid (A) -->
+                <circle cx="100" cy="50" r="5" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                <text x="95" y="45" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Plasmid</p>
+        `
+    },
+    {
+        questionText: "Explain why antibiotic resistance is a global challenge.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Antibiotic resistance occurs when bacteria evolve to survive antibiotic treatment, making infections harder to treat. Overuse of antibiotics accelerates this, leading to increased mortality and healthcare costs worldwide.</p>
+        `
+    },
+    {
+        questionText: "What is the role of white blood cells in preventing disease?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>White blood cells defend the body by engulfing pathogens (phagocytosis), producing antibodies to neutralize them, or releasing antitoxins to counteract toxins.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a transect line. Explain how it is used to study ecosystems.",
+        svgDiagram: `
+            <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Transect line -->
+                <line x1="20" y1="50" x2="280" y2="50" stroke="#000" stroke-width="2"/>
+                <!-- Sampling points -->
+                <circle cx="50" cy="50" r="5" fill="#27AE60"/>
+                <circle cx="150" cy="50" r="5" fill="#27AE60"/>
+                <circle cx="250" cy="50" r="5" fill="#27AE60"/>
+                <text x="20" y="40" font-family="Arial" font-size="8">Transect</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A transect line is placed across an ecosystem, and organisms are sampled at regular intervals along it. This helps study changes in species distribution, e.g., across a gradient like a forest to a field.</p>
+        `
+    },
+    {
+        questionText: "What is a pathogen?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A pathogen is a microorganism, such as a virus, bacterium, or fungus, that causes disease in its host.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a test for starch. What color indicates a positive result?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Test tube -->
+                <rect x="80" y="50" width="40" height="100" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="80" y="100" width="40" height="50" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <text x="70" y="40" font-family="Arial" font-size="8">Test tube</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A positive result for starch is indicated by a blue-black color when iodine solution is added.</p>
+        `
+    },
+    {
+        questionText: "Explain how vaccination prevents disease.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Vaccination introduces a weakened or inactive pathogen, stimulating the immune system to produce antibodies and memory cells. This enables a faster response if the pathogen is encountered again, preventing disease.</p>
+        `
+    },
+    {
+        questionText: "What is the greenhouse effect?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The greenhouse effect is the trapping of heat in the Earth’s atmosphere by gases like carbon dioxide and methane, which absorb infrared radiation, leading to global warming.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a genetic cross. What is the genotype of the offspring labeled A?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid -->
+                <rect x="50" y="50" width="100" height="100" fill="none" stroke="#000" stroke-width="1"/>
+                <line x1="100" y1="50" x2="100" y2="150" stroke="#000" stroke-width="1"/>
+                <line x1="50" y1="100" x2="150" y2="100" stroke="#000" stroke-width="1"/>
+                <!-- Labels -->
+                <text x="75" y="45" font-family="Arial" font-size="8">B</text>
+                <text x="125" y="45" font-family="Arial" font-size="8">b</text>
+                <text x="45" y="75" font-family="Arial" font-size="8">B</text>
+                <text x="45" y="125" font-family="Arial" font-size="8">b</text>
+                <!-- Genotypes -->
+                <text x="75" y="75" font-family="Arial" font-size="8">BB</text>
+                <text x="125" y="75" font-family="Arial" font-size="8">Bb</text>
+                <text x="75" y="125" font-family="Arial" font-size="8">Bb</text>
+                <text x="125" y="125" font-family="Arial" font-size="8">A</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The genotype of the offspring labeled A is bb.</p>
+        `
+    },
+    {
+        questionText: "What is meant by 'sustainable development'?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Sustainable development meets the needs of the present without compromising the ability of future generations to meet their needs, balancing economic, social, and environmental factors.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a food chain. Calculate the percentage of energy transferred from the producer to the primary consumer if 1000 kJ is available at the producer level and 100 kJ reaches the primary consumer.",
+        svgDiagram: `
+            <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Producer -->
+                <rect x="20" y="40" width="80" height="20" fill="#27AE60"/>
+                <text x="30" y="55" font-family="Arial" font-size="8">Producer</text>
+                <!-- Primary Consumer -->
+                <rect x="120" y="40" width="80" height="20" fill="#F5B7B1"/>
+                <text x="130" y="55" font-family="Arial" font-size="8">Primary Consumer</text>
+                <!-- Arrow -->
+                <path d="M100,50 L120,50" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L9,3 Z" fill="#000"/>
+                    </marker>
+                </defs>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Energy transferred = (Energy at primary consumer / Energy at producer) × 100 = (100 kJ / 1000 kJ) × 100 = 10%.</p>
+        `
+    },
+    {
+        questionText: "Describe the structure of a virus.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A virus consists of a protein coat (capsid) surrounding genetic material (DNA or RNA). Some have an outer lipid envelope. It lacks organelles and cannot reproduce without a host.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a test for reducing sugars. What is the expected result for a positive test?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Test tube -->
+                <rect x="80" y="50" width="40" height="100" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="80" y="100" width="40" height="50" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                <text x="70" y="40" font-family="Arial" font-size="8">Test tube</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A positive test for reducing sugars using Benedict’s solution results in a color change from blue to green, yellow, or red precipitate, depending on sugar concentration.</p>
+        `
+    },
+    {
+        questionText: "Explain how eutrophication affects aquatic ecosystems.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>E stereotypically malevolent Eutrophication occurs when excess nutrients (e.g., from fertilizers) enter water bodies, causing algal blooms. These block sunlight and deplete oxygen, killing aquatic life.</p>
+        `
+    },
+    {
+        questionText: "What is a recessive allele?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A recessive allele is a version of a gene that only expresses its trait if two copies are present (homozygous recessive). It is masked by a dominant allele in heterozygotes.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a sampling net. What is it used for?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Net frame -->
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#000" stroke-width="2"/>
+                <!-- Net mesh -->
+                <path d="M50,100 L150,100 L100,150 Z" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <text x="80" y="90" font-family="Arial" font-size="8">Net</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A sampling net is used to capture small organisms, such as insects or aquatic life, for ecological studies or population estimates.</p>
+        `
+    },
+    {
+        questionText: "What is the role of DNA in inheritance?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>DNA carries genetic information in genes, which determine traits. It is passed from parents to offspring, controlling the inheritance of characteristics.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a graph of population growth. Describe the trend.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line x1="20" y1="180" x2="180" y2="180" stroke="#000" stroke-width="1"/>
+                <line x1="20" y1="20" x2="20" y2="180" stroke="#000" stroke-width="1"/>
+                <!-- Curve -->
+                <path d="M20,180 C50,160 100,100 180,20" fill="none" stroke="#27AE60" stroke-width="2"/>
+                <text x="90" y="190" font-family="Arial" font-size="8">Time</text>
+                <text x="10" y="100" font-family="Arial" font-size="8" transform="rotate(-90,10,100)">Population</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The graph shows exponential population growth, with the population increasing slowly at first, then rapidly over time.</p>
+        `
+    },
+    {
+        questionText: "Explain how smoking increases the risk of lung cancer.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Smoking introduces carcinogens, like tar, into the lungs, which damage DNA in lung cells. This can lead to uncontrolled cell division, forming tumors.</p>
+        `
+    },
+    {
+        questionText: "What is a trophic level?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A trophic level is a position in a food chain or web, such as producers, primary consumers, secondary consumers, or tertiary consumers.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a test for proteins. What is the expected result?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Test tube -->
+                <rect x="80" y="50" width="40" height="100" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="80" y="100" width="40" height="50" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <text x="70" y="40" font-family="Arial" font-size="8">Test tube</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A positive test for proteins using Biuret reagent results in a color change from blue to purple.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a risk assessment in experiments?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A risk assessment identifies potential hazards in an experiment, evaluates their likelihood and severity, and outlines precautions to minimize risks.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a carbon cycle. Identify process A.",
+        svgDiagram: `
+            <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Plants -->
+                <rect x="50" y="150" width="50" height="20" fill="#27AE60"/>
+                <text x="55" y="165" font-family="Arial" font-size="8">Plants</text>
+                <!-- Atmosphere -->
+                <rect x="200" y="50" width="50" height="20" fill="#AED6F1"/>
+                <text x="205" y="65" font-family="Arial" font-size="8">Atmosphere</text>
+                <!-- Arrow (Photosynthesis) -->
+                <path d="M100,150 L200,70" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <text x="140" y="110" font-family="Arial" font-size="8">A</text>
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L9,3 Z" fill="#000"/>
+                    </marker>
+                </defs>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Photosynthesis</p>
+        `
+    },
+    {
+        questionText: "What is a communicable disease?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A communicable disease is an illness caused by pathogens that can be transmitted from one organism to another, e.g., influenza.</p>
+        `
+    },
+    {
+        questionText: "Explain how global warming affects ecosystems.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Global warming alters temperatures and weather patterns, shifting habitats and affecting species distributions. It can lead to coral bleaching, polar ice melting, and increased extinction risks.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a microscope. Identify part A.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Eyepiece (A) -->
+                <rect x="90" y="20" width="20" height="20" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                <text x="85" y="30" font-family="Arial" font-size="8">A</text>
+                <!-- Stage -->
+                <rect x="50" y="200" width="100" height="20" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Eyepiece</p>
+        `
+    },
+    {
+        questionText: "What is the difference between a dominant and recessive allele?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A dominant allele expresses its trait even if only one copy is present (heterozygous). A recessive allele only expresses its trait if two copies are present (homozygous recessive).</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a food web. What would happen if the primary consumer population decreased?",
+        svgDiagram: `
+            <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grass -->
+                <rect x="50" y="150" width="50" height="20" fill="#27AE60"/>
+                <text x="55" y="165" font-family="Arial" font-size="8">Grass</text>
+                <!-- Rabbit -->
+                <rect x="120" y="100" width="50" height="20" fill="#F5B7B1"/>
+                <text x="125" y="115" font-family="Arial" font-size="8">Rabbit</text>
+                <!-- Fox -->
+                <rect x="200" y="50" width="50" height="20" fill="#D35400"/>
+                <text x="205" y="65" font-family="Arial" font-size="8">Fox</text>
+                <!-- Arrows -->
+                <path d="M100,150 L120,120" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <path d="M170,100 L200,70" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L9,3 Z" fill="#000"/>
+                    </marker>
+                </defs>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A decrease in rabbits (primary consumers) would reduce food for foxes (secondary consumers), potentially decreasing their population. Grass (producers) might increase due to less grazing.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of staining a microscope slide?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Staining a microscope slide increases contrast, making cell structures, like the nucleus or cell wall, more visible under the microscope.</p>
+        `
+    },
+    {
+        questionText: "Explain how genetic engineering is used in agriculture.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Genetic engineering modifies an organism’s DNA to introduce desirable traits, such as pest resistance or higher yield. For example, Bt crops produce a toxin that kills pests, reducing pesticide use.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a graph of enzyme activity. Explain the shape of the curve.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line x1="20" y1="180" x2="180" y2="180" stroke="#000" stroke-width="1"/>
+                <line x1="20" y1="20" x2="20" y2="180" stroke="#000" stroke-width="1"/>
+                <!-- Curve -->
+                <path d="M20,180 C60,100 100,20 140,100 180,180" fill="none" stroke="#27AE60" stroke-width="2"/>
+                <text x="90" y="190" font-family="Arial" font-size="8">Temperature</text>
+                <text x="10" y="100" font-family="Arial" font-size="8" transform="rotate(-90,10,100)">Activity</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Enzyme activity increases with temperature up to an optimum, where activity is highest. Beyond this, the enzyme denatures, causing activity to decrease, forming a bell-shaped curve.</p>
+        `
+    },
+    {
+        questionText: "What is the role of producers in an ecosystem?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Producers, like plants, use photosynthesis to convert sunlight into energy, forming the base of food chains and providing energy for all other organisms.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a test for lipids. What is the expected result?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Test tube -->
+                <rect x="80" y="50" width="40" height="100" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="80" y="100" width="40" height="50" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                <text x="70" y="40" font-family="Arial" font-size="8">Test tube</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A positive test for lipids using the emulsion test results in a cloudy white emulsion when ethanol and water are added.</p>
+        `
+    },
+    {
+        questionText: "Explain how overfishing affects marine ecosystems.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Overfishing depletes fish populations, disrupting food chains and reducing predator or prey species. This can lead to ecosystem imbalance, affecting biodiversity and other marine life.</p>
+        `
+    },
+    {
+        questionText: "What is a heterozygous genotype?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A heterozygous genotype has two different alleles for a gene, e.g., Aa, with the dominant allele determining the trait expressed.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a nitrogen cycle. Identify process A.",
+        svgDiagram: `
+            <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Soil -->
+                <rect x="50" y="150" width="50" height="20" fill="#8D5524"/>
+                <text x="55" y="165" font-family="Arial" font-size="8">Soil</text>
+                <!-- Plants -->
+                <rect x="200" y="150" width="50" height="20" fill="#27AE60"/>
+                <text x="205" y="165" font-family="Arial" font-size="8">Plants</text>
+                <!-- Arrow (Nitrogen uptake) -->
+                <path d="M100,150 L200,150" fill="none" stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+                <text x="140" y="140" font-family="Arial" font-size="8">A</text>
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L9,3 Z" fill="#000"/>
+                    </marker>
+                </defs>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p><strong>A:</strong> Nitrogen uptake</p>
+        `
+    },
+    {
+        questionText: "What is the difference between a food chain and a food web?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A food chain is a linear sequence showing energy transfer between organisms (e.g., grass → rabbit → fox). A food web is a network of interconnected food chains, showing complex feeding relationships.</p>
+        `
+    },
+    {
+        questionText: "Explain how microscopy is used in biological research.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Microscopy magnifies small structures, like cells or bacteria, allowing scientists to study their structure, function, and interactions, aiding discoveries in genetics and disease research.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a pyramid of numbers. Explain why it is wider at the base.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Producers -->
+                <rect x="20" y="150" width="160" height="40" fill="#27AE60"/>
+                <text x="80" y="170" font-family="Arial" font-size="8">Producers</text>
+                <!-- Primary Consumers -->
+                <rect x="40" y="100" width="120" height="30" fill="#F5B7B1"/>
+                <text x="80" y="115" font-family="Arial" font-size="8">Primary Consumers</text>
+                <!-- Secondary Consumers -->
+                <rect x="60" y="60" width="80" height="20" fill="#D35400"/>
+                <text x="80" y="70" font-family="Arial" font-size="8">Secondary Consumers</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The pyramid is wider at the base because producers, like plants, are more numerous than consumers. Higher trophic levels have fewer organisms due to energy loss and population dynamics.</p>
+        `
+    },
+    {
+        questionText: "What is the role of antibodies in the immune system?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Antibodies, produced by white blood cells, bind to specific pathogens or toxins, marking them for destruction by other immune cells or neutralizing them directly.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a transect sampling setup. What data might be collected?",
+        svgDiagram: `
+            <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Transect line -->
+                <line x1="20" y1="50" x2="280" y2="50" stroke="#000" stroke-width="2"/>
+                <!-- Sampling points -->
+                <circle cx="50" cy="50" r="5" fill="#27AE60"/>
+                <circle cx="150" cy="50" r="5" fill="#27AE60"/>
+                <circle cx="250" cy="50" r="5" fill="#27AE60"/>
+                <text x="20" y="40" font-family="Arial" font-size="8">Transect</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Data collected may include species presence, abundance, or distribution at each sampling point, as well as environmental factors like soil pH or light intensity.</p>
+        `
+    },
+    {
+        questionText: "What is meant by 'adaptation' in biology?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>An adaptation is a trait that enhances an organism’s survival or reproduction in its environment, developed through natural selection, e.g., a camel’s hump for water storage.</p>
+        `
+    },
+    {
+        questionText: "Explain how monoculture affects biodiversity.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Monoculture, growing a single crop, reduces biodiversity by replacing diverse habitats with one species, limiting food and shelter for other organisms and increasing pest vulnerability.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a test for glucose. What reagent is used?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Test tube -->
+                <rect x="80" y="50" width="40" height="100" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="80" y="100" width="40" height="50" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                <text x="70" y="40" font-family="Arial" font-size="8">Test tube</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Benedict’s solution is used to test for glucose, a reducing sugar, producing a color change when heated.</p>
+        `
+    },
+    {
+        questionText: "What is the role of predators in an ecosystem?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Predators control prey populations, preventing overgrazing or resource depletion, maintaining ecosystem balance and promoting biodiversity by allowing weaker species to survive.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a genetic pedigree. What is the inheritance pattern?",
+        svgDiagram: `
+            <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Male (square) -->
+                <rect x="50" y="20" width="20" height="20" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                <!-- Female (circle) -->
+                <circle cx="100" cy="30" r="10" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                <!-- Affected male -->
+                <rect x="50" y="100" width="20" height="20" fill="#D35400" stroke="#000" stroke-width="1"/>
+                <!-- Lines -->
+                <line x1="60" y1="40" x2="60" y2="80" stroke="#000" stroke-width="1"/>
+                <line x1="60" y1="80" x2="90" y2="80" stroke="#000" stroke-width="1"/>
+                <line x1="90" y1="80" x2="90" y2="40" stroke="#000" stroke-width="1"/>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The pedigree suggests a recessive inheritance pattern, as the trait skips generations and appears in offspring of unaffected parents, indicating they are carriers.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a control variable in an experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A control variable is kept constant in an experiment to ensure that the results are due to the independent variable, not other factors.</p>
+        `
+    },
+    {
+        questionText: "Explain how cloning is used in biotechnology.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Cloning produces genetically identical organisms or cells, used in biotechnology to replicate desirable traits, like disease-resistant plants, or to produce proteins like insulin in bacteria.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a population pyramid. What does a wide base indicate?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Male -->
+                <rect x="20" y="150" width="80" height="40" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <rect x="20" y="110" width="60" height="30" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <!-- Female -->
+                <rect x="100" y="150" width="80" height="40" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                <rect x="120" y="110" width="60" height="30" fill="#F5B7B1" stroke="#000" stroke-width="1"/>
+                <text x="90" y="190" font-family="Arial" font-size="8">Age</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A wide base in a population pyramid indicates a high birth rate, suggesting a growing population with many young individuals.</p>
+        `
+    },
+    {
+        questionText: "What is the role of the pancreas in blood glucose regulation?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The pancreas regulates blood glucose by releasing insulin, which lowers glucose levels by promoting uptake into cells, and glucagon, which raises levels by releasing stored glucose.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a sampling technique. What is the advantage of random sampling?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Field -->
+                <rect x="20" y="20" width="160" height="160" fill="#A9DFBF" stroke="#000" stroke-width="1"/>
+                <!-- Quadrats -->
+                <rect x="40" y="40" width="20" height="20" fill="none" stroke="#000" stroke-width="2"/>
+                <rect x="120" y="80" width="20" height="20" fill="none" stroke="#000" stroke-width="2"/>
+                <rect x="60" y="120" width="20" height="20" fill="none" stroke="#000" stroke-width="2"/>
+                <text x="80" y="15" font-family="Arial" font-size="8">Field</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Random sampling reduces bias by ensuring all areas have an equal chance of being sampled, providing a representative sample of the population.</p>
+        `
+    },
+    {
+        questionText: "What is the difference between sexual and asexual reproduction?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Sexual reproduction involves two parents, producing genetically diverse offspring via gamete fusion. Asexual reproduction involves one parent, producing genetically identical offspring, e.g., by budding.</p>
+        `
+    },
+    {
+        questionText: "Explain how acid rain affects ecosystems.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Acid rain, caused by pollutants like sulfur dioxide, lowers soil and water pH, harming plants, aquatic life, and soil microbes, disrupting nutrient cycles and food chains.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a test for biological molecules. What molecule is being tested if iodine is used?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Test tube -->
+                <rect x="80" y="50" width="40" height="100" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <!-- Solution -->
+                <rect x="80" y="100" width="40" height="50" fill="#FAD7A0" stroke="#000" stroke-width="1"/>
+                <text x="70" y="40" font-family="Arial" font-size="8">Test tube</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Iodine is used to test for starch, which turns blue-black if present.</p>
+        `
+    },
+    {
+        questionText: "What is the role of competition in ecosystems?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Competition for resources like food or space limits population sizes, promotes natural selection, and drives adaptations, shaping ecosystem structure and diversity.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a graph of predator-prey populations. Explain the relationship.",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line x1="20" y1="180" x2="180" y2="180" stroke="#000" stroke-width="1"/>
+                <line x1="20" y1="20" x2="20" y2="180" stroke="#000" stroke-width="1"/>
+                <!-- Prey curve -->
+                <path d="M20,100 C60,20 100,180 140,20 180,100" fill="none" stroke="#27AE60" stroke-width="2"/>
+                <!-- Predator curve -->
+                <path d="M20,140 C60,60 100,140 140,60 180,140" fill="none" stroke="#D35400" stroke-width="2"/>
+                <text x="90" y="190" font-family="Arial" font-size="8">Time</text>
+                <text x="10" y="100" font-family="Arial" font-size="8" transform="rotate(-90,10,100)">Population</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Predator and prey populations cycle, with prey increasing first, allowing predators to grow. As predators increase, prey decrease, causing predators to decline, allowing prey to recover.</p>
+        `
+    },
+    {
+        questionText: "What is the purpose of a hypothesis in an experiment?",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>A hypothesis is a testable prediction about the relationship between variables, guiding the experiment’s design and interpretation of results.</p>
+        `
+    },
+    {
+        questionText: "Explain how deforestation contributes to climate change.",
+        svgDiagram: "",
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>Deforestation removes trees that absorb carbon dioxide, increasing atmospheric CO₂ levels. It also releases stored carbon from soil and biomass, contributing to global warming.</p>
+        `
+    },
+    {
+        questionText: "The diagram shows a bacterial growth experiment. What is the purpose of the control plate?",
+        svgDiagram: `
+            <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <!-- Control plate -->
+                <circle cx="100" cy="100" r="50" fill="#D5DBDB" stroke="#000" stroke-width="1"/>
+                <text x="80" y="90" font-family="Arial" font-size="8">Control</text>
+                <!-- Test plate -->
+                <circle cx="100" cy="50" r="50" fill="#AED6F1" stroke="#000" stroke-width="1"/>
+                <text x="80" y="40" font-family="Arial" font-size="8">Test</text>
+            </svg>
+        `,
+        answerText: `
+            <p><strong>Model Answer:</strong></p>
+            <p>The control plate, untreated, shows normal bacterial growth, allowing comparison with the test plate to determine the effect of the variable, e.g., an antibiotic.</p>
+        `
+    }
+];
+        const questionTextEl = document.getElementById('question-text');
+        const diagramContainerEl = document.getElementById('diagram-container');
+        const answerAreaEl = document.getElementById('answer-area');
+        const answerButton = document.getElementById('answer-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = -1;
+        let currentQuestion = null;
+
+        function displayQuestion(index) {
+            currentQuestion = questions[index];
+            questionTextEl.innerHTML = currentQuestion.questionText;
+
+            if (currentQuestion.svgDiagram && currentQuestion.svgDiagram.trim() !== "") {
+                diagramContainerEl.innerHTML = currentQuestion.svgDiagram;
+                diagramContainerEl.style.display = 'block';
+            } else {
+                diagramContainerEl.innerHTML = '';
+                diagramContainerEl.style.display = 'none';
+            }
+
+            answerAreaEl.style.display = 'none';
+            answerAreaEl.innerHTML = '';
+        }
+
+        function showAnswer() {
+            if (currentQuestion) {
+                answerAreaEl.innerHTML = currentQuestion.answerText;
+                answerAreaEl.style.display = 'block';
+            }
+        }
+
+        function loadNextQuestion() {
+            if (questions.length === 0) {
+                questionTextEl.innerHTML = "No questions loaded. Please add questions to the 'questions' array in the script.";
+                diagramContainerEl.innerHTML = '';
+                answerAreaEl.style.display = 'none';
+                return;
+            }
+
+            let newIndex;
+            if (questions.length > 1) {
+                do {
+                    newIndex = Math.floor(Math.random() * questions.length);
+                } while (newIndex === currentQuestionIndex);
+            } else {
+                newIndex = 0;
+            }
+            currentQuestionIndex = newIndex;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        answerButton.addEventListener('click', showAnswer);
+        nextButton.addEventListener('click', loadNextQuestion);
+
+        loadNextQuestion();
+    </script>
+</body>
+</html>
